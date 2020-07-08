@@ -24,7 +24,7 @@
       organización
     </p>
   </div>
-  <div class="fl w-100 w-100-m w-50-l tc-ns tl-l ph4-l">
+  <div class="fl w-100 w-100-m w-50-l tc-ns tc-m tl-l ph4-l">
     <img src={whyImage} alt="why gif" />
   </div>
 
