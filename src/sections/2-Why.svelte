@@ -11,7 +11,7 @@
 </style>
 
 <div id="why">
-  <h3 class=" ml2-ns ml5-l f2 lh-copy courier mb0">¿Para qué?</h3>
+  <h3 class=" ml2-ns ml4-m ml5-l f2 lh-copy courier mb0">¿Para qué?</h3>
 
   <section class="cf pa3 mt0 pt0 fw3 ml2-ns ml5-l">
     <div class="fl w-100 w-100-m w-50-l f3 ">

@@ -22,6 +22,11 @@ a {
   text-decoration: none;
 }
 
+.alink {
+  color: #07c9c5;
+  text-decoration: none;
+}
+
 a:hover {
   text-decoration: underline;
 }
