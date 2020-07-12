@@ -2,6 +2,13 @@
   let whyImage = "./gif/why.svg";
 </script>
 
+<style>
+  a {
+    color: #07c9c5;
+    text-decoration: none;
+  }
+</style>
+
 <div id="pilares">
   <h3 class=" ml2-ns ml5-l f2 lh-copy courier mb0">Pilares</h3>
 

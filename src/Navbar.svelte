@@ -4,33 +4,9 @@
     font-family: "Open Sans";
     --text-primary: #b6b6b6;
     --text-secondary: #ececec;
-    --bg-primary: #23232e;
-    --bg-secondary: #141418;
+    --bg-primary: #262022;
+    --bg-secondary: #1a1516;
     --transition-speed: 600ms;
-  }
-
-  body {
-    color: black;
-    background-color: white;
-    margin: 0;
-    padding: 0;
-  }
-
-  body::-webkit-scrollbar {
-    width: 0.25rem;
-  }
-
-  body::-webkit-scrollbar-track {
-    background: #1e1e24;
-  }
-
-  body::-webkit-scrollbar-thumb {
-    background: #6649b8;
-  }
-
-  main {
-    margin-left: 5rem;
-    padding: 1rem;
   }
 
   .navbar {
@@ -86,11 +62,11 @@
   }
 
   .fa-primary {
-    color: #ff7eee;
+    color: #ffedd5;
   }
 
   .fa-secondary {
-    color: #df49a6;
+    color: #ff7d87;
   }
 
   .fa-primary,
@@ -145,10 +121,6 @@
     .nav-link {
       justify-content: center;
     }
-
-    main {
-      margin: 0;
-    }
   }
 
   /* Large screens */
@@ -175,50 +147,13 @@
       left: 0px;
     }
   }
-
-  .dark {
-    --text-primary: #b6b6b6;
-    --text-secondary: #ececec;
-    --bg-primary: #23232e;
-    --bg-secondary: #141418;
-  }
-
-  .light {
-    --text-primary: #1f1f1f;
-    --text-secondary: #000000;
-    --bg-primary: #ffffff;
-    --bg-secondary: #e4e4e4;
-  }
-
-  .solar {
-    --text-primary: #576e75;
-    --text-secondary: #35535c;
-    --bg-primary: #fdf6e3;
-    --bg-secondary: #f5e5b8;
-  }
-
-  .theme-icon {
-    display: none;
-  }
-
-  .dark #darkIcon {
-    display: block;
-  }
-
-  .light #lightIcon {
-    display: block;
-  }
-
-  .solar #solarIcon {
-    display: block;
-  }
 </style>
 
 <nav class="navbar">
   <ul class="navbar-nav">
     <li class="logo">
-      <a href="#" class="nav-link">
-        <span class="link-text logo-text">Fireship</span>
+      <a href="#title" class="nav-link">
+        <span class="link-text logo-text courier">Ant Hill</span>
         <svg
           aria-hidden="true"
           focusable="false"
@@ -248,127 +183,271 @@
       </a>
     </li>
 
+    <!-- Index Options -->
+
+    <!-- Pilares -->
     <li class="nav-item">
-      <a href="#" class="nav-link">
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          data-prefix="fad"
-          data-icon="cat"
-          role="img"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          class="svg-inline--fa fa-cat fa-w-16 fa-9x">
-          <g class="fa-group">
-            <path
-              fill="currentColor"
-              d="M448 96h-64l-64-64v134.4a96 96 0 0 0 192 0V32zm-72 80a16 16 0 1
-              1 16-16 16 16 0 0 1-16 16zm80 0a16 16 0 1 1 16-16 16 16 0 0 1-16
-              16zm-165.41 16a204.07 204.07 0 0 0-34.59
-              2.89V272l-43.15-64.73a183.93 183.93 0 0 0-44.37 26.17L192
-              304l-60.94-30.47L128 272v-80a96.1 96.1 0 0 0-96-96 32 32 0 0 0 0
-              64 32 32 0 0 1 32 32v256a64.06 64.06 0 0 0 64 64h176a16 16 0 0 0
-              16-16v-16a32 32 0 0 0-32-32h-32l128-96v144a16 16 0 0 0 16 16h32a16
-              16 0 0 0 16-16V289.86a126.78 126.78 0 0 1-32 4.54c-61.81
-              0-113.52-44.05-125.41-102.4z"
-              class="fa-secondary" />
-            <path
-              fill="currentColor"
-              d="M376 144a16 16 0 1 0 16 16 16 16 0 0 0-16-16zm80 0a16 16 0 1 0
-              16 16 16 16 0 0 0-16-16zM131.06 273.53L192 304l-23.52-70.56a192.06
-              192.06 0 0 0-37.42 40.09zM256 272v-77.11a198.62 198.62 0 0 0-43.15
-              12.38z"
-              class="fa-primary" />
-          </g>
+      <a href="#pilares" class="nav-link">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+
+          <path
+            fill="currentColor"
+            d="M544 464v32a16 16 0 0 1-16 16H112a16 16 0 0 1-16-16v-32a16 16 0 0
+            1 16-16h176V153.25A80.06 80.06 0 0 1 241.61 96H112a16 16 0 0
+            1-16-16V48a16 16 0 0 1 16-16h144.36a79.28 79.28 0 0 1 127.28
+            0H528a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16H398.39A80.06 80.06 0 0
+            1 352 153.25V448h176a16 16 0 0 1 16 16z"
+            class="fa-secondary" />
+          <path
+            fill="currentColor"
+            d="M256 336c0-16.18
+            1.34-8.73-85-181.51-17.65-35.29-68.19-35.36-85.87 0C-2.06 328.75 0
+            320.33 0 336c0 44.18 57.31 80 128 80s128-35.82 128-80zM128 176l72
+            144H56zm512 160c0-16.18
+            1.34-8.73-85.05-181.51-17.65-35.29-68.19-35.36-85.87 0C381.94 328.75
+            384 320.33 384 336c0 44.18 57.31 80 128 80s128-35.82
+            128-80zm-200-16l72-144 72 144z"
+            class="fa-primary" />
         </svg>
-        <span class="link-text">Cats</span>
+
+        <span class="link-text">Pilares</span>
       </a>
     </li>
 
+    <!-- Roles -->
     <li class="nav-item">
       <a href="#" class="nav-link">
         <svg
           aria-hidden="true"
           focusable="false"
           data-prefix="fad"
-          data-icon="alien-monster"
-          role="img"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 576 512"
-          class="svg-inline--fa fa-alien-monster fa-w-18 fa-9x">
-          <g class="fa-group">
-            <path
-              fill="currentColor"
-              d="M560,128H528a15.99954,15.99954,0,0,0-16,16v80H480V176a15.99954,15.99954,0,0,0-16-16H416V96h48a16.00079,16.00079,0,0,0,16-16V48a15.99954,15.99954,0,0,0-16-16H432a15.99954,15.99954,0,0,0-16,16V64H368a15.99954,15.99954,0,0,0-16,16v48H224V80a15.99954,15.99954,0,0,0-16-16H160V48a15.99954,15.99954,0,0,0-16-16H112A15.99954,15.99954,0,0,0,96,48V80a16.00079,16.00079,0,0,0,16,16h48v64H112a15.99954,15.99954,0,0,0-16,16v48H64V144a15.99954,15.99954,0,0,0-16-16H16A15.99954,15.99954,0,0,0,0,144V272a16.00079,16.00079,0,0,0,16,16H64v80a16.00079,16.00079,0,0,0,16,16h48v80a16.00079,16.00079,0,0,0,16,16h96a16.00079,16.00079,0,0,0,16-16V432a15.99954,15.99954,0,0,0-16-16H192V384H384v32H336a15.99954,15.99954,0,0,0-16,16v32a16.00079,16.00079,0,0,0,16,16h96a16.00079,16.00079,0,0,0,16-16V384h48a16.00079,16.00079,0,0,0,16-16V288h48a16.00079,16.00079,0,0,0,16-16V144A15.99954,15.99954,0,0,0,560,128ZM224,320H160V224h64Zm192,0H352V224h64Z"
-              class="fa-secondary" />
-            <path
-              fill="currentColor"
-              d="M160,320h64V224H160Zm192-96v96h64V224Z"
-              class="fa-primary" />
-          </g>
-        </svg>
-        <span class="link-text">Aliens</span>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a href="#" class="nav-link">
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          data-prefix="fad"
-          data-icon="space-station-moon-alt"
-          role="img"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          class="svg-inline--fa fa-space-station-moon-alt fa-w-16 fa-5x">
-          <g class="fa-group">
-            <path
-              fill="currentColor"
-              d="M501.70312,224H448V160H368V96h48V66.67383A246.86934,246.86934,0,0,0,256,8C119.03125,8,8,119.0332,8,256a250.017,250.017,0,0,0,1.72656,28.26562C81.19531,306.76953,165.47656,320,256,320s174.80469-13.23047,246.27344-35.73438A250.017,250.017,0,0,0,504,256,248.44936,248.44936,0,0,0,501.70312,224ZM192,240a80,80,0,1,1,80-80A80.00021,80.00021,0,0,1,192,240ZM384,343.13867A940.33806,940.33806,0,0,1,256,352c-87.34375,0-168.71094-11.46094-239.28906-31.73633C45.05859,426.01953,141.29688,504,256,504a247.45808,247.45808,0,0,0,192-91.0918V384H384Z"
-              class="fa-secondary" />
-            <path
-              fill="currentColor"
-              d="M256,320c-90.52344,0-174.80469-13.23047-246.27344-35.73438a246.11376,246.11376,0,0,0,6.98438,35.998C87.28906,340.53906,168.65625,352,256,352s168.71094-11.46094,239.28906-31.73633a246.11376,246.11376,0,0,0,6.98438-35.998C430.80469,306.76953,346.52344,320,256,320Zm-64-80a80,80,0,1,0-80-80A80.00021,80.00021,0,0,0,192,240Zm0-104a24,24,0,1,1-24,24A23.99993,23.99993,0,0,1,192,136Z"
-              class="fa-primary" />
-          </g>
-        </svg>
-        <span class="link-text">Space</span>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a href="#" class="nav-link">
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          data-prefix="fad"
-          data-icon="space-shuttle"
+          data-icon="descargar"
           role="img"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 640 512"
-          class="svg-inline--fa fa-space-shuttle fa-w-20 fa-5x">
+          class="svg-inline--fa fa-alien-monster fa-w-18 fa-9x">
           <g class="fa-group">
+
             <path
               fill="currentColor"
-              d="M32 416c0 35.35 21.49 64 48 64h16V352H32zm154.54-232h280.13L376
-              168C243 140.59 222.45 51.22 128 34.65V160h18.34a45.62 45.62 0 0 1
-              40.2 24zM32 96v64h64V32H80c-26.51 0-48 28.65-48 64zm114.34
-              256H128v125.35C222.45 460.78 243 371.41 376
-              344l90.67-16H186.54a45.62 45.62 0 0 1-40.2 24z"
+              d="M512 0a48 48 0 1 0 48 48 48 48 0 0 0-48-48zM128 0a48 48 0 1 0
+              48 48 48 48 0 0 0-48-48zm272 128H240a16 16 0 0 0-16 16v171.59c4.63
+              2.49 11.33 3.95 16 4.32h160c4.67-.37 11.35-1.83 16-4.3V143.7a16 16
+              0 0 0-16-15.7z"
               class="fa-secondary" />
             <path
               fill="currentColor"
-              d="M592.6 208.24C559.73 192.84 515.78 184 472 184H186.54a45.62
-              45.62 0 0 0-40.2-24H32c-23.2 0-32 10-32 24v144c0 14 8.82 24 32
-              24h114.34a45.62 45.62 0 0 0 40.2-24H472c43.78 0 87.73-8.84
-              120.6-24.24C622.28 289.84 640 272 640
-              256s-17.72-33.84-47.4-47.76zM488 296a8 8 0 0 1-8-8v-64a8 8 0 0 1
-              8-8c31.91 0 31.94 80 0 80z"
+              d="M637.71 468.1l-44-110-41.09 46.4-2 18.2 27.69 69.2A32 32 0 0 0
+              608 512a31.09 31.09 0 0 0 11.9-2.3 32 32 0 0 0
+              17.81-41.6zm-591.4-110l-44 110a32 32 0 0 0 59.4
+              23.8l27.71-69.2-2-18.2zm150.31-162.2a108.86 108.86 0 0 0-48.1-59.4
+              61.72 61.72 0 0 0-56.1-3.3 64.81 64.81 0 0 0-37.5 44.9l-18.4
+              80.2a64 64 0 0 0 14.4 56.7l67.2 75.9 10.09 92.6A32 32 0 0 0 160
+              512c1.19 0 2.29-.1 3.5-.2a31.94 31.94 0 0 0
+              28.29-35.3l-10.1-92.8a64 64 0 0 0-15.59-35l-43.31-49 17.61-70.3
+              6.79 20.4c4.1 12.5 11.91 23.4 24.5 32.6l51.1 32.5c.38.24.78.46
+              1.19.68V240l-16.06-10.2zm406.9 62.4L585 178.1a64.81 64.81 0 0
+              0-37.5-44.9 61.7 61.7 0 0 0-56.1 3.3 109.53 109.53 0 0 0-48.11
+              59.4L432 229.8 416 240v75.6c.42-.23.83-.46
+              1.21-.7l51.1-32.5c12.61-9.2 20.4-20 24.5-32.6l6.81-20.4 17.59
+              70.3-43.29 49a63.86 63.86 0 0 0-15.61 35l-10.1 92.8a32 32 0 0 0
+              28.31 35.3c1.19.1 2.29.2 3.5.2a32 32 0 0 0 31.79-28.5l10.11-92.6
+              67.19-75.9a64.4 64.4 0 0 0 14.41-56.7z"
               class="fa-primary" />
           </g>
         </svg>
-        <span class="link-text">Shuttle</span>
+        <span class="link-text">Roles</span>
+      </a>
+    </li>
+
+    <!-- Artefactos -->
+    <li class="nav-item">
+      <a href="#" class="nav-link">
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fad"
+          data-icon="descargar"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+          class="svg-inline--fa fa-alien-monster fa-w-18 fa-9x">
+          <g class="fa-group">
+
+            <path
+              fill="currentColor"
+              d="M193.8 227.7L18.74 402.76a64 64 0 0 0 90.5
+              90.5l148.88-148.88a75.36 75.36 0 0 1 6.58-45.78zM64 472a24 24 0 1
+              1 24-24 24 24 0 0 1-24 24zm443.73-362.9a12 12 0 0
+              0-20.12-5.51L413.25 178l-67.88-11.31-11.31-67.93 74.36-74.36a12 12
+              0 0 0-5.66-20.16 143.92 143.92 0 0 0-136.58 37.93c-39.64
+              39.64-50.55 97.1-34.05 147.2l-4.43 4.43 70.9 70.9a74.25 74.25 0 0
+              1 85.4 13.9l7.21 7.21a141.74 141.74 0 0 0 78.61-40 143.94 143.94 0
+              0 0 37.91-136.71z"
+              class="fa-secondary" />
+            <path
+              fill="currentColor"
+              d="M501.1 395.7a37.36 37.36 0 0 1 0 52.7l-52.7 52.7a37.18 37.18 0
+              0 1-52.58.12l-.12-.12L278.6
+              384c-23.1-23.1-27.5-57.6-13.9-85.4L158.1 192H96L0 64 64 0l128
+              96v62.1l106.6 106.6a74.25 74.25 0 0 1 85.4 13.9z"
+              class="fa-primary" />
+          </g>
+        </svg>
+        <span class="link-text">Artefactos</span>
+      </a>
+    </li>
+
+    <!-- Eventos -->
+    <li class="nav-item">
+      <a href="#" class="nav-link">
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fad"
+          data-icon="descargar"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 448 512"
+          class="svg-inline--fa fa-alien-monster fa-w-18 fa-9x">
+          <g class="fa-group">
+
+            <path
+              fill="currentColor"
+              d="M0 192v272a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48V192zm324.13
+              141.91a11.92 11.92 0 0 1-3.53 6.89L281 379.4l9.4 54.6a12 12 0 0
+              1-17.4 12.6l-49-25.8-48.9 25.8a12 12 0 0
+              1-17.4-12.6l9.4-54.6-39.6-38.6a12 12 0 0 1 6.6-20.5l54.7-8
+              24.5-49.6a12 12 0 0 1 21.5 0l24.5 49.6 54.7 8a12 12 0 0 1 10.13
+              13.61zM304 128h32a16 16 0 0 0 16-16V16a16 16 0 0 0-16-16h-32a16 16
+              0 0 0-16 16v96a16 16 0 0 0 16 16zm-192 0h32a16 16 0 0 0
+              16-16V16a16 16 0 0 0-16-16h-32a16 16 0 0 0-16 16v96a16 16 0 0 0 16
+              16z"
+              class="fa-secondary" />
+            <path
+              fill="currentColor"
+              d="M314 320.3l-54.7-8-24.5-49.6a12 12 0 0 0-21.5 0l-24.5 49.6-54.7
+              8a12 12 0 0 0-6.6 20.5l39.6 38.6-9.4 54.6a12 12 0 0 0 17.4
+              12.6l48.9-25.8 49 25.8a12 12 0 0 0 17.4-12.6l-9.4-54.6
+              39.6-38.6a12 12 0 0 0-6.6-20.5zM400 64h-48v48a16 16 0 0 1-16
+              16h-32a16 16 0 0 1-16-16V64H160v48a16 16 0 0 1-16 16h-32a16 16 0 0
+              1-16-16V64H48a48 48 0 0 0-48 48v80h448v-80a48 48 0 0 0-48-48z"
+              class="fa-primary" />
+          </g>
+        </svg>
+        <span class="link-text">Eventos</span>
+      </a>
+    </li>
+
+    <!-- Actividades -->
+    <li class="nav-item">
+      <a href="#" class="nav-link">
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fad"
+          data-icon="descargar"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+          class="svg-inline--fa fa-alien-monster fa-w-18 fa-9x">
+          <g class="fa-group">
+
+            <path
+              fill="currentColor"
+              d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5
+              421.1 2.7 466 2.2 466.5a8 8 0 0 0-1.5 8.7A7.83 7.83 0 0 0 8
+              480c66.3 0 116-31.8 140.6-51.4A305 305 0 0 0 256 448c141.4 0
+              256-93.1 256-208S397.4 32 256 32zm114.1 163.8l-131 130a11 11 0 0
+              1-15.6-.1l-75.7-76.3a11 11 0 0 1 .1-15.6l26-25.8a11 11 0 0 1
+              15.6.1l42.1 42.5 97.2-96.4a11 11 0 0 1 15.6.1l25.8 26a11 11 0 0
+              1-.1 15.5z"
+              class="fa-secondary" />
+            <path
+              fill="currentColor"
+              d="M370.1 195.8l-131 130a11 11 0 0 1-15.6-.1l-75.7-76.3a11 11 0 0
+              1 .1-15.6l26-25.8a11 11 0 0 1 15.6.1l42.1 42.5 97.2-96.4a11 11 0 0
+              1 15.6.1l25.8 26a11 11 0 0 1-.1 15.5z"
+              class="fa-primary" />
+          </g>
+        </svg>
+        <span class="link-text">Actividades</span>
+      </a>
+    </li>
+
+    <!-- Acuerdos -->
+    <li class="nav-item">
+      <a href="#" class="nav-link">
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fad"
+          data-icon="descargar"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 640 512"
+          class="svg-inline--fa fa-alien-monster fa-w-18 fa-9x">
+          <g class="fa-group">
+
+            <path
+              fill="currentColor"
+              d="M640 143.9v191.8a16 16 0 0 1-16 16h-97.6a63.36 63.36 0 0
+              0-22.2-37.9L358.6 195.6l26.1-23.9a16 16 0 0 0-21.6-23.6l-27
+              24.7-53 48.5c-.1.1-.3.1-.4.2-21.1 18.9-46.5 7.8-56.1-2.7a39.69
+              39.69 0 0 1 2.1-56c.1-.1.2-.3.3-.4l98.3-90a32 32 0 0 1
+              21.6-8.4h85.9a31.94 31.94 0 0 1 22.6 9.4L512 128h112a16 16 0 0 1
+              16 15.9z"
+              class="fa-secondary" />
+            <path
+              fill="currentColor"
+              d="M0 335.9V144a16 16 0 0 1 16-16h112l54.7-54.6a31.94 31.94 0 0 1
+              22.6-9.4h83.8l-81.8 74.9a72 72 0 0 0-4.4 101.7c14.9 16.3 61.1 41.5
+              101.7 4.4l30-27.5 149.3 121.2a32.06 32.06 0 0 1 4.6 45.1l-9.5
+              11.7a32 32 0 0 1-45 4.7l-5.4-4.4-31.4 38.6a37.16 37.16 0 0 1-52.3
+              5.4L327 424.3l-.2.2a64 64 0 0 1-90 9.3l-90.5-81.9H16a16 16 0 0
+              1-16-16z"
+              class="fa-primary" />
+          </g>
+        </svg>
+        <span class="link-text">Acuerdos</span>
+      </a>
+    </li>
+
+    <!-- Descargar -->
+    <li class="nav-item">
+      <a href="#" class="nav-link">
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fad"
+          data-icon="descargar"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 384 512"
+          class="svg-inline--fa fa-alien-monster fa-w-18 fa-9x">
+          <g class="fa-group">
+
+            <path
+              fill="currentColor"
+              d="M384 128H272a16 16 0 0 1-16-16V0H24A23.94 23.94 0 0 0 0
+              23.88V488a23.94 23.94 0 0 0 23.88 24H360a23.94 23.94 0 0 0
+              24-23.88V128zm-83.55 219.36L204 443.06a17.06 17.06 0 0 1-24
+              0l-96.42-95.7C73.42 337.29 80.54 320 94.82 320H160v-80a16 16 0 0 1
+              16-16h32a16 16 0 0 1 16 16v80h65.18c14.28 0 21.4 17.29 11.27
+              27.36z"
+              class="fa-secondary" />
+            <path
+              fill="currentColor"
+              d="M377 105L279.1 7a24 24 0 0 0-17-7H256v112a16 16 0 0 0 16
+              16h112v-6.1a23.9 23.9 0 0 0-7-16.9zm-87.82 215H224v-80a16 16 0 0
+              0-16-16h-32a16 16 0 0 0-16 16v80H94.82c-14.28 0-21.4 17.29-11.24
+              27.36l96.42 95.7a17.06 17.06 0 0 0 24 0l96.45-95.7c10.13-10.07
+              3.01-27.36-11.27-27.36z"
+              class="fa-primary" />
+          </g>
+        </svg>
+        <span class="link-text">Descargar</span>
       </a>
     </li>
 
