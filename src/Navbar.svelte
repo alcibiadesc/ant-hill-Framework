@@ -1,3 +1,9 @@
+<script>
+  import jsPDF from "jspdf";
+
+  let pdfVersion = "./descargas/Ant Hill Framework.pdf";
+</script>
+
 <style>
   :root {
     font-size: 16px;
@@ -217,7 +223,7 @@
 
     <!-- Roles -->
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a href="#roles" class="nav-link">
         <svg
           aria-hidden="true"
           focusable="false"
@@ -263,7 +269,7 @@
 
     <!-- Artefactos -->
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a href="#artefactos" class="nav-link">
         <svg
           aria-hidden="true"
           focusable="false"
@@ -301,7 +307,7 @@
 
     <!-- Eventos -->
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a href="#eventos" class="nav-link">
         <svg
           aria-hidden="true"
           focusable="false"
@@ -341,8 +347,8 @@
     </li>
 
     <!-- Actividades -->
-    <li class="nav-item">
-      <a href="#" class="nav-link">
+    <!-- <li class="nav-item">
+      <a href="#actividades" class="nav-link">
         <svg
           aria-hidden="true"
           focusable="false"
@@ -374,11 +380,11 @@
         </svg>
         <span class="link-text">Actividades</span>
       </a>
-    </li>
+    </li> -->
 
     <!-- Acuerdos -->
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a href="#acuerdos" class="nav-link">
         <svg
           aria-hidden="true"
           focusable="false"
@@ -416,7 +422,7 @@
 
     <!-- Descargar -->
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a href={pdfVersion} class="nav-link" download>
         <svg
           aria-hidden="true"
           focusable="false"

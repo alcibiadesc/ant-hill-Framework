@@ -81,3 +81,8 @@ button:focus {
 .lookhere {
   color: #ff7d87;
 }
+
+mark {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 50%, #ffedd5 50%);
+  color: #333;
+}
