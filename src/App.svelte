@@ -1,4 +1,8 @@
 <script>
+  import Acuerdos from "./sections/8-Acuerdos.svelte";
+  import Actividades from "./sections/7-Actividades.svelte";
+  import Eventos from "./sections/6-Eventos.svelte";
+  import Artefactos from "./sections/5-Artefactos.svelte";
   import Roles from "./sections/4-Roles.svelte";
   import Credits from "./sections/99-Credits.svelte";
   import Navbar from "./Navbar.svelte";
@@ -37,6 +41,10 @@
   <Why />
   <Pilares />
   <Roles />
+  <Artefactos />
+  <Eventos />
+  <Actividades />
+  <Acuerdos />
 </main>
 
 <Credits />
