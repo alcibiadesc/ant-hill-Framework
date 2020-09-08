@@ -86,3 +86,8 @@ mark {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 50%, #ffedd5 50%);
   color: #333;
 }
+.img-svg {
+  border-radius: 100%;
+  width: 12rem;
+  height: 12rem;
+}

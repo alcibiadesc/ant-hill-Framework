@@ -1,3 +1,7 @@
+<script>
+  let ciclo = "./gif/Ciclo.svg";
+</script>
+
 <div id="eventos">
   <h3 class=" f2 lh-copy mb0 courier">Eventos</h3>
 
@@ -27,12 +31,15 @@
   </section>
 
   <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Iteración</h3>
-  <section class="cf pa3 mt0 pt0 fw3 mt0">
-    <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
+  <section class="cf pa3 mt0 pt0 fw3 mt0 w-75-l">
+    <div class="fl w-100 w-100-m f3-l f4-ns ">
       <p>
         La iteración es el contenedor de los demás eventos que se describirán a
         continuación.
       </p>
+    </div>
+
+    <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
       <p>
         Cada iteración comienza con la inspección de necesidades a cubrir
         durante el periodo, transcurre con su desarrollo en base a planes
@@ -40,12 +47,15 @@
         entregado durante la iteración y la inspección y adaptación de la forma
         de trabajar de la organización.
       </p>
-
       <p>
         Una iteración tiene un timebox de 2 meses como máximo y al finalizar la
         vigente comienza otra de la misma duración.
       </p>
 
+    </div>
+
+    <div class="fl w-100 w-100-m w-30-l tc-m ph4-l">
+      <img src={ciclo} alt="ciclo" class="img-svg" />
     </div>
 
   </section>

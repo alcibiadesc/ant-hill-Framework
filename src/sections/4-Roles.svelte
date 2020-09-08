@@ -1,10 +1,14 @@
+<script>
+  let equipo = "./gif/Fuego agua.svg";
+</script>
+
 <div id="roles">
   <h3 class=" f2 lh-copy mb0 courier">Roles</h3>
 
   <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Key Stakeholder</h3>
 
-  <section class="cf pa3 mt0 pt0 fw3 mt0">
-    <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
+  <section class="cf pa3 mt0 pt0 fw3 mt0 w-75-l">
+    <div class="fl w-100 w-100-m f3-l f4-ns ">
       <p>
         Los Key Stakeholder son líderes al servicio de la organización,
         comprometidos con la autonomía de los equipos y la entrega de valor.
@@ -38,18 +42,24 @@
         necesidades detectadas dentro de la organización. Esta responsabilidad
         es compartida por todos los miembros del equipo.
       </p>
-      El equipo es autosuficiente, crossfuncional y autoorganizado para definir
-      <mark>cómo quieren trabajar</mark>
-      con el propósito de alcanzar las Epopeyas. Para ello, deberá disponer de
-      conocimiento táctico como estratégico.
-      <p>
-        En relación a su área de especialización y empoderamiento, dentro de
-        cada equipo podremos identificar tanto el rol de Owner como el de
-        Desarrollador.
-      </p>
 
+      <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
+        El equipo es autosuficiente, crossfuncional y autoorganizado para
+        definir
+        <mark>cómo quieren trabajar</mark>
+        con el propósito de alcanzar las Epopeyas. Para ello, deberá disponer de
+        conocimiento táctico como estratégico.
+        <p>
+          En relación a su área de especialización y empoderamiento, dentro de
+          cada equipo podremos identificar tanto el rol de Owner como el de
+          Desarrollador.
+        </p>
+      </div>
+
+      <div class="fl w-100 w-100-m w-30-l tc-m ph4-l">
+        <img src={equipo} alt="equipo" class="img-svg" />
+      </div>
     </div>
-
   </section>
   <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Owner</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0">

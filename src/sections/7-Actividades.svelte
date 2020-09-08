@@ -1,3 +1,7 @@
+<script>
+  let celula = "./gif/Celula.svg";
+</script>
+
 <div class="actividades">
 
   <h3 class=" f2 lh-copy mb0 courier">Actividades</h3>
@@ -57,8 +61,9 @@
   </section>
 
   <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Comunidad de Prácticas</h3>
-  <section class="cf pa3 mt0 pt0 fw3 mt0 ">
-    <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
+  <section class="cf pa3 mt0 pt0 fw3 mt0 w-75-l">
+
+    <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
       <p>
         Con el fin de
         <mark>
@@ -74,7 +79,13 @@
         La creación de una Comunidad de Práctica tiende a ser fruto como
         respuesta a las acciones de mejora detectadas durante la Big Review.
       </p>
+
     </div>
+
+    <div class="fl w-100 w-100-m w-30-l tc-m ph4-l">
+      <img src={celula} alt="celula" class="img-svg" />
+    </div>
+
   </section>
 
 </div>

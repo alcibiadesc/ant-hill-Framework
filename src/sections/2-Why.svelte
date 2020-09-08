@@ -2,19 +2,12 @@
   let whyImage = "./gif/why.svg";
 </script>
 
-<style>
-  img {
-    border-radius: 100%;
-    width: 12rem;
-    height: 12rem;
-  }
-</style>
-
 <div id="why">
   <h3 class=" f2 lh-copy courier mb0">¿Para qué?</h3>
 
-  <section class="cf pa3 mt0 pt0 fw3 ">
-    <div class="fl w-100 w-100-m w-50-l f3 ">
+  <section class="cf pa3 mt0 pt0 fw3 w-75-l">
+
+    <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
       <p>
         La mayoría de modelos de escalado Agile requieren que todos los equipos
         trabajen bajo el mismo framework o método.
@@ -26,8 +19,8 @@
         alineamiento de la organización
       </p>
     </div>
-    <div class="fl w-100 w-100-m w-50-l tc-m ph4-l">
-      <img src={whyImage} alt="why gif" />
+    <div class="fl w-100 w-100-m w-30-l tc-m ph4-l">
+      <img src={whyImage} alt="why gif" class="img-svg" />
     </div>
 
   </section>
