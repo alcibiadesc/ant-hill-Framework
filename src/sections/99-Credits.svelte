@@ -10,4 +10,4 @@
   </a>
 
 </p>
-<p class="f6 mv1 pv1 tc courier fw1">versión 0.7.0</p>
+<p class="f6 mv1 pv1 tc courier fw1">versión 1.0.2</p>
