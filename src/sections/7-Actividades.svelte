@@ -79,7 +79,7 @@
       </p>
     </div>
 
-    <div class="fl w-100 w-100-m w-30-l tc-m ph4-l">
+    <div class="fl w-100 w-100-m w-30-l tc-m ph4-l tc">
       <img src={celula} alt="celula" class="img-svg" />
     </div>
 
