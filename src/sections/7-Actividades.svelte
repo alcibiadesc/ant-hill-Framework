@@ -37,7 +37,7 @@
         escalado de Bloqueos y los protocolos para su subsanación.
       </p>
 
-      <div class="pa4 pb1">
+      <div class="pa2 pa2-m pa4-l">
         <blockquote class="athelas ml0 mt0 pt0 pl4 black-90 bl bw2 b--gray">
           <p class="f5 f4-m f4-l lh-copy measure mt0 mb0">
             Se entiende por Bloqueo todo aquel impedimento que no puede resolver
@@ -64,22 +64,19 @@
   <section class="cf pa3 mt0 pt0 fw3 mt0 w-75-l">
 
     <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
-      <p>
-        Con el fin de
-        <mark>
-          fomentar la autoorganización, el desarrollo y la difusión de
-          conocimientos
-        </mark>
-        orientados a las necesidades de los productos y servicios prestados por
-        la organización, tanto dentro del equipo como entre equipos, es
-        recomendable la creación de comunidades orientadas al aprendizaje y
-        desarrollo de habilidades prácticas.
-      </p>
+      Con el fin de
+      <mark>
+        fomentar la autoorganización, el desarrollo y la difusión de
+        conocimientos
+      </mark>
+      orientados a las necesidades de los productos y servicios prestados por la
+      organización, tanto dentro del equipo como entre equipos, es recomendable
+      la creación de comunidades orientadas al aprendizaje y desarrollo de
+      habilidades prácticas.
       <p>
         La creación de una Comunidad de Práctica tiende a ser fruto como
         respuesta a las acciones de mejora detectadas durante la Big Review.
       </p>
-
     </div>
 
     <div class="fl w-100 w-100-m w-30-l tc-m ph4-l">

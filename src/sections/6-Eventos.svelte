@@ -14,7 +14,7 @@
       </p>
       <p>Todos los eventos respetan el concepto de Timebox.</p>
 
-      <div class="pa3 pb1">
+      <div class="pa2 pa2-m pa4-l">
         <blockquote class="athelas ml0 mt0 pt0 pl4 black-90 bl bw2 b--gray">
           <p class="f5 f4-m f4-l lh-copy measure mt0 mb0">
             El Timebox (caja de tiempo) es una técnica para limitar la duración
@@ -40,13 +40,11 @@
     </div>
 
     <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
-      <p>
-        Cada iteración comienza con la inspección de necesidades a cubrir
-        durante el periodo, transcurre con su desarrollo en base a planes
-        flexibles y finaliza con la obtención del feedback sobre el valor
-        entregado durante la iteración y la inspección y adaptación de la forma
-        de trabajar de la organización.
-      </p>
+      Cada iteración comienza con la inspección de necesidades a cubrir durante
+      el periodo, transcurre con su desarrollo en base a planes flexibles y
+      finaliza con la obtención del feedback sobre el valor entregado durante la
+      iteración y la inspección y adaptación de la forma de trabajar de la
+      organización.
       <p>
         Una iteración tiene un timebox de 2 meses como máximo y al finalizar la
         vigente comienza otra de la misma duración.
