@@ -10,4 +10,18 @@
   </a>
 
 </p>
-<p class="f6 mv1 pv1 tc courier fw1">versión 1.0.2</p>
+
+<div class=" mt4 mb4 ns-mb6 mh4 pb0 mb1 tc courier fw3 f6">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <img
+      alt="Licencia de Creative Commons"
+      style="border-width:0"
+      src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
+  </a>
+  <br />
+  Este obra está bajo una
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+    licencia de Creative Commons Reconocimiento-NoComercial-CompartirIgual 4.0
+    Internacional
+  </a>
+</div>
