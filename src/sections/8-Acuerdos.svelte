@@ -7,7 +7,7 @@
         Como bases mínimas que sustentan el control empírico de procesos, cada
         equipo debe tener un lenguaje común que permita la inspección,
         adaptación y transparencia a través del desarrollo y difusión de
-        acuerdos.
+        acuerdos explícitos.
       </p>
 
       <p>
@@ -25,7 +25,7 @@
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
         En Ant-Hill la calidad no se negocia. Esto implica la necesidad de
-        sentar las bases comunes para el entendimiento de ¿cuando algo esta
+        sentar las bases comunes para el entendimiento de ¿cuando algo está
         hecho?, en base al cumplimiento y aseguramiento de la calidad esperada.
       </p>
 
@@ -35,7 +35,7 @@
       </p>
 
       <p>
-        La Definición Mínima de Hecho, es la base necesaria para generar
+        La Definición Mínima de Hecho, es la base necesaria para generar un
         entendimiento compartido de "¿qué se entiende por hecho?".
       </p>
       <p>

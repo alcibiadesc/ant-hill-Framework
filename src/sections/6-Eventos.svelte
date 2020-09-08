@@ -5,13 +5,12 @@
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
         Respetando los eventos o feedback loops que establezcan los equipos en
-        su forma de trabajar, a nivel organizativo, estableceremos los
-        siguientes eventos que estarán organizados en relación a su propósito:
-        Entrega de Valor y Mejora.
+        su forma de trabajar, se establecen como necesarios los siguientes
+        eventos.
       </p>
-      <p>Todos los eventos respetan el concepto de Timebox en su duración.</p>
+      <p>Todos los eventos respetan el concepto de Timebox.</p>
 
-      <div class="pa4 pb1">
+      <div class="pa3 pb1">
         <blockquote class="athelas ml0 mt0 pt0 pl4 black-90 bl bw2 b--gray">
           <p class="f5 f4-m f4-l lh-copy measure mt0 mb0">
             El Timebox (caja de tiempo) es una técnica para limitar la duración
@@ -31,24 +30,21 @@
   <section class="cf pa3 mt0 pt0 fw3 mt0">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
-        La iteración es el Feedback Loop contenedor de los eventos que se
-        describirán a continuación.
+        La iteración es el contenedor de los demás eventos que se describirán a
+        continuación.
       </p>
       <p>
         Cada iteración comienza con la inspección de necesidades a cubrir
         durante el periodo, transcurre con su desarrollo en base a planes
-        flexibles y finaliza con la obtención de feedback del valor entregado
-        durante la iteración e inspección y adaptación de la forma de trabajar
-        de la organización para mejorar la entrega de valor.
+        flexibles y finaliza con la obtención del feedback sobre el valor
+        entregado durante la iteración y la inspección y adaptación de la forma
+        de trabajar de la organización.
       </p>
 
       <p>
-        Una iteración tiene un
-        <mark>timebox de 2 meses</mark>
-        como máximo.
+        Una iteración tiene un timebox de 2 meses como máximo y al finalizar la
+        vigente comienza otra de la misma duración.
       </p>
-
-      <p>Tras una iteración comienza otra iteración.</p>
 
     </div>
 
@@ -93,7 +89,7 @@
       <p>
         <span class="fw6">Propósito:</span>
         Inspeccionar la entrega de valor realizada durante la iteración por cada
-        uno de los equipos.
+        uno de los equipos en base a las Epopeyas.
       </p>
 
     </div>
@@ -118,7 +114,7 @@
         experiencia adquirida durante la iteración. Compartir buenas prácticas e
         inspeccionar vías para subsanar bloqueos recurrentes. Al menos una
         acción de mejora debe proponerse y probarse durante la siguiente
-        iteración a nivel organizacional.
+        iteración que beneficie a la mayor parte de equipos.
       </p>
 
     </div>

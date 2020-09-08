@@ -40,7 +40,7 @@
       </p>
       El equipo es autosuficiente, crossfuncional y autoorganizado para definir
       <mark>cómo quieren trabajar</mark>
-      con el próposito de alcanzar las Epopeyas. Para ello, deberá disponer de
+      con el propósito de alcanzar las Epopeyas. Para ello, deberá disponer de
       conocimiento táctico como estratégico.
       <p>
         En relación a su área de especialización y empoderamiento, dentro de
@@ -71,7 +71,7 @@
       <mark>qué necesidades hay que satisfacer</mark>
 
       <p>
-        Se recomienda que el rol este identificado en un solo miembro del equipo
+        Se recomienda que el rol esté identificado en un solo miembro del equipo
         para evitar desperdicios relacionados con los canales de comunicación y
         con los conflictos que puedan suceder al establecer criterios de valor
         al ordenar el backlog.
@@ -84,7 +84,7 @@
   <section class="cf pa3 mt0 pt0 fw3 mt0">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
-        La misión del Equipo de Desarrollo o Development Teamm es satisfacer las
+        La misión del Equipo de Desarrollo o Development Team es satisfacer las
         necesidades de nuestros clientes y usuarios a través de la entrega
         continua y frecuente de servicios de calidad y productos de valor.
       </p>
