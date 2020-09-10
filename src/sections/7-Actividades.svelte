@@ -61,6 +61,7 @@
   </section>
 
   <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Comunidad de Prácticas</h3>
+  <p />
   <section class="cf pa3 mt0 pt0 fw3 mt0 w-75-l">
 
     <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
