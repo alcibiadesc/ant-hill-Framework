@@ -63,9 +63,10 @@
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
         <span class="fw6">Timebox:</span>
-        8 horas para ciclos bimestrales. Invitados: Los Owners de cada equipo
-        junto con los Key Stakeholders.
+        8 horas para ciclos bimestrales. 
       </p>
+      <p><span class="fw6">Invitados:</span> Los Owners de cada equipo
+        junto con los Key Stakeholders.</p> 
       <p>
         Cada Owner tiene la posibilidad de invitar a miembros de sus equipos que
         consideren relevantes para cumplir con el propósito de la sesión.
