@@ -1,7 +1,7 @@
 <hr class="mt5 " />
 
 <p class="mt4 mh4 pb0 mb1 tc courier fw1">
-  hecho con ❤️ por
+  desarrollado con ❤️ por
   <a
     href="https://www.linkedin.com/in/alcibiadesc/"
     target="#blank"
@@ -9,6 +9,9 @@
     Alcibíades
   </a>
 
+</p>
+<p class=" mh4 pb0 mb1 tc courier fw1">
+versión 1.0.3
 </p>
 
 <div class=" mt4 mb4 ns-mb6 mh4 pb0 mb1 tc courier fw3 f6">

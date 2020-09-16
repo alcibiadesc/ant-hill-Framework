@@ -35,7 +35,7 @@
         entendimiento compartido de
         <mark>"¿qué se entiende por hecho?"</mark>
         Este entendimiento
-        <mark>no es objeto de negociación</mark>
+        <mark>no es objeto de negociación,</mark>
         puesto que opera sobre la calidad de los productos y servicios
         prestados.
       </p>
@@ -97,7 +97,7 @@
       </p>
 
       <p>
-        Analizar la rentabilidad que obtiene la organización, en base a las
+        Analizar la rentabilidad que obtiene la organización, basándonos en las
         inversiones y actividades realizadas, durante el desarrollo de productos
         y la prestación de servicios es un indicador directo y transparente para
         la

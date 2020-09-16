@@ -67,7 +67,7 @@
     <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
       Con el fin de
       <mark>
-        fomentar la autoorganización, el desarrollo y la difusión de
+        fomentar la auto-organización, el desarrollo y la difusión de
         conocimientos
       </mark>
       orientados a las necesidades de los productos y servicios prestados por la
