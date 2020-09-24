@@ -28,9 +28,13 @@
   </div>
 
   <!-- Descargar PDF -->
-  <div class=" dib pa2 mh4 tc">
+  <div class=" dib pa2 mh4 tc ">
     <a href={pdfVersion} class="dim" target="_blank">
-      <img src={documento} alt="why gif" class="img-svg" />
+      <img
+        src={documento}
+        alt="Descargar PDF"
+        class="img-svg"
+        id="descargar_pdf_home" />
     </a>
     <br />
     <a href={pdfVersion} target="_blank">
