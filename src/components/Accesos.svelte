@@ -11,7 +11,7 @@
   }
 </style>
 
-<section class="tc-m ">
+<section class="tc tl-l">
 
   <!-- Leer Online -->
   <div class=" dib pa2 mh4 tc">
