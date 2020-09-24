@@ -23,7 +23,7 @@
     </a>
     <br />
     <a aria-current={segment === 'guia' ? 'page' : undefined} href="guia">
-      <h2>Leer Framework</h2>
+      <h2>Leer Online</h2>
     </a>
   </div>
 
