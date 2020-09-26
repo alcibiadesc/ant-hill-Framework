@@ -4,29 +4,22 @@
 
 <div id="pilares">
   <h3 class=" f2 lh-copy courier mb0">Pilares</h3>
-
-  <section class="cf pa3 mt0 pt0 fw3 w-75-l">
+  <section class="cf pa3 mt0 pt0 fw3 mt0 w-75-l">
     <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
-      <p>Ant Hill se basa en la teoría de control empírico de procesos.</p>
-      <p class="mv0">
-        Como organización
-        <mark>
-          solo conocemos aquello que ha pasado y solo podemos tratar de predecir
-          aquello que ocurrirá.
-        </mark>
+      Ant Hill se basa en la teoría de
+      <mark>control empírico de procesos.</mark>
+
+      <p>
+        Como organización solo conocemos aquello que ha pasado y solo podemos
+        tratar de predecir aquello que ocurrirá.
       </p>
-
-      <div class="mv0 pv0">
-        <p class="pv0 mv0">
-          Por ello, nuestros pilares son
-          <mark>la Transparencia, la Inspección y la Adaptación,</mark>
-          tanto de nuestros productos y servicios como de nuestra forma de ser y
-          hacer.
-        </p>
-
-      </div>
+      <p>
+        Por ello, nuestros pilares son
+        <mark>la Transparencia, la Inspección y la Adaptación,</mark>
+        tanto de nuestros productos y servicios como de nuestra forma de ser y
+        hacer.
+      </p>
     </div>
-
     <div class="fl w-100 w-100-m w-30-l tc-m ph4-l tc">
       <img src={whyImage} alt="why gif" class="img-svg" />
     </div>
