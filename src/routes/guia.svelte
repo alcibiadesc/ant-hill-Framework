@@ -9,7 +9,6 @@
   import Acuerdos from "./../components/8-Acuerdos.svelte";
   import Credits from "./../components/99-Credits.svelte";
   import { fade } from "svelte/transition";
-  import { flip } from "svelte/animate";
 </script>
 
 <style>
