@@ -1,7 +1,6 @@
 <script>
   import Navbar from "./../components/Navbar.svelte";
   import Title from "./../components/1-Title.svelte";
-  import Why from "./../components/2-Why.svelte";
   import Pilares from "./../components/3-Pilares.svelte";
   import Roles from "./../components/4-Roles.svelte";
   import Artefactos from "./../components/5-Artefactos.svelte";
@@ -47,7 +46,6 @@
 
   <main class="sections">
     <Title />
-    <Why />
     <Pilares />
     <Roles />
     <Artefactos />

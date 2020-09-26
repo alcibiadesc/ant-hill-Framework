@@ -1,8 +1,12 @@
+<script>
+  let whyImage = "./gif/why.svg";
+</script>
+
 <div id="pilares">
   <h3 class=" f2 lh-copy courier mb0">Pilares</h3>
 
-  <section class="cf pa3 mt0 pt0 fw3 ">
-    <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
+  <section class="cf pa3 mt0 pt0 fw3 w-75-l">
+    <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
       <p>Ant Hill se basa en la teoría de control empírico de procesos.</p>
       <p class="mv0">
         Como organización
@@ -21,6 +25,10 @@
         </p>
 
       </div>
+    </div>
+
+    <div class="fl w-100 w-100-m w-30-l tc-m ph4-l tc">
+      <img src={whyImage} alt="why gif" class="img-svg" />
     </div>
 
   </section>
