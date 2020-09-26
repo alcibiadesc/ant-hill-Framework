@@ -125,6 +125,18 @@
     .nav-link {
       justify-content: center;
     }
+
+    .pilares {
+      display: none;
+    }
+
+    .acuerdos {
+      display: none;
+    }
+
+    .actividades {
+      display: none;
+    }
   }
 
   /* Large screens */
@@ -189,8 +201,8 @@
 
     <!-- Index Options -->
 
-    <!-- Pilares -->
-    <!-- <li class="nav-item">
+    <!-- Pilares-->
+    <li class="nav-item pilares">
       <a href="guia/#pilares" class="nav-link">
 
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
@@ -217,7 +229,7 @@
 
         <span class="link-text">Pilares</span>
       </a>
-    </li> -->
+    </li>
 
     <!-- Roles -->
     <li class="nav-item">
@@ -345,7 +357,7 @@
     </li>
 
     <!-- Actividades -->
-    <!-- <li class="nav-item">
+    <!-- <li class="nav-item actividades">
       <a href="#actividades" class="nav-link">
         <svg
           aria-hidden="true"
@@ -381,7 +393,7 @@
     </li> -->
 
     <!-- Acuerdos -->
-    <li class="nav-item">
+    <li class="nav-item acuerdos">
       <a href="guia/#acuerdos" class="nav-link">
         <svg
           aria-hidden="true"
