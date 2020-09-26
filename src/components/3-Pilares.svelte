@@ -12,17 +12,6 @@
         </mark>
       </p>
 
-      <div class="pa2 pa2-m pa4-l">
-        <blockquote class="athelas ml0 mt0 pt0 pl4 black-90 bl bw2 b--gray">
-          <p class="f5 f4-m f4-l lh-copy measure mt0 mb0">
-            Nuestra toma de decisión debe estar basada en aquello que sabemos y
-            avanzar sobre la incertidumbre de aquello que predecimos,
-            adquiriendo experiencia durante su desarrollo.
-          </p>
-
-        </blockquote>
-      </div>
-
       <div class="mv0 pv0">
         <p class="pv0 mv0">
           Por ello, nuestros pilares son
