@@ -133,10 +133,6 @@
     .acuerdos {
       display: none;
     }
-
-    .actividades {
-      display: none;
-    }
   }
 
   /* Large screens */
