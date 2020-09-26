@@ -190,7 +190,7 @@
     <!-- Index Options -->
 
     <!-- Pilares -->
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a href="guia/#pilares" class="nav-link">
 
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
@@ -217,7 +217,7 @@
 
         <span class="link-text">Pilares</span>
       </a>
-    </li>
+    </li> -->
 
     <!-- Roles -->
     <li class="nav-item">
