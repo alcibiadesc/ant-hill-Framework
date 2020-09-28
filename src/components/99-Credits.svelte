@@ -10,7 +10,6 @@
     </a>
 
   </p>
-  <p class=" tc courier fw1 f5-ns f6-m f7">versión 1.1.0</p>
 
   <div class=" tc courier fw3 f5-ns f6-m f7">
     <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
