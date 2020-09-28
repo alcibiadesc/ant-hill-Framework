@@ -1,13 +1,1039 @@
-import fs from 'fs';
-import path from 'path';
-import { build_dir, dev, src_dir, manifest } from './internal/manifest-server';
-import { writable } from 'svelte/store';
-import Stream from 'stream';
-import http from 'http';
-import Url from 'url';
-import https from 'https';
-import zlib from 'zlib';
-import App from './internal/App.svelte';
+'use strict';
+
+var sirv = require('sirv');
+var polka = require('polka');
+var compression = require('compression');
+var fs = require('fs');
+var path = require('path');
+var grayMatter = require('gray-matter');
+var marked = require('marked');
+var hljs = require('highlight.js');
+var Stream = require('stream');
+var http = require('http');
+var Url = require('url');
+var https = require('https');
+var zlib = require('zlib');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var sirv__default = /*#__PURE__*/_interopDefaultLegacy(sirv);
+var polka__default = /*#__PURE__*/_interopDefaultLegacy(polka);
+var compression__default = /*#__PURE__*/_interopDefaultLegacy(compression);
+var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
+var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
+var grayMatter__default = /*#__PURE__*/_interopDefaultLegacy(grayMatter);
+var marked__default = /*#__PURE__*/_interopDefaultLegacy(marked);
+var hljs__default = /*#__PURE__*/_interopDefaultLegacy(hljs);
+var Stream__default = /*#__PURE__*/_interopDefaultLegacy(Stream);
+var http__default = /*#__PURE__*/_interopDefaultLegacy(http);
+var Url__default = /*#__PURE__*/_interopDefaultLegacy(Url);
+var https__default = /*#__PURE__*/_interopDefaultLegacy(https);
+var zlib__default = /*#__PURE__*/_interopDefaultLegacy(zlib);
+
+const getAllPosts = () =>
+  fs__default['default'].readdirSync("content").map((fileName) => {
+    const post = fs__default['default'].readFileSync(path__default['default'].resolve("content", fileName), "utf-8");
+    return grayMatter__default['default'](post).data;
+  });
+
+function get(req, res) {
+  res.writeHead(200, {
+    "Content-Type": "application/json",
+  });
+  const posts = getAllPosts();
+  res.end(JSON.stringify(posts));
+}
+
+var route_0 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  get: get
+});
+
+const getPost = (fileName) =>
+  fs__default['default'].readFileSync(path__default['default'].resolve("content", `${fileName}.md`), "utf-8");
+
+function get$1(req, res, next) {
+  const { slug } = req.params;
+
+  // get the markdown text
+  const post = getPost(slug);
+
+  // function that expose helpful callbacks
+  // to manipulate the data before convert it into html
+  const renderer = new marked__default['default'].Renderer();
+
+  // use hljs to highlight our blocks codes
+  renderer.code = (source, lang) => {
+    const { value: highlighted } = hljs__default['default'].highlight(lang, source);
+    return `<pre class='language-javascriptreact'><code>${highlighted}</code></pre>`;
+  };
+
+  // parse the md to get front matter
+  // and the content without escaping characters
+  const { data, content } = grayMatter__default['default'](post);
+
+  const html = marked__default['default'](content, { renderer });
+
+  if (html) {
+    res.writeHead(200, {
+      "Content-Type": "application/json",
+    });
+
+    res.end(JSON.stringify({ html, ...data }));
+  } else {
+    res.writeHead(404, {
+      "Content-Type": "application/json",
+    });
+
+    res.end(
+      JSON.stringify({
+        message: `Not found`,
+      })
+    );
+  }
+}
+
+var route_1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  get: get$1
+});
+
+function noop() { }
+function run(fn) {
+    return fn();
+}
+function blank_object() {
+    return Object.create(null);
+}
+function run_all(fns) {
+    fns.forEach(run);
+}
+function safe_not_equal(a, b) {
+    return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+}
+
+let current_component;
+function set_current_component(component) {
+    current_component = component;
+}
+function get_current_component() {
+    if (!current_component)
+        throw new Error(`Function called outside component initialization`);
+    return current_component;
+}
+function afterUpdate(fn) {
+    get_current_component().$$.after_update.push(fn);
+}
+function setContext(key, context) {
+    get_current_component().$$.context.set(key, context);
+}
+const escaped = {
+    '"': '&quot;',
+    "'": '&#39;',
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;'
+};
+function escape(html) {
+    return String(html).replace(/["'&<>]/g, match => escaped[match]);
+}
+function each(items, fn) {
+    let str = '';
+    for (let i = 0; i < items.length; i += 1) {
+        str += fn(items[i], i);
+    }
+    return str;
+}
+const missing_component = {
+    $$render: () => ''
+};
+function validate_component(component, name) {
+    if (!component || !component.$$render) {
+        if (name === 'svelte:component')
+            name += ' this={...}';
+        throw new Error(`<${name}> is not a valid SSR component. You may need to review your build config to ensure that dependencies are compiled, rather than imported as pre-compiled modules`);
+    }
+    return component;
+}
+let on_destroy;
+function create_ssr_component(fn) {
+    function $$render(result, props, bindings, slots) {
+        const parent_component = current_component;
+        const $$ = {
+            on_destroy,
+            context: new Map(parent_component ? parent_component.$$.context : []),
+            // these will be immediately discarded
+            on_mount: [],
+            before_update: [],
+            after_update: [],
+            callbacks: blank_object()
+        };
+        set_current_component({ $$ });
+        const html = fn(result, props, bindings, slots);
+        set_current_component(parent_component);
+        return html;
+    }
+    return {
+        render: (props = {}, options = {}) => {
+            on_destroy = [];
+            const result = { title: '', head: '', css: new Set() };
+            const html = $$render(result, props, {}, options);
+            run_all(on_destroy);
+            return {
+                html,
+                css: {
+                    code: Array.from(result.css).map(css => css.code).join('\n'),
+                    map: null // TODO
+                },
+                head: result.title + result.head
+            };
+        },
+        $$render
+    };
+}
+function add_attribute(name, value, boolean) {
+    if (value == null || (boolean && !value))
+        return '';
+    return ` ${name}${value === true ? '' : `=${typeof value === 'string' ? JSON.stringify(escape(value)) : `"${value}"`}`}`;
+}
+
+/* src/components/1-Title.svelte generated by Svelte v3.28.0 */
+
+const css = {
+	code: "a.svelte-7mn6z7{color:#333333}",
+	map: "{\"version\":3,\"file\":\"1-Title.svelte\",\"sources\":[\"1-Title.svelte\"],\"sourcesContent\":[\"<style>\\n  a {\\n    color: #333333;\\n  }\\n</style>\\n\\n<div class=\\\"pa1 w-80 \\\" id=\\\"title\\\">\\n\\n  <a href=\\\".\\\">\\n    <h1 class=\\\" courier f1-ns f-subheadline-l lh-title-l mb0\\\">Ant Hill</h1>\\n  </a>\\n\\n  <h2 class=\\\"fw3 f3-ns f2-l mt2\\\">\\n    Un framework para generar\\n    <span class=\\\" lookhere\\\">feedback loops</span>\\n    orientados a la aportación continua de\\n    <span class=\\\" lookhere\\\">valor</span>\\n  </h2>\\n</div>\\n\"],\"names\":[],\"mappings\":\"AACE,CAAC,cAAC,CAAC,AACD,KAAK,CAAE,OAAO,AAChB,CAAC\"}"
+};
+
+const _1_Title = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	$$result.css.add(css);
+
+	return `<div class="${"pa1 w-80 "}" id="${"title"}"><a href="${"."}" class="${"svelte-7mn6z7"}"><h1 class="${" courier f1-ns f-subheadline-l lh-title-l mb0"}">Ant Hill</h1></a>
+
+  <h2 class="${"fw3 f3-ns f2-l mt2"}">Un framework para generar
+    <span class="${" lookhere"}">feedback loops</span>
+    orientados a la aportación continua de
+    <span class="${" lookhere"}">valor</span></h2></div>`;
+});
+
+/* src/components/2-Why.svelte generated by Svelte v3.28.0 */
+
+const _2_Why = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	return `<div id="${"why"}"><h3 class="${" f2 lh-copy courier mb0"}">¿Para qué?</h3>
+
+  <section class="${"cf pa3 mt0 pt0 fw3 w-75-l"}"><div class="${"fl w-100 w-100-m w-90-l f3-l f4-ns "}">La mayoría de modelos de escalado Agile requieren que todos los equipos
+      trabajen bajo el mismo framework o método.
+      <p>El propósito de Ant Hill es
+        <mark>respetar como trabajan los equipos</mark>
+        y establecer canales de comunicación para la sincronización y
+        alineamiento de la organización
+      </p></div></section></div>`;
+});
+
+/* src/components/Accesos.svelte generated by Svelte v3.28.0 */
+
+const css$1 = {
+	code: "a.svelte-7mn6z7{color:#333333}",
+	map: "{\"version\":3,\"file\":\"Accesos.svelte\",\"sources\":[\"Accesos.svelte\"],\"sourcesContent\":[\"<script>\\n  export let segment;\\n  let pdfVersion = \\\"./descargas/Ant Hill Framework.pdf\\\";\\n  let leer = \\\"./gif/Ojo.svg\\\";\\n  let documento = \\\"./gif/Documento.svg\\\";\\n</script>\\n\\n<style>\\n  a {\\n    color: #333333;\\n  }\\n</style>\\n\\n<section class=\\\"tc tl-l\\\">\\n\\n  <!-- Leer Online -->\\n  <div class=\\\" dib pa2 mh4 tc\\\">\\n    <a\\n      aria-current={segment === 'guia' ? 'page' : undefined}\\n      href=\\\"guia\\\"\\n      class=\\\"dim\\\">\\n      <img src={leer} alt=\\\"why gif\\\" class=\\\"img-svg\\\" />\\n    </a>\\n    <br />\\n    <a aria-current={segment === 'guia' ? 'page' : undefined} href=\\\"guia\\\">\\n      <h2>Leer Online</h2>\\n    </a>\\n  </div>\\n\\n  <!-- Descargar PDF -->\\n  <div class=\\\" dib pa2 mh4 tc \\\">\\n    <a href={pdfVersion} class=\\\"dim\\\" target=\\\"_blank\\\">\\n      <img\\n        src={documento}\\n        alt=\\\"Descargar PDF\\\"\\n        class=\\\"img-svg\\\"\\n        id=\\\"descargar_pdf_home\\\" />\\n    </a>\\n    <br />\\n    <a href={pdfVersion} target=\\\"_blank\\\">\\n      <h2>Descargar PDF</h2>\\n    </a>\\n  </div>\\n\\n</section>\\n\"],\"names\":[],\"mappings\":\"AAQE,CAAC,cAAC,CAAC,AACD,KAAK,CAAE,OAAO,AAChB,CAAC\"}"
+};
+
+let pdfVersion = "./descargas/Ant Hill Framework.pdf";
+let leer = "./gif/Ojo.svg";
+let documento = "./gif/Documento.svg";
+
+const Accesos = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	let { segment } = $$props;
+	if ($$props.segment === void 0 && $$bindings.segment && segment !== void 0) $$bindings.segment(segment);
+	$$result.css.add(css$1);
+
+	return `<section class="${"tc tl-l"}">
+  <div class="${" dib pa2 mh4 tc"}"><a${add_attribute("aria-current", segment === "guia" ? "page" : undefined, 0)} href="${"guia"}" class="${"dim svelte-7mn6z7"}"><img${add_attribute("src", leer, 0)} alt="${"why gif"}" class="${"img-svg"}"></a>
+    <br>
+    <a${add_attribute("aria-current", segment === "guia" ? "page" : undefined, 0)} href="${"guia"}" class="${"svelte-7mn6z7"}"><h2>Leer Online</h2></a></div>
+
+  
+  <div class="${" dib pa2 mh4 tc "}"><a${add_attribute("href", pdfVersion, 0)} class="${"dim svelte-7mn6z7"}" target="${"_blank"}"><img${add_attribute("src", documento, 0)} alt="${"Descargar PDF"}" class="${"img-svg"}" id="${"descargar_pdf_home"}"></a>
+    <br>
+    <a${add_attribute("href", pdfVersion, 0)} target="${"_blank"}" class="${"svelte-7mn6z7"}"><h2>Descargar PDF</h2></a></div></section>`;
+});
+
+/* src/components/99-Credits.svelte generated by Svelte v3.28.0 */
+
+const _99_Credits = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	return `<footer class="${" bt b--black-05 mv4 mid-gray "}"><p class="${" tc courier fw1 pt3 f5-ns f6-m f7 "}">desarrollado con ❤️ por
+    <a href="${"https://www.linkedin.com/in/alcibiadesc/"}" target="${"#blank"}" class="${"lookhere"}">Alcibíades
+    </a></p>
+
+  <div class="${" tc courier fw3 f5-ns f6-m f7"}"><a rel="${"license"}" href="${"http://creativecommons.org/licenses/by-nc-sa/4.0/"}"><img alt="${"Licencia de Creative Commons"}" style="${"border-width:0"}" src="${"https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"}"></a></div></footer>`;
+});
+
+/* src/routes/index.svelte generated by Svelte v3.28.0 */
+
+const css$2 = {
+	code: ".sections.svelte-z1pa2y{margin-left:3rem;margin-right:2rem}@media only screen and (max-width: 600px){.sections.svelte-z1pa2y{margin-left:2rem;margin-right:2rem}}@media only screen and (min-width: 600px){.sections.svelte-z1pa2y{margin-left:3rem;margin-right:2rem}}",
+	map: "{\"version\":3,\"file\":\"index.svelte\",\"sources\":[\"index.svelte\"],\"sourcesContent\":[\"<script>\\n  import Title from \\\"./../components/1-Title.svelte\\\";\\n  import Why from \\\"./../components/2-Why.svelte\\\";\\n  import Accesos from \\\"./../components/Accesos.svelte\\\";\\n  import Credits from \\\"./../components/99-Credits.svelte\\\";\\n</script>\\n\\n<style>\\n  .sections {\\n    margin-left: 3rem;\\n    margin-right: 2rem;\\n  }\\n\\n  /* Small screens */\\n  @media only screen and (max-width: 600px) {\\n    .sections {\\n      margin-left: 2rem;\\n      margin-right: 2rem;\\n    }\\n  }\\n\\n  /* Large screens */\\n  @media only screen and (min-width: 600px) {\\n    .sections {\\n      margin-left: 3rem;\\n      margin-right: 2rem;\\n    }\\n  }\\n</style>\\n\\n<svelte:head>\\n  <title>Inicio</title>\\n</svelte:head>\\n\\n<main class=\\\"sections \\\">\\n  <Title />\\n  <Why />\\n  <Accesos />\\n\\n</main>\\n<Credits />\\n\"],\"names\":[],\"mappings\":\"AAQE,SAAS,cAAC,CAAC,AACT,WAAW,CAAE,IAAI,CACjB,YAAY,CAAE,IAAI,AACpB,CAAC,AAGD,OAAO,IAAI,CAAC,MAAM,CAAC,GAAG,CAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AACzC,SAAS,cAAC,CAAC,AACT,WAAW,CAAE,IAAI,CACjB,YAAY,CAAE,IAAI,AACpB,CAAC,AACH,CAAC,AAGD,OAAO,IAAI,CAAC,MAAM,CAAC,GAAG,CAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AACzC,SAAS,cAAC,CAAC,AACT,WAAW,CAAE,IAAI,CACjB,YAAY,CAAE,IAAI,AACpB,CAAC,AACH,CAAC\"}"
+};
+
+const Routes = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	$$result.css.add(css$2);
+
+	return `${($$result.head += `${($$result.title = `<title>Inicio</title>`, "")}`, "")}
+
+<main class="${"sections  svelte-z1pa2y"}">${validate_component(_1_Title, "Title").$$render($$result, {}, {}, {})}
+  ${validate_component(_2_Why, "Why").$$render($$result, {}, {}, {})}
+  ${validate_component(Accesos, "Accesos").$$render($$result, {}, {}, {})}</main>
+${validate_component(_99_Credits, "Credits").$$render($$result, {}, {}, {})}`;
+});
+
+var component_0 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  'default': Routes
+});
+
+/* src/routes/blog/index.svelte generated by Svelte v3.28.0 */
+
+const css$3 = {
+	code: "@media only screen and (max-width: 600px){.sections.svelte-1qot8yx{margin-left:2rem;margin-right:2rem}}@media only screen and (min-width: 600px){.sections.svelte-1qot8yx{margin-left:3rem;margin-right:2rem}}.sections.svelte-1qot8yx{margin-left:3rem;margin-right:2rem}.post-card.svelte-1qot8yx{background:white;min-height:8vh}.title-card.svelte-1qot8yx:hover{color:#ff7d87}.title-card.svelte-1qot8yx:focus{color:#ff7d87}a.svelte-1qot8yx{text-decoration:none;color:#333333}",
+	map: "{\"version\":3,\"file\":\"index.svelte\",\"sources\":[\"index.svelte\"],\"sourcesContent\":[\"<script context=\\\"module\\\">\\n  export function preload() {\\n    return this.fetch(`blog.json`)\\n      .then(r => r.json())\\n      .then(posts => {\\n        return { posts };\\n      });\\n  }\\n</script>\\n\\n<script>\\n  import Title from \\\"./../../components/1-Title.svelte\\\";\\n  export let posts;\\n\\n  let postsOrdered = posts.sort((a, b) => {\\n    a = a.date\\n      .split(\\\"/\\\")\\n      .reverse()\\n      .join(\\\"\\\");\\n    b = b.date\\n      .split(\\\"/\\\")\\n      .reverse()\\n      .join(\\\"\\\");\\n\\n    return a < b ? 1 : a > b ? -1 : 0;\\n  });\\n\\n  const shortDescription = inputDescription => {\\n    let output = \\\"\\\";\\n    inputDescription.length > 140\\n      ? (output = inputDescription.substring(0, 140) + \\\"...\\\")\\n      : (output = inputDescription);\\n    return output;\\n  };\\n\\n  const dateTransformer = inputDate => {\\n    let arrayDate = inputDate.split(\\\"/\\\");\\n    let reverseDate = arrayDate.reverse();\\n    let dia = arrayDate[2];\\n    let mes = arrayDate[1] == 0 ? arrayDate[1].substring(1) : arrayDate[1];\\n    let año = arrayDate[0];\\n\\n    const arrayMeses = [\\n      \\\"ene\\\",\\n      \\\"feb\\\",\\n      \\\"mar\\\",\\n      \\\"abr\\\",\\n      \\\"may\\\",\\n      \\\"jun\\\",\\n      \\\"jul\\\",\\n      \\\"ago\\\",\\n      \\\"sept\\\",\\n      \\\"oct\\\",\\n      \\\"nov\\\",\\n      \\\"dic\\\"\\n    ];\\n    return `${dia} ${arrayMeses[mes - 1]}. ${\\n      año == new Date().getFullYear() ? \\\"\\\" : año\\n    }`;\\n  };\\n</script>\\n\\n<style>\\n  /* Small screens */\\n  @media only screen and (max-width: 600px) {\\n    .sections {\\n      margin-left: 2rem;\\n      margin-right: 2rem;\\n    }\\n  }\\n\\n  /* Large screens */\\n  @media only screen and (min-width: 600px) {\\n    .sections {\\n      margin-left: 3rem;\\n      margin-right: 2rem;\\n    }\\n  }\\n\\n  .sections {\\n    margin-left: 3rem;\\n    margin-right: 2rem;\\n  }\\n\\n  .post-card {\\n    background: white;\\n    min-height: 8vh;\\n  }\\n\\n  .title-card:hover {\\n    color: #ff7d87;\\n  }\\n\\n  .title-card:focus {\\n    color: #ff7d87;\\n  }\\n\\n  a {\\n    text-decoration: none;\\n    color: #333333;\\n  }\\n</style>\\n\\n<svelte:head>\\n  <title>Blog</title>\\n</svelte:head>\\n\\n<main class=\\\"sections\\\">\\n  <Title />\\n\\n  <h2 class=\\\"tl-l tc\\\">Últimos artículos</h2>\\n\\n  {#each postsOrdered as post}\\n    <a rel=\\\"prefetch\\\" href=\\\"blog/{post.slug}\\\">\\n\\n      <div class=\\\" center-m post-card w-60-ns w-80-m w-100 shadow-4 br3\\\">\\n\\n        <h2\\n          class=\\\"f3 lh-copy courier mb0 ph3 pt3 underline-hover title-card link\\\">\\n          {post.title}\\n        </h2>\\n\\n        {#if post.description}\\n          <p class=\\\"ph3\\\">{shortDescription(post.description)}</p>\\n        {/if}\\n\\n        {#if post.date}\\n          <p class=\\\" ma1 pb2 pr2 tr f6 gray lh-copy courier\\\">\\n            {dateTransformer(post.date)}\\n          </p>\\n        {/if}\\n\\n      </div>\\n    </a>\\n  {/each}\\n\\n</main>\\n\"],\"names\":[],\"mappings\":\"AAgEE,OAAO,IAAI,CAAC,MAAM,CAAC,GAAG,CAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AACzC,SAAS,eAAC,CAAC,AACT,WAAW,CAAE,IAAI,CACjB,YAAY,CAAE,IAAI,AACpB,CAAC,AACH,CAAC,AAGD,OAAO,IAAI,CAAC,MAAM,CAAC,GAAG,CAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AACzC,SAAS,eAAC,CAAC,AACT,WAAW,CAAE,IAAI,CACjB,YAAY,CAAE,IAAI,AACpB,CAAC,AACH,CAAC,AAED,SAAS,eAAC,CAAC,AACT,WAAW,CAAE,IAAI,CACjB,YAAY,CAAE,IAAI,AACpB,CAAC,AAED,UAAU,eAAC,CAAC,AACV,UAAU,CAAE,KAAK,CACjB,UAAU,CAAE,GAAG,AACjB,CAAC,AAED,0BAAW,MAAM,AAAC,CAAC,AACjB,KAAK,CAAE,OAAO,AAChB,CAAC,AAED,0BAAW,MAAM,AAAC,CAAC,AACjB,KAAK,CAAE,OAAO,AAChB,CAAC,AAED,CAAC,eAAC,CAAC,AACD,eAAe,CAAE,IAAI,CACrB,KAAK,CAAE,OAAO,AAChB,CAAC\"}"
+};
+
+function preload() {
+	return this.fetch(`blog.json`).then(r => r.json()).then(posts => {
+		return { posts };
+	});
+}
+
+const Blog = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	let { posts } = $$props;
+
+	let postsOrdered = posts.sort((a, b) => {
+		a = a.date.split("/").reverse().join("");
+		b = b.date.split("/").reverse().join("");
+		return a < b ? 1 : a > b ? -1 : 0;
+	});
+
+	const shortDescription = inputDescription => {
+		let output = "";
+
+		inputDescription.length > 140
+		? output = inputDescription.substring(0, 140) + "..."
+		: output = inputDescription;
+
+		return output;
+	};
+
+	const dateTransformer = inputDate => {
+		let arrayDate = inputDate.split("/");
+		let reverseDate = arrayDate.reverse();
+		let dia = arrayDate[2];
+
+		let mes = arrayDate[1] == 0
+		? arrayDate[1].substring(1)
+		: arrayDate[1];
+
+		let año = arrayDate[0];
+
+		const arrayMeses = [
+			"ene",
+			"feb",
+			"mar",
+			"abr",
+			"may",
+			"jun",
+			"jul",
+			"ago",
+			"sept",
+			"oct",
+			"nov",
+			"dic"
+		];
+
+		return `${dia} ${arrayMeses[mes - 1]}. ${año == new Date().getFullYear() ? "" : año}`;
+	};
+
+	if ($$props.posts === void 0 && $$bindings.posts && posts !== void 0) $$bindings.posts(posts);
+	$$result.css.add(css$3);
+
+	return `${($$result.head += `${($$result.title = `<title>Blog</title>`, "")}`, "")}
+
+<main class="${"sections svelte-1qot8yx"}">${validate_component(_1_Title, "Title").$$render($$result, {}, {}, {})}
+
+  <h2 class="${"tl-l tc"}">Últimos artículos</h2>
+
+  ${each(postsOrdered, post => `<a rel="${"prefetch"}" href="${"blog/" + escape(post.slug)}" class="${"svelte-1qot8yx"}"><div class="${" center-m post-card w-60-ns w-80-m w-100 shadow-4 br3 svelte-1qot8yx"}"><h2 class="${"f3 lh-copy courier mb0 ph3 pt3 underline-hover title-card link svelte-1qot8yx"}">${escape(post.title)}</h2>
+
+        ${post.description
+	? `<p class="${"ph3"}">${escape(shortDescription(post.description))}</p>`
+	: ``}
+
+        ${post.date
+	? `<p class="${" ma1 pb2 pr2 tr f6 gray lh-copy courier"}">${escape(dateTransformer(post.date))}
+          </p>`
+	: ``}</div>
+    </a>`)}</main>`;
+});
+
+var component_1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  'default': Blog,
+  preload: preload
+});
+
+/* src/routes/blog/[slug].svelte generated by Svelte v3.28.0 */
+
+const css$4 = {
+	code: ".content.svelte-18mipvo h2{font-size:1.4em;font-weight:500}.content.svelte-18mipvo pre{background-color:#f9f9f9;box-shadow:inset 1px 1px 5px rgba(0, 0, 0, 0.05);padding:0.5em;border-radius:2px;overflow-x:auto}.content.svelte-18mipvo pre code{background-color:transparent;padding:0}.content.svelte-18mipvo ul{line-height:1.5}.content.svelte-18mipvo li{margin:0 0 0.5em 0}",
+	map: "{\"version\":3,\"file\":\"[slug].svelte\",\"sources\":[\"[slug].svelte\"],\"sourcesContent\":[\"<script context=\\\"module\\\">\\n  export async function preload({ params }) {\\n    // the `slug` parameter is available because\\n    // this file is called [slug].svelte\\n    const res = await this.fetch(`blog/${params.slug}.json`);\\n    const data = await res.json();\\n    if (res.status === 200) {\\n      return { post: data };\\n    } else {\\n      this.error(res.status, data.message);\\n    }\\n  }\\n</script>\\n\\n<script>\\n  export let post;\\n</script>\\n\\n<style>\\n  /*\\n\\t\\tBy default, CSS is locally scoped to the component,\\n\\t\\tand any unused styles are dead-code-eliminated.\\n\\t\\tIn this page, Svelte can't know which elements are\\n\\t\\tgoing to appear inside the {{{post.html}}} block,\\n\\t\\tso we have to use the :global(...) modifier to target\\n\\t\\tall elements inside .content\\n\\t*/\\n  .content :global(h2) {\\n    font-size: 1.4em;\\n    font-weight: 500;\\n  }\\n  .content :global(pre) {\\n    background-color: #f9f9f9;\\n    box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.05);\\n    padding: 0.5em;\\n    border-radius: 2px;\\n    overflow-x: auto;\\n  }\\n  .content :global(pre) :global(code) {\\n    background-color: transparent;\\n    padding: 0;\\n  }\\n  .content :global(ul) {\\n    line-height: 1.5;\\n  }\\n  .content :global(li) {\\n    margin: 0 0 0.5em 0;\\n  }\\n</style>\\n\\n<svelte:head>\\n  <title>{post.title}</title>\\n</svelte:head>\\n\\n<h1>{post.title}</h1>\\n\\n<div class=\\\"content\\\">\\n  {@html post.html}\\n</div>\\n\"],\"names\":[],\"mappings\":\"AA2BE,uBAAQ,CAAC,AAAQ,EAAE,AAAE,CAAC,AACpB,SAAS,CAAE,KAAK,CAChB,WAAW,CAAE,GAAG,AAClB,CAAC,AACD,uBAAQ,CAAC,AAAQ,GAAG,AAAE,CAAC,AACrB,gBAAgB,CAAE,OAAO,CACzB,UAAU,CAAE,KAAK,CAAC,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CACjD,OAAO,CAAE,KAAK,CACd,aAAa,CAAE,GAAG,CAClB,UAAU,CAAE,IAAI,AAClB,CAAC,AACD,uBAAQ,CAAC,AAAQ,GAAG,AAAC,CAAC,AAAQ,IAAI,AAAE,CAAC,AACnC,gBAAgB,CAAE,WAAW,CAC7B,OAAO,CAAE,CAAC,AACZ,CAAC,AACD,uBAAQ,CAAC,AAAQ,EAAE,AAAE,CAAC,AACpB,WAAW,CAAE,GAAG,AAClB,CAAC,AACD,uBAAQ,CAAC,AAAQ,EAAE,AAAE,CAAC,AACpB,MAAM,CAAE,CAAC,CAAC,CAAC,CAAC,KAAK,CAAC,CAAC,AACrB,CAAC\"}"
+};
+
+async function preload$1({ params }) {
+	// the `slug` parameter is available because
+	// this file is called [slug].svelte
+	const res = await this.fetch(`blog/${params.slug}.json`);
+
+	const data = await res.json();
+
+	if (res.status === 200) {
+		return { post: data };
+	} else {
+		this.error(res.status, data.message);
+	}
+}
+
+const U5Bslugu5D = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	let { post } = $$props;
+	if ($$props.post === void 0 && $$bindings.post && post !== void 0) $$bindings.post(post);
+	$$result.css.add(css$4);
+
+	return `${($$result.head += `${($$result.title = `<title>${escape(post.title)}</title>`, "")}`, "")}
+
+<h1>${escape(post.title)}</h1>
+
+<div class="${"content svelte-18mipvo"}">${post.html}</div>`;
+});
+
+var component_2 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  'default': U5Bslugu5D,
+  preload: preload$1
+});
+
+/* src/components/Navbar.svelte generated by Svelte v3.28.0 */
+
+const css$5 = {
+	code: ":root{font-size:16px;font-family:\"Open Sans\";--text-primary:#b6b6b6;--text-secondary:#ececec;--bg-primary:#262022;--bg-secondary:#1a1516;--transition-speed:600ms}.navbar.svelte-996qnb.svelte-996qnb{position:fixed;background-color:var(--bg-primary);transition:width 600ms ease;overflow:scroll}.navbar-nav.svelte-996qnb.svelte-996qnb{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;align-items:center;height:100%}.nav-item.svelte-996qnb.svelte-996qnb{width:100%}.nav-item.svelte-996qnb.svelte-996qnb:last-child{margin-top:auto}.nav-link.svelte-996qnb.svelte-996qnb{display:flex;align-items:center;height:5rem;color:var(--text-primary);text-decoration:none;filter:grayscale(100%) opacity(0.7);transition:var(--transition-speed)}.nav-link.svelte-996qnb.svelte-996qnb:hover{filter:grayscale(0%) opacity(1);background:var(--bg-secondary);color:var(--text-secondary)}.link-text.svelte-996qnb.svelte-996qnb{display:none;margin-left:1rem}.nav-link.svelte-996qnb svg.svelte-996qnb{width:2rem;min-width:2rem;margin:0 1.5rem}.fa-primary.svelte-996qnb.svelte-996qnb{color:#ffedd5}.fa-secondary.svelte-996qnb.svelte-996qnb{color:#ff7d87}.fa-primary.svelte-996qnb.svelte-996qnb,.fa-secondary.svelte-996qnb.svelte-996qnb{transition:var(--transition-speed)}.logo.svelte-996qnb.svelte-996qnb{font-weight:bold;text-transform:uppercase;margin-bottom:1rem;text-align:center;color:var(--text-secondary);background:var(--bg-secondary);font-size:1.5rem;letter-spacing:0.3ch;width:100%}.logo.svelte-996qnb svg.svelte-996qnb{transform:rotate(0deg);transition:var(--transition-speed)}.logo-text.svelte-996qnb.svelte-996qnb{display:inline;position:absolute;left:-999px;transition:var(--transition-speed)}.navbar.svelte-996qnb:hover .logo svg.svelte-996qnb{transform:rotate(-180deg)}@media only screen and (max-width: 600px){.navbar.svelte-996qnb.svelte-996qnb{bottom:0;width:100vw;height:5rem}.logo.svelte-996qnb.svelte-996qnb{display:none}.navbar-nav.svelte-996qnb.svelte-996qnb{flex-direction:row}.nav-link.svelte-996qnb.svelte-996qnb{justify-content:center}.pilares.svelte-996qnb.svelte-996qnb{display:none}.acuerdos.svelte-996qnb.svelte-996qnb{display:none}}@media only screen and (min-width: 600px){.navbar.svelte-996qnb.svelte-996qnb{top:0;width:5rem;height:100vh}.navbar.svelte-996qnb.svelte-996qnb:hover{width:16rem}.navbar.svelte-996qnb:hover .link-text.svelte-996qnb{display:inline}.navbar.svelte-996qnb:hover .logo svg.svelte-996qnb{margin-left:11rem}.navbar.svelte-996qnb:hover .logo-text.svelte-996qnb{left:0px}}",
+	map: "{\"version\":3,\"file\":\"Navbar.svelte\",\"sources\":[\"Navbar.svelte\"],\"sourcesContent\":[\"<script>\\n  let pdfVersion = \\\"./descargas/Ant Hill Framework.pdf\\\";\\n</script>\\n\\n<style>\\n  :root {\\n    font-size: 16px;\\n    font-family: \\\"Open Sans\\\";\\n    --text-primary: #b6b6b6;\\n    --text-secondary: #ececec;\\n    --bg-primary: #262022;\\n    --bg-secondary: #1a1516;\\n    --transition-speed: 600ms;\\n  }\\n\\n  .navbar {\\n    position: fixed;\\n    background-color: var(--bg-primary);\\n    transition: width 600ms ease;\\n    overflow: scroll;\\n  }\\n\\n  .navbar-nav {\\n    list-style: none;\\n    padding: 0;\\n    margin: 0;\\n    display: flex;\\n    flex-direction: column;\\n    align-items: center;\\n    height: 100%;\\n  }\\n\\n  .nav-item {\\n    width: 100%;\\n  }\\n\\n  .nav-item:last-child {\\n    margin-top: auto;\\n  }\\n\\n  .nav-link {\\n    display: flex;\\n    align-items: center;\\n    height: 5rem;\\n    color: var(--text-primary);\\n    text-decoration: none;\\n    filter: grayscale(100%) opacity(0.7);\\n    transition: var(--transition-speed);\\n  }\\n\\n  .nav-link:hover {\\n    filter: grayscale(0%) opacity(1);\\n    background: var(--bg-secondary);\\n    color: var(--text-secondary);\\n  }\\n\\n  .link-text {\\n    display: none;\\n    margin-left: 1rem;\\n  }\\n\\n  .nav-link svg {\\n    width: 2rem;\\n    min-width: 2rem;\\n    margin: 0 1.5rem;\\n  }\\n\\n  .fa-primary {\\n    color: #ffedd5;\\n  }\\n\\n  .fa-secondary {\\n    color: #ff7d87;\\n  }\\n\\n  .fa-primary,\\n  .fa-secondary {\\n    transition: var(--transition-speed);\\n  }\\n\\n  .logo {\\n    font-weight: bold;\\n    text-transform: uppercase;\\n    margin-bottom: 1rem;\\n    text-align: center;\\n    color: var(--text-secondary);\\n    background: var(--bg-secondary);\\n    font-size: 1.5rem;\\n    letter-spacing: 0.3ch;\\n    width: 100%;\\n  }\\n\\n  .logo svg {\\n    transform: rotate(0deg);\\n    transition: var(--transition-speed);\\n  }\\n\\n  .logo-text {\\n    display: inline;\\n    position: absolute;\\n    left: -999px;\\n    transition: var(--transition-speed);\\n  }\\n\\n  .navbar:hover .logo svg {\\n    transform: rotate(-180deg);\\n  }\\n\\n  /* Small screens */\\n  @media only screen and (max-width: 600px) {\\n    .navbar {\\n      bottom: 0;\\n      width: 100vw;\\n      height: 5rem;\\n    }\\n\\n    .logo {\\n      display: none;\\n    }\\n\\n    .navbar-nav {\\n      flex-direction: row;\\n    }\\n\\n    .nav-link {\\n      justify-content: center;\\n    }\\n\\n    .pilares {\\n      display: none;\\n    }\\n\\n    .acuerdos {\\n      display: none;\\n    }\\n  }\\n\\n  /* Large screens */\\n  @media only screen and (min-width: 600px) {\\n    .navbar {\\n      top: 0;\\n      width: 5rem;\\n      height: 100vh;\\n    }\\n\\n    .navbar:hover {\\n      width: 16rem;\\n    }\\n\\n    .navbar:hover .link-text {\\n      display: inline;\\n    }\\n\\n    .navbar:hover .logo svg {\\n      margin-left: 11rem;\\n    }\\n\\n    .navbar:hover .logo-text {\\n      left: 0px;\\n    }\\n  }\\n</style>\\n\\n<nav class=\\\"navbar\\\">\\n  <ul class=\\\"navbar-nav\\\">\\n    <li class=\\\"logo\\\">\\n      <a href=\\\".\\\" class=\\\"nav-link\\\">\\n        <span class=\\\"link-text logo-text courier\\\">Ant Hill</span>\\n        <svg\\n          aria-hidden=\\\"true\\\"\\n          focusable=\\\"false\\\"\\n          data-prefix=\\\"fad\\\"\\n          data-icon=\\\"angle-double-right\\\"\\n          role=\\\"img\\\"\\n          xmlns=\\\"http://www.w3.org/2000/svg\\\"\\n          viewBox=\\\"0 0 448 512\\\"\\n          class=\\\"svg-inline--fa fa-angle-double-right fa-w-14 fa-5x\\\">\\n          <g class=\\\"fa-group\\\">\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M224 273L88.37 409a23.78 23.78 0 0 1-33.8 0L32 386.36a23.94\\n              23.94 0 0 1 0-33.89l96.13-96.37L32 159.73a23.94 23.94 0 0 1\\n              0-33.89l22.44-22.79a23.78 23.78 0 0 1 33.8 0L223.88 239a23.94\\n              23.94 0 0 1 .1 34z\\\"\\n              class=\\\"fa-secondary\\\" />\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M415.89 273L280.34 409a23.77 23.77 0 0 1-33.79 0L224\\n              386.26a23.94 23.94 0 0 1 0-33.89L320.11 256l-96-96.47a23.94 23.94\\n              0 0 1 0-33.89l22.52-22.59a23.77 23.77 0 0 1 33.79 0L416 239a24 24\\n              0 0 1-.11 34z\\\"\\n              class=\\\"fa-primary\\\" />\\n          </g>\\n        </svg>\\n      </a>\\n    </li>\\n\\n    <!-- Index Options -->\\n\\n    <!-- Pilares-->\\n    <li class=\\\"nav-item pilares\\\">\\n      <a href=\\\"guia/#pilares\\\" class=\\\"nav-link\\\">\\n\\n        <svg xmlns=\\\"http://www.w3.org/2000/svg\\\" viewBox=\\\"0 0 640 512\\\">\\n\\n          <path\\n            fill=\\\"currentColor\\\"\\n            d=\\\"M544 464v32a16 16 0 0 1-16 16H112a16 16 0 0 1-16-16v-32a16 16 0 0\\n            1 16-16h176V153.25A80.06 80.06 0 0 1 241.61 96H112a16 16 0 0\\n            1-16-16V48a16 16 0 0 1 16-16h144.36a79.28 79.28 0 0 1 127.28\\n            0H528a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16H398.39A80.06 80.06 0 0\\n            1 352 153.25V448h176a16 16 0 0 1 16 16z\\\"\\n            class=\\\"fa-secondary\\\" />\\n          <path\\n            fill=\\\"currentColor\\\"\\n            d=\\\"M256 336c0-16.18\\n            1.34-8.73-85-181.51-17.65-35.29-68.19-35.36-85.87 0C-2.06 328.75 0\\n            320.33 0 336c0 44.18 57.31 80 128 80s128-35.82 128-80zM128 176l72\\n            144H56zm512 160c0-16.18\\n            1.34-8.73-85.05-181.51-17.65-35.29-68.19-35.36-85.87 0C381.94 328.75\\n            384 320.33 384 336c0 44.18 57.31 80 128 80s128-35.82\\n            128-80zm-200-16l72-144 72 144z\\\"\\n            class=\\\"fa-primary\\\" />\\n        </svg>\\n\\n        <span class=\\\"link-text\\\">Pilares</span>\\n      </a>\\n    </li>\\n\\n    <!-- Roles -->\\n    <li class=\\\"nav-item\\\">\\n      <a href=\\\"guia/#roles\\\" class=\\\"nav-link\\\">\\n        <svg\\n          aria-hidden=\\\"true\\\"\\n          focusable=\\\"false\\\"\\n          data-prefix=\\\"fad\\\"\\n          data-icon=\\\"descargar\\\"\\n          role=\\\"img\\\"\\n          xmlns=\\\"http://www.w3.org/2000/svg\\\"\\n          viewBox=\\\"0 0 640 512\\\"\\n          class=\\\"svg-inline--fa fa-alien-monster fa-w-18 fa-9x\\\">\\n          <g class=\\\"fa-group\\\">\\n\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M512 0a48 48 0 1 0 48 48 48 48 0 0 0-48-48zM128 0a48 48 0 1 0\\n              48 48 48 48 0 0 0-48-48zm272 128H240a16 16 0 0 0-16 16v171.59c4.63\\n              2.49 11.33 3.95 16 4.32h160c4.67-.37 11.35-1.83 16-4.3V143.7a16 16\\n              0 0 0-16-15.7z\\\"\\n              class=\\\"fa-secondary\\\" />\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M637.71 468.1l-44-110-41.09 46.4-2 18.2 27.69 69.2A32 32 0 0 0\\n              608 512a31.09 31.09 0 0 0 11.9-2.3 32 32 0 0 0\\n              17.81-41.6zm-591.4-110l-44 110a32 32 0 0 0 59.4\\n              23.8l27.71-69.2-2-18.2zm150.31-162.2a108.86 108.86 0 0 0-48.1-59.4\\n              61.72 61.72 0 0 0-56.1-3.3 64.81 64.81 0 0 0-37.5 44.9l-18.4\\n              80.2a64 64 0 0 0 14.4 56.7l67.2 75.9 10.09 92.6A32 32 0 0 0 160\\n              512c1.19 0 2.29-.1 3.5-.2a31.94 31.94 0 0 0\\n              28.29-35.3l-10.1-92.8a64 64 0 0 0-15.59-35l-43.31-49 17.61-70.3\\n              6.79 20.4c4.1 12.5 11.91 23.4 24.5 32.6l51.1 32.5c.38.24.78.46\\n              1.19.68V240l-16.06-10.2zm406.9 62.4L585 178.1a64.81 64.81 0 0\\n              0-37.5-44.9 61.7 61.7 0 0 0-56.1 3.3 109.53 109.53 0 0 0-48.11\\n              59.4L432 229.8 416 240v75.6c.42-.23.83-.46\\n              1.21-.7l51.1-32.5c12.61-9.2 20.4-20 24.5-32.6l6.81-20.4 17.59\\n              70.3-43.29 49a63.86 63.86 0 0 0-15.61 35l-10.1 92.8a32 32 0 0 0\\n              28.31 35.3c1.19.1 2.29.2 3.5.2a32 32 0 0 0 31.79-28.5l10.11-92.6\\n              67.19-75.9a64.4 64.4 0 0 0 14.41-56.7z\\\"\\n              class=\\\"fa-primary\\\" />\\n          </g>\\n        </svg>\\n        <span class=\\\"link-text\\\">Roles</span>\\n      </a>\\n    </li>\\n\\n    <!-- Artefactos -->\\n    <li class=\\\"nav-item\\\">\\n      <a href=\\\"guia/#artefactos\\\" class=\\\"nav-link\\\">\\n        <svg\\n          aria-hidden=\\\"true\\\"\\n          focusable=\\\"false\\\"\\n          data-prefix=\\\"fad\\\"\\n          data-icon=\\\"descargar\\\"\\n          role=\\\"img\\\"\\n          xmlns=\\\"http://www.w3.org/2000/svg\\\"\\n          viewBox=\\\"0 0 512 512\\\"\\n          class=\\\"svg-inline--fa fa-alien-monster fa-w-18 fa-9x\\\">\\n          <g class=\\\"fa-group\\\">\\n\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M193.8 227.7L18.74 402.76a64 64 0 0 0 90.5\\n              90.5l148.88-148.88a75.36 75.36 0 0 1 6.58-45.78zM64 472a24 24 0 1\\n              1 24-24 24 24 0 0 1-24 24zm443.73-362.9a12 12 0 0\\n              0-20.12-5.51L413.25 178l-67.88-11.31-11.31-67.93 74.36-74.36a12 12\\n              0 0 0-5.66-20.16 143.92 143.92 0 0 0-136.58 37.93c-39.64\\n              39.64-50.55 97.1-34.05 147.2l-4.43 4.43 70.9 70.9a74.25 74.25 0 0\\n              1 85.4 13.9l7.21 7.21a141.74 141.74 0 0 0 78.61-40 143.94 143.94 0\\n              0 0 37.91-136.71z\\\"\\n              class=\\\"fa-secondary\\\" />\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M501.1 395.7a37.36 37.36 0 0 1 0 52.7l-52.7 52.7a37.18 37.18 0\\n              0 1-52.58.12l-.12-.12L278.6\\n              384c-23.1-23.1-27.5-57.6-13.9-85.4L158.1 192H96L0 64 64 0l128\\n              96v62.1l106.6 106.6a74.25 74.25 0 0 1 85.4 13.9z\\\"\\n              class=\\\"fa-primary\\\" />\\n          </g>\\n        </svg>\\n        <span class=\\\"link-text\\\">Artefactos</span>\\n      </a>\\n    </li>\\n\\n    <!-- Eventos -->\\n    <li class=\\\"nav-item\\\">\\n      <a href=\\\"guia/#eventos\\\" class=\\\"nav-link\\\">\\n        <svg\\n          aria-hidden=\\\"true\\\"\\n          focusable=\\\"false\\\"\\n          data-prefix=\\\"fad\\\"\\n          data-icon=\\\"descargar\\\"\\n          role=\\\"img\\\"\\n          xmlns=\\\"http://www.w3.org/2000/svg\\\"\\n          viewBox=\\\"0 0 448 512\\\"\\n          class=\\\"svg-inline--fa fa-alien-monster fa-w-18 fa-9x\\\">\\n          <g class=\\\"fa-group\\\">\\n\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M0 192v272a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48V192zm324.13\\n              141.91a11.92 11.92 0 0 1-3.53 6.89L281 379.4l9.4 54.6a12 12 0 0\\n              1-17.4 12.6l-49-25.8-48.9 25.8a12 12 0 0\\n              1-17.4-12.6l9.4-54.6-39.6-38.6a12 12 0 0 1 6.6-20.5l54.7-8\\n              24.5-49.6a12 12 0 0 1 21.5 0l24.5 49.6 54.7 8a12 12 0 0 1 10.13\\n              13.61zM304 128h32a16 16 0 0 0 16-16V16a16 16 0 0 0-16-16h-32a16 16\\n              0 0 0-16 16v96a16 16 0 0 0 16 16zm-192 0h32a16 16 0 0 0\\n              16-16V16a16 16 0 0 0-16-16h-32a16 16 0 0 0-16 16v96a16 16 0 0 0 16\\n              16z\\\"\\n              class=\\\"fa-secondary\\\" />\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M314 320.3l-54.7-8-24.5-49.6a12 12 0 0 0-21.5 0l-24.5 49.6-54.7\\n              8a12 12 0 0 0-6.6 20.5l39.6 38.6-9.4 54.6a12 12 0 0 0 17.4\\n              12.6l48.9-25.8 49 25.8a12 12 0 0 0 17.4-12.6l-9.4-54.6\\n              39.6-38.6a12 12 0 0 0-6.6-20.5zM400 64h-48v48a16 16 0 0 1-16\\n              16h-32a16 16 0 0 1-16-16V64H160v48a16 16 0 0 1-16 16h-32a16 16 0 0\\n              1-16-16V64H48a48 48 0 0 0-48 48v80h448v-80a48 48 0 0 0-48-48z\\\"\\n              class=\\\"fa-primary\\\" />\\n          </g>\\n        </svg>\\n        <span class=\\\"link-text\\\">Eventos</span>\\n      </a>\\n    </li>\\n\\n    <!-- Actividades -->\\n    <!-- <li class=\\\"nav-item actividades\\\">\\n      <a href=\\\"#actividades\\\" class=\\\"nav-link\\\">\\n        <svg\\n          aria-hidden=\\\"true\\\"\\n          focusable=\\\"false\\\"\\n          data-prefix=\\\"fad\\\"\\n          data-icon=\\\"descargar\\\"\\n          role=\\\"img\\\"\\n          xmlns=\\\"http://www.w3.org/2000/svg\\\"\\n          viewBox=\\\"0 0 512 512\\\"\\n          class=\\\"svg-inline--fa fa-alien-monster fa-w-18 fa-9x\\\">\\n          <g class=\\\"fa-group\\\">\\n\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5\\n              421.1 2.7 466 2.2 466.5a8 8 0 0 0-1.5 8.7A7.83 7.83 0 0 0 8\\n              480c66.3 0 116-31.8 140.6-51.4A305 305 0 0 0 256 448c141.4 0\\n              256-93.1 256-208S397.4 32 256 32zm114.1 163.8l-131 130a11 11 0 0\\n              1-15.6-.1l-75.7-76.3a11 11 0 0 1 .1-15.6l26-25.8a11 11 0 0 1\\n              15.6.1l42.1 42.5 97.2-96.4a11 11 0 0 1 15.6.1l25.8 26a11 11 0 0\\n              1-.1 15.5z\\\"\\n              class=\\\"fa-secondary\\\" />\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M370.1 195.8l-131 130a11 11 0 0 1-15.6-.1l-75.7-76.3a11 11 0 0\\n              1 .1-15.6l26-25.8a11 11 0 0 1 15.6.1l42.1 42.5 97.2-96.4a11 11 0 0\\n              1 15.6.1l25.8 26a11 11 0 0 1-.1 15.5z\\\"\\n              class=\\\"fa-primary\\\" />\\n          </g>\\n        </svg>\\n        <span class=\\\"link-text\\\">Actividades</span>\\n      </a>\\n    </li> -->\\n\\n    <!-- Acuerdos -->\\n    <li class=\\\"nav-item acuerdos\\\">\\n      <a href=\\\"guia/#acuerdos\\\" class=\\\"nav-link\\\">\\n        <svg\\n          aria-hidden=\\\"true\\\"\\n          focusable=\\\"false\\\"\\n          data-prefix=\\\"fad\\\"\\n          data-icon=\\\"descargar\\\"\\n          role=\\\"img\\\"\\n          xmlns=\\\"http://www.w3.org/2000/svg\\\"\\n          viewBox=\\\"0 0 640 512\\\"\\n          class=\\\"svg-inline--fa fa-alien-monster fa-w-18 fa-9x\\\">\\n          <g class=\\\"fa-group\\\">\\n\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M640 143.9v191.8a16 16 0 0 1-16 16h-97.6a63.36 63.36 0 0\\n              0-22.2-37.9L358.6 195.6l26.1-23.9a16 16 0 0 0-21.6-23.6l-27\\n              24.7-53 48.5c-.1.1-.3.1-.4.2-21.1 18.9-46.5 7.8-56.1-2.7a39.69\\n              39.69 0 0 1 2.1-56c.1-.1.2-.3.3-.4l98.3-90a32 32 0 0 1\\n              21.6-8.4h85.9a31.94 31.94 0 0 1 22.6 9.4L512 128h112a16 16 0 0 1\\n              16 15.9z\\\"\\n              class=\\\"fa-secondary\\\" />\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M0 335.9V144a16 16 0 0 1 16-16h112l54.7-54.6a31.94 31.94 0 0 1\\n              22.6-9.4h83.8l-81.8 74.9a72 72 0 0 0-4.4 101.7c14.9 16.3 61.1 41.5\\n              101.7 4.4l30-27.5 149.3 121.2a32.06 32.06 0 0 1 4.6 45.1l-9.5\\n              11.7a32 32 0 0 1-45 4.7l-5.4-4.4-31.4 38.6a37.16 37.16 0 0 1-52.3\\n              5.4L327 424.3l-.2.2a64 64 0 0 1-90 9.3l-90.5-81.9H16a16 16 0 0\\n              1-16-16z\\\"\\n              class=\\\"fa-primary\\\" />\\n          </g>\\n        </svg>\\n        <span class=\\\"link-text\\\">Acuerdos</span>\\n      </a>\\n    </li>\\n\\n    <!-- Descargar -->\\n    <li class=\\\"nav-item\\\">\\n      <a href={pdfVersion} class=\\\"nav-link\\\" download>\\n        <svg\\n          aria-hidden=\\\"true\\\"\\n          focusable=\\\"false\\\"\\n          data-prefix=\\\"fad\\\"\\n          data-icon=\\\"descargar\\\"\\n          role=\\\"img\\\"\\n          xmlns=\\\"http://www.w3.org/2000/svg\\\"\\n          viewBox=\\\"0 0 384 512\\\"\\n          class=\\\"svg-inline--fa fa-alien-monster fa-w-18 fa-9x\\\">\\n          <g class=\\\"fa-group\\\">\\n\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M384 128H272a16 16 0 0 1-16-16V0H24A23.94 23.94 0 0 0 0\\n              23.88V488a23.94 23.94 0 0 0 23.88 24H360a23.94 23.94 0 0 0\\n              24-23.88V128zm-83.55 219.36L204 443.06a17.06 17.06 0 0 1-24\\n              0l-96.42-95.7C73.42 337.29 80.54 320 94.82 320H160v-80a16 16 0 0 1\\n              16-16h32a16 16 0 0 1 16 16v80h65.18c14.28 0 21.4 17.29 11.27\\n              27.36z\\\"\\n              class=\\\"fa-secondary\\\" />\\n            <path\\n              fill=\\\"currentColor\\\"\\n              d=\\\"M377 105L279.1 7a24 24 0 0 0-17-7H256v112a16 16 0 0 0 16\\n              16h112v-6.1a23.9 23.9 0 0 0-7-16.9zm-87.82 215H224v-80a16 16 0 0\\n              0-16-16h-32a16 16 0 0 0-16 16v80H94.82c-14.28 0-21.4 17.29-11.24\\n              27.36l96.42 95.7a17.06 17.06 0 0 0 24 0l96.45-95.7c10.13-10.07\\n              3.01-27.36-11.27-27.36z\\\"\\n              class=\\\"fa-primary\\\" />\\n          </g>\\n        </svg>\\n        <span class=\\\"link-text\\\">Descargar</span>\\n      </a>\\n    </li>\\n\\n  </ul>\\n</nav>\\n\"],\"names\":[],\"mappings\":\"AAKE,KAAK,AAAC,CAAC,AACL,SAAS,CAAE,IAAI,CACf,WAAW,CAAE,WAAW,CACxB,cAAc,CAAE,OAAO,CACvB,gBAAgB,CAAE,OAAO,CACzB,YAAY,CAAE,OAAO,CACrB,cAAc,CAAE,OAAO,CACvB,kBAAkB,CAAE,KAAK,AAC3B,CAAC,AAED,OAAO,4BAAC,CAAC,AACP,QAAQ,CAAE,KAAK,CACf,gBAAgB,CAAE,IAAI,YAAY,CAAC,CACnC,UAAU,CAAE,KAAK,CAAC,KAAK,CAAC,IAAI,CAC5B,QAAQ,CAAE,MAAM,AAClB,CAAC,AAED,WAAW,4BAAC,CAAC,AACX,UAAU,CAAE,IAAI,CAChB,OAAO,CAAE,CAAC,CACV,MAAM,CAAE,CAAC,CACT,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CACtB,WAAW,CAAE,MAAM,CACnB,MAAM,CAAE,IAAI,AACd,CAAC,AAED,SAAS,4BAAC,CAAC,AACT,KAAK,CAAE,IAAI,AACb,CAAC,AAED,qCAAS,WAAW,AAAC,CAAC,AACpB,UAAU,CAAE,IAAI,AAClB,CAAC,AAED,SAAS,4BAAC,CAAC,AACT,OAAO,CAAE,IAAI,CACb,WAAW,CAAE,MAAM,CACnB,MAAM,CAAE,IAAI,CACZ,KAAK,CAAE,IAAI,cAAc,CAAC,CAC1B,eAAe,CAAE,IAAI,CACrB,MAAM,CAAE,UAAU,IAAI,CAAC,CAAC,QAAQ,GAAG,CAAC,CACpC,UAAU,CAAE,IAAI,kBAAkB,CAAC,AACrC,CAAC,AAED,qCAAS,MAAM,AAAC,CAAC,AACf,MAAM,CAAE,UAAU,EAAE,CAAC,CAAC,QAAQ,CAAC,CAAC,CAChC,UAAU,CAAE,IAAI,cAAc,CAAC,CAC/B,KAAK,CAAE,IAAI,gBAAgB,CAAC,AAC9B,CAAC,AAED,UAAU,4BAAC,CAAC,AACV,OAAO,CAAE,IAAI,CACb,WAAW,CAAE,IAAI,AACnB,CAAC,AAED,uBAAS,CAAC,GAAG,cAAC,CAAC,AACb,KAAK,CAAE,IAAI,CACX,SAAS,CAAE,IAAI,CACf,MAAM,CAAE,CAAC,CAAC,MAAM,AAClB,CAAC,AAED,WAAW,4BAAC,CAAC,AACX,KAAK,CAAE,OAAO,AAChB,CAAC,AAED,aAAa,4BAAC,CAAC,AACb,KAAK,CAAE,OAAO,AAChB,CAAC,AAED,uCAAW,CACX,aAAa,4BAAC,CAAC,AACb,UAAU,CAAE,IAAI,kBAAkB,CAAC,AACrC,CAAC,AAED,KAAK,4BAAC,CAAC,AACL,WAAW,CAAE,IAAI,CACjB,cAAc,CAAE,SAAS,CACzB,aAAa,CAAE,IAAI,CACnB,UAAU,CAAE,MAAM,CAClB,KAAK,CAAE,IAAI,gBAAgB,CAAC,CAC5B,UAAU,CAAE,IAAI,cAAc,CAAC,CAC/B,SAAS,CAAE,MAAM,CACjB,cAAc,CAAE,KAAK,CACrB,KAAK,CAAE,IAAI,AACb,CAAC,AAED,mBAAK,CAAC,GAAG,cAAC,CAAC,AACT,SAAS,CAAE,OAAO,IAAI,CAAC,CACvB,UAAU,CAAE,IAAI,kBAAkB,CAAC,AACrC,CAAC,AAED,UAAU,4BAAC,CAAC,AACV,OAAO,CAAE,MAAM,CACf,QAAQ,CAAE,QAAQ,CAClB,IAAI,CAAE,MAAM,CACZ,UAAU,CAAE,IAAI,kBAAkB,CAAC,AACrC,CAAC,AAED,qBAAO,MAAM,CAAC,KAAK,CAAC,GAAG,cAAC,CAAC,AACvB,SAAS,CAAE,OAAO,OAAO,CAAC,AAC5B,CAAC,AAGD,OAAO,IAAI,CAAC,MAAM,CAAC,GAAG,CAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AACzC,OAAO,4BAAC,CAAC,AACP,MAAM,CAAE,CAAC,CACT,KAAK,CAAE,KAAK,CACZ,MAAM,CAAE,IAAI,AACd,CAAC,AAED,KAAK,4BAAC,CAAC,AACL,OAAO,CAAE,IAAI,AACf,CAAC,AAED,WAAW,4BAAC,CAAC,AACX,cAAc,CAAE,GAAG,AACrB,CAAC,AAED,SAAS,4BAAC,CAAC,AACT,eAAe,CAAE,MAAM,AACzB,CAAC,AAED,QAAQ,4BAAC,CAAC,AACR,OAAO,CAAE,IAAI,AACf,CAAC,AAED,SAAS,4BAAC,CAAC,AACT,OAAO,CAAE,IAAI,AACf,CAAC,AACH,CAAC,AAGD,OAAO,IAAI,CAAC,MAAM,CAAC,GAAG,CAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AACzC,OAAO,4BAAC,CAAC,AACP,GAAG,CAAE,CAAC,CACN,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,KAAK,AACf,CAAC,AAED,mCAAO,MAAM,AAAC,CAAC,AACb,KAAK,CAAE,KAAK,AACd,CAAC,AAED,qBAAO,MAAM,CAAC,UAAU,cAAC,CAAC,AACxB,OAAO,CAAE,MAAM,AACjB,CAAC,AAED,qBAAO,MAAM,CAAC,KAAK,CAAC,GAAG,cAAC,CAAC,AACvB,WAAW,CAAE,KAAK,AACpB,CAAC,AAED,qBAAO,MAAM,CAAC,UAAU,cAAC,CAAC,AACxB,IAAI,CAAE,GAAG,AACX,CAAC,AACH,CAAC\"}"
+};
+
+let pdfVersion$1 = "./descargas/Ant Hill Framework.pdf";
+
+const Navbar = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	$$result.css.add(css$5);
+
+	return `<nav class="${"navbar svelte-996qnb"}"><ul class="${"navbar-nav svelte-996qnb"}"><li class="${"logo svelte-996qnb"}"><a href="${"."}" class="${"nav-link svelte-996qnb"}"><span class="${"link-text logo-text courier svelte-996qnb"}">Ant Hill</span>
+        <svg aria-hidden="${"true"}" focusable="${"false"}" data-prefix="${"fad"}" data-icon="${"angle-double-right"}" role="${"img"}" xmlns="${"http://www.w3.org/2000/svg"}" viewBox="${"0 0 448 512"}" class="${"svg-inline--fa fa-angle-double-right fa-w-14 fa-5x svelte-996qnb"}"><g class="${"fa-group svelte-996qnb"}"><path fill="${"currentColor"}" d="${"M224 273L88.37 409a23.78 23.78 0 0 1-33.8 0L32 386.36a23.94\n              23.94 0 0 1 0-33.89l96.13-96.37L32 159.73a23.94 23.94 0 0 1\n              0-33.89l22.44-22.79a23.78 23.78 0 0 1 33.8 0L223.88 239a23.94\n              23.94 0 0 1 .1 34z"}" class="${"fa-secondary svelte-996qnb"}"></path><path fill="${"currentColor"}" d="${"M415.89 273L280.34 409a23.77 23.77 0 0 1-33.79 0L224\n              386.26a23.94 23.94 0 0 1 0-33.89L320.11 256l-96-96.47a23.94 23.94\n              0 0 1 0-33.89l22.52-22.59a23.77 23.77 0 0 1 33.79 0L416 239a24 24\n              0 0 1-.11 34z"}" class="${"fa-primary svelte-996qnb"}"></path></g></svg></a></li>
+
+    
+
+    
+    <li class="${"nav-item pilares svelte-996qnb"}"><a href="${"guia/#pilares"}" class="${"nav-link svelte-996qnb"}"><svg xmlns="${"http://www.w3.org/2000/svg"}" viewBox="${"0 0 640 512"}" class="${"svelte-996qnb"}"><path fill="${"currentColor"}" d="${"M544 464v32a16 16 0 0 1-16 16H112a16 16 0 0 1-16-16v-32a16 16 0 0\n            1 16-16h176V153.25A80.06 80.06 0 0 1 241.61 96H112a16 16 0 0\n            1-16-16V48a16 16 0 0 1 16-16h144.36a79.28 79.28 0 0 1 127.28\n            0H528a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16H398.39A80.06 80.06 0 0\n            1 352 153.25V448h176a16 16 0 0 1 16 16z"}" class="${"fa-secondary svelte-996qnb"}"></path><path fill="${"currentColor"}" d="${"M256 336c0-16.18\n            1.34-8.73-85-181.51-17.65-35.29-68.19-35.36-85.87 0C-2.06 328.75 0\n            320.33 0 336c0 44.18 57.31 80 128 80s128-35.82 128-80zM128 176l72\n            144H56zm512 160c0-16.18\n            1.34-8.73-85.05-181.51-17.65-35.29-68.19-35.36-85.87 0C381.94 328.75\n            384 320.33 384 336c0 44.18 57.31 80 128 80s128-35.82\n            128-80zm-200-16l72-144 72 144z"}" class="${"fa-primary svelte-996qnb"}"></path></svg>
+
+        <span class="${"link-text svelte-996qnb"}">Pilares</span></a></li>
+
+    
+    <li class="${"nav-item svelte-996qnb"}"><a href="${"guia/#roles"}" class="${"nav-link svelte-996qnb"}"><svg aria-hidden="${"true"}" focusable="${"false"}" data-prefix="${"fad"}" data-icon="${"descargar"}" role="${"img"}" xmlns="${"http://www.w3.org/2000/svg"}" viewBox="${"0 0 640 512"}" class="${"svg-inline--fa fa-alien-monster fa-w-18 fa-9x svelte-996qnb"}"><g class="${"fa-group svelte-996qnb"}"><path fill="${"currentColor"}" d="${"M512 0a48 48 0 1 0 48 48 48 48 0 0 0-48-48zM128 0a48 48 0 1 0\n              48 48 48 48 0 0 0-48-48zm272 128H240a16 16 0 0 0-16 16v171.59c4.63\n              2.49 11.33 3.95 16 4.32h160c4.67-.37 11.35-1.83 16-4.3V143.7a16 16\n              0 0 0-16-15.7z"}" class="${"fa-secondary svelte-996qnb"}"></path><path fill="${"currentColor"}" d="${"M637.71 468.1l-44-110-41.09 46.4-2 18.2 27.69 69.2A32 32 0 0 0\n              608 512a31.09 31.09 0 0 0 11.9-2.3 32 32 0 0 0\n              17.81-41.6zm-591.4-110l-44 110a32 32 0 0 0 59.4\n              23.8l27.71-69.2-2-18.2zm150.31-162.2a108.86 108.86 0 0 0-48.1-59.4\n              61.72 61.72 0 0 0-56.1-3.3 64.81 64.81 0 0 0-37.5 44.9l-18.4\n              80.2a64 64 0 0 0 14.4 56.7l67.2 75.9 10.09 92.6A32 32 0 0 0 160\n              512c1.19 0 2.29-.1 3.5-.2a31.94 31.94 0 0 0\n              28.29-35.3l-10.1-92.8a64 64 0 0 0-15.59-35l-43.31-49 17.61-70.3\n              6.79 20.4c4.1 12.5 11.91 23.4 24.5 32.6l51.1 32.5c.38.24.78.46\n              1.19.68V240l-16.06-10.2zm406.9 62.4L585 178.1a64.81 64.81 0 0\n              0-37.5-44.9 61.7 61.7 0 0 0-56.1 3.3 109.53 109.53 0 0 0-48.11\n              59.4L432 229.8 416 240v75.6c.42-.23.83-.46\n              1.21-.7l51.1-32.5c12.61-9.2 20.4-20 24.5-32.6l6.81-20.4 17.59\n              70.3-43.29 49a63.86 63.86 0 0 0-15.61 35l-10.1 92.8a32 32 0 0 0\n              28.31 35.3c1.19.1 2.29.2 3.5.2a32 32 0 0 0 31.79-28.5l10.11-92.6\n              67.19-75.9a64.4 64.4 0 0 0 14.41-56.7z"}" class="${"fa-primary svelte-996qnb"}"></path></g></svg>
+        <span class="${"link-text svelte-996qnb"}">Roles</span></a></li>
+
+    
+    <li class="${"nav-item svelte-996qnb"}"><a href="${"guia/#artefactos"}" class="${"nav-link svelte-996qnb"}"><svg aria-hidden="${"true"}" focusable="${"false"}" data-prefix="${"fad"}" data-icon="${"descargar"}" role="${"img"}" xmlns="${"http://www.w3.org/2000/svg"}" viewBox="${"0 0 512 512"}" class="${"svg-inline--fa fa-alien-monster fa-w-18 fa-9x svelte-996qnb"}"><g class="${"fa-group svelte-996qnb"}"><path fill="${"currentColor"}" d="${"M193.8 227.7L18.74 402.76a64 64 0 0 0 90.5\n              90.5l148.88-148.88a75.36 75.36 0 0 1 6.58-45.78zM64 472a24 24 0 1\n              1 24-24 24 24 0 0 1-24 24zm443.73-362.9a12 12 0 0\n              0-20.12-5.51L413.25 178l-67.88-11.31-11.31-67.93 74.36-74.36a12 12\n              0 0 0-5.66-20.16 143.92 143.92 0 0 0-136.58 37.93c-39.64\n              39.64-50.55 97.1-34.05 147.2l-4.43 4.43 70.9 70.9a74.25 74.25 0 0\n              1 85.4 13.9l7.21 7.21a141.74 141.74 0 0 0 78.61-40 143.94 143.94 0\n              0 0 37.91-136.71z"}" class="${"fa-secondary svelte-996qnb"}"></path><path fill="${"currentColor"}" d="${"M501.1 395.7a37.36 37.36 0 0 1 0 52.7l-52.7 52.7a37.18 37.18 0\n              0 1-52.58.12l-.12-.12L278.6\n              384c-23.1-23.1-27.5-57.6-13.9-85.4L158.1 192H96L0 64 64 0l128\n              96v62.1l106.6 106.6a74.25 74.25 0 0 1 85.4 13.9z"}" class="${"fa-primary svelte-996qnb"}"></path></g></svg>
+        <span class="${"link-text svelte-996qnb"}">Artefactos</span></a></li>
+
+    
+    <li class="${"nav-item svelte-996qnb"}"><a href="${"guia/#eventos"}" class="${"nav-link svelte-996qnb"}"><svg aria-hidden="${"true"}" focusable="${"false"}" data-prefix="${"fad"}" data-icon="${"descargar"}" role="${"img"}" xmlns="${"http://www.w3.org/2000/svg"}" viewBox="${"0 0 448 512"}" class="${"svg-inline--fa fa-alien-monster fa-w-18 fa-9x svelte-996qnb"}"><g class="${"fa-group svelte-996qnb"}"><path fill="${"currentColor"}" d="${"M0 192v272a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48V192zm324.13\n              141.91a11.92 11.92 0 0 1-3.53 6.89L281 379.4l9.4 54.6a12 12 0 0\n              1-17.4 12.6l-49-25.8-48.9 25.8a12 12 0 0\n              1-17.4-12.6l9.4-54.6-39.6-38.6a12 12 0 0 1 6.6-20.5l54.7-8\n              24.5-49.6a12 12 0 0 1 21.5 0l24.5 49.6 54.7 8a12 12 0 0 1 10.13\n              13.61zM304 128h32a16 16 0 0 0 16-16V16a16 16 0 0 0-16-16h-32a16 16\n              0 0 0-16 16v96a16 16 0 0 0 16 16zm-192 0h32a16 16 0 0 0\n              16-16V16a16 16 0 0 0-16-16h-32a16 16 0 0 0-16 16v96a16 16 0 0 0 16\n              16z"}" class="${"fa-secondary svelte-996qnb"}"></path><path fill="${"currentColor"}" d="${"M314 320.3l-54.7-8-24.5-49.6a12 12 0 0 0-21.5 0l-24.5 49.6-54.7\n              8a12 12 0 0 0-6.6 20.5l39.6 38.6-9.4 54.6a12 12 0 0 0 17.4\n              12.6l48.9-25.8 49 25.8a12 12 0 0 0 17.4-12.6l-9.4-54.6\n              39.6-38.6a12 12 0 0 0-6.6-20.5zM400 64h-48v48a16 16 0 0 1-16\n              16h-32a16 16 0 0 1-16-16V64H160v48a16 16 0 0 1-16 16h-32a16 16 0 0\n              1-16-16V64H48a48 48 0 0 0-48 48v80h448v-80a48 48 0 0 0-48-48z"}" class="${"fa-primary svelte-996qnb"}"></path></g></svg>
+        <span class="${"link-text svelte-996qnb"}">Eventos</span></a></li>
+
+    
+    
+
+    
+    <li class="${"nav-item acuerdos svelte-996qnb"}"><a href="${"guia/#acuerdos"}" class="${"nav-link svelte-996qnb"}"><svg aria-hidden="${"true"}" focusable="${"false"}" data-prefix="${"fad"}" data-icon="${"descargar"}" role="${"img"}" xmlns="${"http://www.w3.org/2000/svg"}" viewBox="${"0 0 640 512"}" class="${"svg-inline--fa fa-alien-monster fa-w-18 fa-9x svelte-996qnb"}"><g class="${"fa-group svelte-996qnb"}"><path fill="${"currentColor"}" d="${"M640 143.9v191.8a16 16 0 0 1-16 16h-97.6a63.36 63.36 0 0\n              0-22.2-37.9L358.6 195.6l26.1-23.9a16 16 0 0 0-21.6-23.6l-27\n              24.7-53 48.5c-.1.1-.3.1-.4.2-21.1 18.9-46.5 7.8-56.1-2.7a39.69\n              39.69 0 0 1 2.1-56c.1-.1.2-.3.3-.4l98.3-90a32 32 0 0 1\n              21.6-8.4h85.9a31.94 31.94 0 0 1 22.6 9.4L512 128h112a16 16 0 0 1\n              16 15.9z"}" class="${"fa-secondary svelte-996qnb"}"></path><path fill="${"currentColor"}" d="${"M0 335.9V144a16 16 0 0 1 16-16h112l54.7-54.6a31.94 31.94 0 0 1\n              22.6-9.4h83.8l-81.8 74.9a72 72 0 0 0-4.4 101.7c14.9 16.3 61.1 41.5\n              101.7 4.4l30-27.5 149.3 121.2a32.06 32.06 0 0 1 4.6 45.1l-9.5\n              11.7a32 32 0 0 1-45 4.7l-5.4-4.4-31.4 38.6a37.16 37.16 0 0 1-52.3\n              5.4L327 424.3l-.2.2a64 64 0 0 1-90 9.3l-90.5-81.9H16a16 16 0 0\n              1-16-16z"}" class="${"fa-primary svelte-996qnb"}"></path></g></svg>
+        <span class="${"link-text svelte-996qnb"}">Acuerdos</span></a></li>
+
+    
+    <li class="${"nav-item svelte-996qnb"}"><a${add_attribute("href", pdfVersion$1, 0)} class="${"nav-link svelte-996qnb"}" download><svg aria-hidden="${"true"}" focusable="${"false"}" data-prefix="${"fad"}" data-icon="${"descargar"}" role="${"img"}" xmlns="${"http://www.w3.org/2000/svg"}" viewBox="${"0 0 384 512"}" class="${"svg-inline--fa fa-alien-monster fa-w-18 fa-9x svelte-996qnb"}"><g class="${"fa-group svelte-996qnb"}"><path fill="${"currentColor"}" d="${"M384 128H272a16 16 0 0 1-16-16V0H24A23.94 23.94 0 0 0 0\n              23.88V488a23.94 23.94 0 0 0 23.88 24H360a23.94 23.94 0 0 0\n              24-23.88V128zm-83.55 219.36L204 443.06a17.06 17.06 0 0 1-24\n              0l-96.42-95.7C73.42 337.29 80.54 320 94.82 320H160v-80a16 16 0 0 1\n              16-16h32a16 16 0 0 1 16 16v80h65.18c14.28 0 21.4 17.29 11.27\n              27.36z"}" class="${"fa-secondary svelte-996qnb"}"></path><path fill="${"currentColor"}" d="${"M377 105L279.1 7a24 24 0 0 0-17-7H256v112a16 16 0 0 0 16\n              16h112v-6.1a23.9 23.9 0 0 0-7-16.9zm-87.82 215H224v-80a16 16 0 0\n              0-16-16h-32a16 16 0 0 0-16 16v80H94.82c-14.28 0-21.4 17.29-11.24\n              27.36l96.42 95.7a17.06 17.06 0 0 0 24 0l96.45-95.7c10.13-10.07\n              3.01-27.36-11.27-27.36z"}" class="${"fa-primary svelte-996qnb"}"></path></g></svg>
+        <span class="${"link-text svelte-996qnb"}">Descargar</span></a></li></ul></nav>`;
+});
+
+/* src/components/3-Pilares.svelte generated by Svelte v3.28.0 */
+
+let whyImage = "./gif/why.svg";
+
+const _3_Pilares = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	return `<div id="${"pilares"}"><h3 class="${" f2 lh-copy courier mb0"}">Pilares</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0 w-75-l"}"><div class="${"fl w-100 w-100-m w-70-l f3-l f4-ns "}">Ant Hill se basa en la teoría de
+      <mark>control empírico de procesos.</mark>
+
+      <p>Como organización solo conocemos aquello que ha pasado y solo podemos
+        tratar de predecir aquello que ocurrirá.
+      </p>
+      <p>Por ello, nuestros pilares son
+        <mark>la Transparencia, la Inspección y la Adaptación,</mark>
+        tanto de nuestros productos y servicios como de nuestra forma de ser y
+        hacer.
+      </p></div>
+    <div class="${"fl w-100 w-100-m w-30-l tc-m ph4-l tc"}"><img${add_attribute("src", whyImage, 0)} alt="${"why gif"}" class="${"img-svg"}"></div></section></div>
+
+
+
+<div><h4 class="${"f2 lh-copy courier mb0"}">Premisas</h4>
+  <ol class="${"cf pa3 mt0 pt0 fw3 f3-l f4-ns w-100 w-100-m w-75-l ml3"}"><li class="${"mv3"}">Nuestra prioridad es
+      <mark>satisfacer las necesidades de nuestros usuarios</mark>
+      a través de la utilización de productos y el consumo de servicios de
+      calidad. Los planes de entrega y manuales, por sí mismos, no logran este
+      objetivo.
+    </li>
+    <li class="${"mv3"}">Creemos que los equipos de
+      <mark>alto rendimiento</mark>
+      emergen desde la autonomía para decidir cómo quieren trabajar y el
+      empoderamiento suficiente para poder comprometerse con la entrega de
+      valor.
+    </li>
+    <li class="${"mv3"}">Tenemos derecho a fallar, es el camino para abordar la incertidumbre, pero
+      tenemos la
+      <mark>responsabilidad</mark>
+      de hacerlo en el menor tiempo posible y con la menor cantidad de recursos
+      disponibles.
+    </li></ol></div>`;
+});
+
+/* src/components/4-Roles.svelte generated by Svelte v3.28.0 */
+
+let equipo = "./gif/Fuego agua.svg";
+
+const _4_Roles = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	return `<div id="${"roles"}"><h3 class="${" f2 lh-copy mb0 courier"}">Roles</h3>
+
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Key Stakeholder</h3>
+
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0 w-75-l"}"><div class="${"fl w-100 w-100-m f3-l f4-ns "}"><p>Los Key Stakeholder son líderes al servicio de la organización,
+        comprometidos con la autonomía de los equipos y la entrega de valor.
+      </p>
+
+      <p>Nuestra máxima prioridad, como Key Stakeholder, es entender las
+        necesidades de nuestros clientes y usuarios, internos o externos, y
+        trasladarlas de forma clara y explícita a todos los integrantes de
+        nuestra organización.
+      </p>
+      <p>Definimos en
+        <mark>Epopeyas</mark>
+        las líneas de trabajo que cubren las necesidades detectadas, dejando
+        espacio para decidir
+        <mark>¿Qué contiene la solución?</mark>
+        por parte de los Owners y
+        <mark>¿Cómo se lleva a cabo?</mark>
+        por parte de los equipos de desarrollo.
+      </p></div></section>
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Team</h3>
+
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0"}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>El Equipo o Team, es el encargado de materializar soluciones para las
+        necesidades detectadas dentro de la organización. Esta responsabilidad
+        es compartida por todos los miembros del equipo.
+      </p>
+
+      <div class="${"fl w-100 w-100-m w-70-l f3-l f4-ns "}">El equipo es autosuficiente, crossfuncional y autoorganizado para
+        definir
+        <mark>cómo quieren trabajar</mark>
+        con el propósito de alcanzar las Epopeyas. Para ello, deberá disponer de
+        conocimiento táctico como estratégico.
+        <p>En relación a su área de especialización y empoderamiento, dentro de
+          cada equipo podremos identificar tanto el rol de Owner como el de
+          Desarrollador.
+        </p></div>
+
+      <div class="${"fl w-100 w-100-m w-30-l tc-m ph4-l tc"}"><img${add_attribute("src", equipo, 0)} alt="${"equipo"}" class="${"img-svg"}"></div></div></section>
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Owner</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0"}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>La misión del Owner
+        <mark>es maximizar el valor del producto y la calidad del servicio
+          desarrollado por el Team.
+        </mark></p>
+
+      <p>El Owner debe estar empoderado para establecer los criterios de valor
+        que considere aplicables para avanzar a través de las Epopeyas de los
+        Key Stakeholders.
+      </p>
+      Al Owner le pertenece la capacidad de establecer a través del Backlog
+      <mark>qué necesidades hay que satisfacer</mark>
+
+      <p>Se recomienda que el rol esté identificado en un solo miembro del equipo
+        para evitar desperdicios relacionados con los canales de comunicación y
+        con los conflictos que puedan suceder al establecer criterios de valor
+        al ordenar el backlog.
+      </p></div></section>
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Development Team</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0"}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>La misión del Equipo de Desarrollo o Development Team es satisfacer las
+        necesidades de nuestros clientes y usuarios a través de la entrega
+        continua y frecuente de servicios de calidad y productos de valor.
+      </p>
+      <p>El Equipo de Desarrollo tiene la capacidad de establecer
+        <mark>cómo satisfacer las necesidades de los usuarios</mark></p></div></section></div>`;
+});
+
+/* src/components/5-Artefactos.svelte generated by Svelte v3.28.0 */
+
+const _5_Artefactos = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	return `<div id="${"artefactos"}"><h3 class="${" f2 lh-copy mb0 courier"}">Artefactos</h3>
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Epopeyas</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0 "}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>Son grandes líneas de trabajo estratégicas, establecidas por los Key
+        Stakeholders, que
+        <mark>deben recoger de forma clara y explícita las necesidades de nuestros
+          clientes
+        </mark>
+        , englobando el conocimiento actual y el retorno esperado con su
+        ejecución.
+      </p>
+      <p>Las Epopeyas son artefactos vivos cuya naturaleza y alcance puede variar
+        durante su desarrollo , usualmente están vinculadas a hipótesis de
+        negocio.
+      </p></div></section>
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Backlog</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0"}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>El Backlog es un listado ordenado de necesidades que deben ser cubiertas
+        para satisfacer a un usuario.
+      </p>
+
+      <p>Puede estar compuesto por épicas, Historias de Usuario, Spikes, Tickets
+        o cualquier otra técnica o medio que permita al equipo establecer un
+        <mark>entendimiento común y compartido</mark>
+        sobre lo que debe contener un producto o entregarse en un servicio.
+      </p>
+      <p>El Backlog debe estar ordenado por el criterio que los Owners consideren
+        oportuno para maximizar el valor de su producto o servicio.
+      </p></div></section></div>`;
+});
+
+/* src/components/6-Eventos.svelte generated by Svelte v3.28.0 */
+
+let ciclo = "./gif/Ciclo.svg";
+
+const _6_Eventos = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	return `<div id="${"eventos"}"><h3 class="${" f2 lh-copy mb0 courier"}">Eventos</h3>
+
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0 "}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>Respetando los eventos o feedback loops que establezcan los equipos en
+        su forma de trabajar, se establecen como necesarios los siguientes
+        eventos.
+      </p>
+      <p>Todos los eventos respetan el concepto de Timebox.</p>
+
+      <div class="${"pa2 pa2-m pa4-l"}"><blockquote class="${"athelas ml0 mt0 pt0 pl4 black-90 bl bw2 b--gray"}"><p class="${"f5 f4-m f4-l lh-copy measure mt0 mb0"}">El Timebox (caja de tiempo) es una técnica para limitar la duración
+            de una reunión o evento. Una vez alcanzado el propósito del evento o
+            superado el tiempo establecido y conocido por todos los asistentes,
+            el evento en curso debe finalizar.
+          </p></blockquote></div></div></section>
+
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Iteración</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0 w-75-l"}"><div class="${"fl w-100 w-100-m f3-l f4-ns "}"><p>La iteración es el contenedor de los demás eventos que se describirán a
+        continuación.
+      </p></div>
+
+    <div class="${"fl w-100 w-100-m w-70-l f3-l f4-ns "}">Cada iteración comienza con la inspección de necesidades a cubrir durante
+      el periodo, transcurre con su desarrollo en base a planes flexibles y
+      finaliza con la obtención del feedback sobre el valor entregado durante la
+      iteración y la inspección y adaptación de la forma de trabajar de la
+      organización.
+      <p>Una iteración tiene un timebox de 2 meses como máximo y al finalizar la
+        vigente comienza otra de la misma duración.
+      </p></div>
+
+    <div class="${"fl w-100 w-100-m w-30-l tc-m ph4-l tc"}"><img${add_attribute("src", ciclo, 0)} alt="${"ciclo"}" class="${"img-svg"}"></div></section>
+
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Big Planning</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0"}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p><span class="${"fw6"}">Timebox:</span>
+        8 horas para ciclos bimestrales. 
+      </p>
+      <p><span class="${"fw6"}">Invitados:</span> Los Owners de cada equipo
+        junto con los Key Stakeholders.</p> 
+      <p>Cada Owner tiene la posibilidad de invitar a miembros de sus equipos que
+        consideren relevantes para cumplir con el propósito de la sesión.
+      </p>
+
+      <p><span class="${"fw6"}">Propósito:</span>
+        Inspeccionar las Epopeyas, ordenarlas en función del valor que pueden
+        aportar, desagregarse en Épicas, detectar dependencias y proceder a su
+        refinamiento e incorporación al Backlog de cada equipo.
+      </p></div></section>
+
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Big Review</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0"}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p><span class="${"fw6"}">Timebox:</span>
+        4 horas para ciclos bimestrales.
+      </p>
+
+      <p><span class="${"fw6"}">Invitados:</span>
+        Los Owners, el Development Team y los Key Stakeholders
+      </p>
+
+      <p><span class="${"fw6"}">Propósito:</span>
+        Inspeccionar la entrega de valor realizada durante la iteración por cada
+        uno de los equipos en base a las Epopeyas.
+      </p></div></section>
+
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Big Retrospective</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0"}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p><span class="${"fw6"}">Timebox:</span>
+        3 horas para ciclos bimestrales.
+      </p>
+
+      <p><span class="${"fw6"}">Invitados:</span>
+        Los Owners, los Equipos y los Key Stakeholders
+      </p>
+
+      <p><span class="${"fw6"}">Propósito:</span>
+        Inspeccionar y adaptar la forma de trabajar de los equipos en base a la
+        experiencia adquirida durante la iteración. Compartir buenas prácticas e
+        inspeccionar vías para subsanar bloqueos recurrentes. Al menos una
+        acción de mejora debe proponerse y probarse durante la siguiente
+        iteración que beneficie a la mayor parte de equipos.
+      </p></div></section></div>`;
+});
+
+/* src/components/7-Actividades.svelte generated by Svelte v3.28.0 */
+
+let celula = "./gif/Celula.svg";
+
+const _7_Actividades = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	return `<div class="${"actividades"}"><h3 class="${" f2 lh-copy mb0 courier"}">Actividades</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0 "}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>Asimismo, junto con los eventos, hay dos actividades enmarcadas dentro
+        del framework que son realizadas a petición de los Development Team, los
+        Owners o los Key Stakeholders:
+      </p></div></section>
+
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Refinamientos</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0"}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>Durante esta actividad los Key Stakeholder refinan, clarifican y añaden
+        detalle a las Epopeyas junto con los Equipos para trasladar la necesidad
+        existente y la gestión de expectativas sobre el valor esperado.
+      </p></div></section>
+
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Escalado de Bloqueos</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0 "}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>Cada Equipo junto con los Key Stakeholders determinan las vías para el
+        escalado de Bloqueos y los protocolos para su subsanación.
+      </p>
+
+      <div class="${"pa2 pa2-m pa4-l"}"><blockquote class="${"athelas ml0 mt0 pt0 pl4 black-90 bl bw2 b--gray"}"><p class="${"f5 f4-m f4-l lh-copy measure mt0 mb0"}">Se entiende por Bloqueo todo aquel impedimento que no puede resolver
+            el Equipo por sí mismo.
+          </p></blockquote></div>
+      <p>Los bloqueos recurrentes deben ser tratados como puntos de mejora, cada
+        equipo velará por la inspección y adaptación de acciones para su
+        reducción o eliminación.
+      </p>
+      <p>Las acciones de mejora realizadas en una iteración pueden ser objeto de
+        inspección a través de la Big Retrospective.
+      </p></div></section>
+
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">Comunidad de Prácticas</h3>
+  <p></p>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0 w-75-l"}"><div class="${"fl w-100 w-100-m w-70-l f3-l f4-ns "}">Con el fin de
+      <mark>fomentar la auto-organización, el desarrollo y la difusión de
+        conocimientos
+      </mark>
+      orientados a las necesidades de los productos y servicios prestados por la
+      organización, tanto dentro del equipo como entre equipos, es recomendable
+      la creación de comunidades orientadas al aprendizaje y desarrollo de
+      habilidades prácticas.
+      <p>La creación de una Comunidad de Práctica tiende a ser fruto como
+        respuesta a las acciones de mejora detectadas durante la Big Review.
+      </p></div>
+
+    <div class="${"fl w-100 w-100-m w-30-l tc-m ph4-l tc"}"><img${add_attribute("src", celula, 0)} alt="${"celula"}" class="${"img-svg"}"></div></section></div>`;
+});
+
+/* src/components/8-Acuerdos.svelte generated by Svelte v3.28.0 */
+
+const _8_Acuerdos = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	return `<div id="${"acuerdos"}"><h3 class="${" f2 lh-copy mb0 courier"}">Acuerdos</h3>
+
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0 "}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>Como bases mínimas que sustentan el control empírico de procesos, cada
+        equipo debe tener un lenguaje común que permita la inspección,
+        adaptación y transparencia a través del desarrollo y difusión de
+        acuerdos explícitos.
+      </p>
+
+      <p>Los acuerdos base sirven como instrumento del
+        <mark>entendimiento compartido</mark>
+        y es desarrollado sobre la base de los compromisos y responsabilidades
+        adquiridos por los equipos.
+      </p></div></section>
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">M-DoD (Minimum Definition Of Done)
+  </h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0 "}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>Todos los equipos de desarrollo de producto comparten una definición de
+        hecho mínima.
+      </p>
+
+      <p>La Definición Mínima de Hecho, es la base necesaria para generar un
+        entendimiento compartido de
+        <mark>&quot;¿qué se entiende por hecho?&quot;</mark>
+        Este entendimiento
+        <mark>no es objeto de negociación,</mark>
+        puesto que opera sobre la calidad de los productos y servicios
+        prestados.
+      </p>
+
+      <p>Sobre esta base, cada equipo puede perfeccionar y mejorar los criterios
+        de calidad de su producto o servicio dando lugar a un D.O.D propio más
+        exigente que comparta la base común establecida en la organización.
+      </p></div></section>
+
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">SLA (Service Level Agreement)
+  </h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0 "}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>Todos los equipos deben establecer Acuerdos de Nivel de Servicio sobre
+        cómo operan en el desarrollo de productos y en la prestación de
+        servicios.
+      </p>
+
+      <p>Estos acuerdos deben ser
+        <mark>establecidos, conocidos e inspeccionados de forma empírica</mark>
+        (a través de la experiencia en el desempeño de las actividades del
+        equipo y amparados con datos objetivos que los respalden) para aumentar,
+        en la medida de lo posible, la predictibilidad y la cadencia de entrega
+        dentro de la organización.
+      </p>
+
+      <p>Durante el desarrollo de los servicios los SLAs pueden modificarse para
+        adaptarse a las circunstancias y necesidades del entorno.
+      </p>
+      <p>Usualmente los equipos de desarrollo de producto establecerán sus SLAs,
+        indicando de forma explícita las cadencias de entrega de incremento de
+        producto.
+      </p></div></section>
+
+  <h3 class="${" f3 lh-copy mb0 pl2 fw5 lookhere "}">ROI (Return Of Inversion)</h3>
+  <section class="${"cf pa3 mt0 pt0 fw3 mt0 "}"><div class="${"fl w-100 w-100-m w-75-l f3-l f4-ns "}"><p>Sin perjuicio de la utilización de otras métricas que garanticen la
+        inspección del éxito de nuestros productos y la calidad de nuestros
+        servicios,
+        <mark>el Retorno de la Inversión es la métrica de medida principal
+        </mark>
+        para cada una de las actividades que realicen los equipos de la
+        organización.
+      </p>
+
+      <p>Analizar la rentabilidad que obtiene la organización, basándonos en las
+        inversiones y actividades realizadas, durante el desarrollo de productos
+        y la prestación de servicios es un indicador directo y transparente para
+        la
+        <mark>validación de las hipótesis de negocio</mark>
+        contenidas en cada una de las Epopeyas.
+      </p>
+
+      <p>Aquellas acciones que no tengan impacto directo o indirecto en el
+        Retorno de la Inversión deben ser evaluadas y, en su caso, eliminadas
+        para el buen gobierno y desempeño de la organización.
+      </p></div></section></div>`;
+});
+
+/* src/routes/guia.svelte generated by Svelte v3.28.0 */
+
+const css$6 = {
+	code: ".sections.svelte-1r9a5fm{margin-left:7rem;margin-right:2rem}@media only screen and (max-width: 600px){.sections.svelte-1r9a5fm{margin-left:2rem;margin-right:2rem}}@media only screen and (min-width: 600px){.sections.svelte-1r9a5fm{margin-left:7rem;margin-right:2rem}}",
+	map: "{\"version\":3,\"file\":\"guia.svelte\",\"sources\":[\"guia.svelte\"],\"sourcesContent\":[\"<script>\\n  import Navbar from \\\"./../components/Navbar.svelte\\\";\\n  import Title from \\\"./../components/1-Title.svelte\\\";\\n  import Pilares from \\\"./../components/3-Pilares.svelte\\\";\\n  import Roles from \\\"./../components/4-Roles.svelte\\\";\\n  import Artefactos from \\\"./../components/5-Artefactos.svelte\\\";\\n  import Eventos from \\\"./../components/6-Eventos.svelte\\\";\\n  import Actividades from \\\"./../components/7-Actividades.svelte\\\";\\n  import Acuerdos from \\\"./../components/8-Acuerdos.svelte\\\";\\n  import Credits from \\\"./../components/99-Credits.svelte\\\";\\n  import { fade } from \\\"svelte/transition\\\";\\n</script>\\n\\n<style>\\n  .sections {\\n    margin-left: 7rem;\\n    margin-right: 2rem;\\n  }\\n\\n  /* Small screens */\\n  @media only screen and (max-width: 600px) {\\n    .sections {\\n      margin-left: 2rem;\\n      margin-right: 2rem;\\n    }\\n  }\\n\\n  /* Large screens */\\n  @media only screen and (min-width: 600px) {\\n    .sections {\\n      margin-left: 7rem;\\n      margin-right: 2rem;\\n    }\\n  }\\n</style>\\n\\n<svelte:head>\\n  <title>Guia</title>\\n\\n</svelte:head>\\n\\n<div transition:fade>\\n\\n  <Navbar />\\n\\n  <main class=\\\"sections\\\">\\n    <Title />\\n    <Pilares />\\n    <Roles />\\n    <Artefactos />\\n    <Eventos />\\n    <Actividades />\\n    <Acuerdos />\\n  </main>\\n\\n  <Credits />\\n</div>\\n\"],\"names\":[],\"mappings\":\"AAcE,SAAS,eAAC,CAAC,AACT,WAAW,CAAE,IAAI,CACjB,YAAY,CAAE,IAAI,AACpB,CAAC,AAGD,OAAO,IAAI,CAAC,MAAM,CAAC,GAAG,CAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AACzC,SAAS,eAAC,CAAC,AACT,WAAW,CAAE,IAAI,CACjB,YAAY,CAAE,IAAI,AACpB,CAAC,AACH,CAAC,AAGD,OAAO,IAAI,CAAC,MAAM,CAAC,GAAG,CAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AACzC,SAAS,eAAC,CAAC,AACT,WAAW,CAAE,IAAI,CACjB,YAAY,CAAE,IAAI,AACpB,CAAC,AACH,CAAC\"}"
+};
+
+const Guia = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	$$result.css.add(css$6);
+
+	return `${($$result.head += `${($$result.title = `<title>Guia</title>`, "")}`, "")}
+
+<div>${validate_component(Navbar, "Navbar").$$render($$result, {}, {}, {})}
+
+  <main class="${"sections svelte-1r9a5fm"}">${validate_component(_1_Title, "Title").$$render($$result, {}, {}, {})}
+    ${validate_component(_3_Pilares, "Pilares").$$render($$result, {}, {}, {})}
+    ${validate_component(_4_Roles, "Roles").$$render($$result, {}, {}, {})}
+    ${validate_component(_5_Artefactos, "Artefactos").$$render($$result, {}, {}, {})}
+    ${validate_component(_6_Eventos, "Eventos").$$render($$result, {}, {}, {})}
+    ${validate_component(_7_Actividades, "Actividades").$$render($$result, {}, {}, {})}
+    ${validate_component(_8_Acuerdos, "Acuerdos").$$render($$result, {}, {}, {})}</main>
+
+  ${validate_component(_99_Credits, "Credits").$$render($$result, {}, {}, {})}</div>`;
+});
+
+var component_3 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  'default': Guia
+});
+
+/* src/routes/_layout.svelte generated by Svelte v3.28.0 */
+
+const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	return `<main>${slots.default ? slots.default({}) : ``}</main>`;
+});
+
+var root_comp = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  'default': Layout
+});
+
+/* src/routes/_error.svelte generated by Svelte v3.28.0 */
+
+const css$7 = {
+	code: "h1.svelte-8od9u6,p.svelte-8od9u6{margin:0 auto}h1.svelte-8od9u6{font-size:2.8em;font-weight:700;margin:0 0 0.5em 0}p.svelte-8od9u6{margin:1em auto}@media(min-width: 480px){h1.svelte-8od9u6{font-size:4em}}",
+	map: "{\"version\":3,\"file\":\"_error.svelte\",\"sources\":[\"_error.svelte\"],\"sourcesContent\":[\"<script>\\n\\texport let status;\\n\\texport let error;\\n\\n\\tconst dev = undefined === 'development';\\n</script>\\n\\n<style>\\n\\th1, p {\\n\\t\\tmargin: 0 auto;\\n\\t}\\n\\n\\th1 {\\n\\t\\tfont-size: 2.8em;\\n\\t\\tfont-weight: 700;\\n\\t\\tmargin: 0 0 0.5em 0;\\n\\t}\\n\\n\\tp {\\n\\t\\tmargin: 1em auto;\\n\\t}\\n\\n\\t@media (min-width: 480px) {\\n\\t\\th1 {\\n\\t\\t\\tfont-size: 4em;\\n\\t\\t}\\n\\t}\\n</style>\\n\\n<svelte:head>\\n\\t<title>{status}</title>\\n</svelte:head>\\n\\n<h1>{status}</h1>\\n\\n<p>{error.message}</p>\\n\\n{#if dev && error.stack}\\n\\t<pre>{error.stack}</pre>\\n{/if}\\n\"],\"names\":[],\"mappings\":\"AAQC,gBAAE,CAAE,CAAC,cAAC,CAAC,AACN,MAAM,CAAE,CAAC,CAAC,IAAI,AACf,CAAC,AAED,EAAE,cAAC,CAAC,AACH,SAAS,CAAE,KAAK,CAChB,WAAW,CAAE,GAAG,CAChB,MAAM,CAAE,CAAC,CAAC,CAAC,CAAC,KAAK,CAAC,CAAC,AACpB,CAAC,AAED,CAAC,cAAC,CAAC,AACF,MAAM,CAAE,GAAG,CAAC,IAAI,AACjB,CAAC,AAED,MAAM,AAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AAC1B,EAAE,cAAC,CAAC,AACH,SAAS,CAAE,GAAG,AACf,CAAC,AACF,CAAC\"}"
+};
+
+const Error$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	let { status } = $$props;
+	let { error } = $$props;
+	if ($$props.status === void 0 && $$bindings.status && status !== void 0) $$bindings.status(status);
+	if ($$props.error === void 0 && $$bindings.error && error !== void 0) $$bindings.error(error);
+	$$result.css.add(css$7);
+
+	return `${($$result.head += `${($$result.title = `<title>${escape(status)}</title>`, "")}`, "")}
+
+<h1 class="${"svelte-8od9u6"}">${escape(status)}</h1>
+
+<p class="${"svelte-8od9u6"}">${escape(error.message)}</p>
+
+${ ``}`;
+});
+
+// This file is generated by Sapper — do not edit it!
+
+const d = decodeURIComponent;
+
+const manifest = {
+	server_routes: [
+		{
+			// blog/index.json.js
+			pattern: /^\/blog\.json$/,
+			handlers: route_0,
+			params: () => ({})
+		},
+
+		{
+			// blog/[slug].json.js
+			pattern: /^\/blog\/([^/]+?)\.json$/,
+			handlers: route_1,
+			params: match => ({ slug: d(match[1]) })
+		}
+	],
+
+	pages: [
+		{
+			// index.svelte
+			pattern: /^\/$/,
+			parts: [
+				{ name: "index", file: "index.svelte", component: component_0 }
+			]
+		},
+
+		{
+			// blog/index.svelte
+			pattern: /^\/blog\/?$/,
+			parts: [
+				{ name: "blog", file: "blog/index.svelte", component: component_1 }
+			]
+		},
+
+		{
+			// blog/[slug].svelte
+			pattern: /^\/blog\/([^/]+?)\/?$/,
+			parts: [
+				null,
+				{ name: "blog_$slug", file: "blog/[slug].svelte", component: component_2, params: match => ({ slug: d(match[1]) }) }
+			]
+		},
+
+		{
+			// guia.svelte
+			pattern: /^\/guia\/?$/,
+			parts: [
+				{ name: "guia", file: "guia.svelte", component: component_3 }
+			]
+		}
+	],
+
+	root_comp,
+	error: Error$1
+};
+
+const build_dir = "__sapper__/build";
+
+const subscriber_queue = [];
+/**
+ * Create a `Writable` store that allows both updating and reading by subscription.
+ * @param {*=}value initial value
+ * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+ */
+function writable(value, start = noop) {
+    let stop;
+    const subscribers = [];
+    function set(new_value) {
+        if (safe_not_equal(value, new_value)) {
+            value = new_value;
+            if (stop) { // store is ready
+                const run_queue = !subscriber_queue.length;
+                for (let i = 0; i < subscribers.length; i += 1) {
+                    const s = subscribers[i];
+                    s[1]();
+                    subscriber_queue.push(s, value);
+                }
+                if (run_queue) {
+                    for (let i = 0; i < subscriber_queue.length; i += 2) {
+                        subscriber_queue[i][0](subscriber_queue[i + 1]);
+                    }
+                    subscriber_queue.length = 0;
+                }
+            }
+        }
+    }
+    function update(fn) {
+        set(fn(value));
+    }
+    function subscribe(run, invalidate = noop) {
+        const subscriber = [run, invalidate];
+        subscribers.push(subscriber);
+        if (subscribers.length === 1) {
+            stop = start(set) || noop;
+        }
+        run(value);
+        return () => {
+            const index = subscribers.indexOf(subscriber);
+            if (index !== -1) {
+                subscribers.splice(index, 1);
+            }
+            if (subscribers.length === 0) {
+                stop();
+                stop = null;
+            }
+        };
+    }
+    return { set, update, subscribe };
+}
+
+const CONTEXT_KEY = {};
+
+/* src/node_modules/@sapper/internal/App.svelte generated by Svelte v3.28.0 */
+
+const App = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	let { stores } = $$props;
+	let { error } = $$props;
+	let { status } = $$props;
+	let { segments } = $$props;
+	let { level0 } = $$props;
+	let { level1 = null } = $$props;
+	let { notify } = $$props;
+	afterUpdate(notify);
+	setContext(CONTEXT_KEY, stores);
+	if ($$props.stores === void 0 && $$bindings.stores && stores !== void 0) $$bindings.stores(stores);
+	if ($$props.error === void 0 && $$bindings.error && error !== void 0) $$bindings.error(error);
+	if ($$props.status === void 0 && $$bindings.status && status !== void 0) $$bindings.status(status);
+	if ($$props.segments === void 0 && $$bindings.segments && segments !== void 0) $$bindings.segments(segments);
+	if ($$props.level0 === void 0 && $$bindings.level0 && level0 !== void 0) $$bindings.level0(level0);
+	if ($$props.level1 === void 0 && $$bindings.level1 && level1 !== void 0) $$bindings.level1(level1);
+	if ($$props.notify === void 0 && $$bindings.notify && notify !== void 0) $$bindings.notify(notify);
+
+	return `
+
+
+${validate_component(Layout, "Layout").$$render($$result, Object.assign({ segment: segments[0] }, level0.props), {}, {
+		default: () => `${error
+		? `${validate_component(Error$1, "Error").$$render($$result, { error, status }, {}, {})}`
+		: `${validate_component(level1.component || missing_component, "svelte:component").$$render($$result, Object.assign(level1.props), {}, {})}`}`
+	})}`;
+});
 
 /**
  * @param typeMap [Object] Map of MIME type -> Array[extensions]
@@ -293,7 +1319,7 @@ function tryDecode(str, decode) {
 var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$';
 var unsafeChars = /[<>\b\f\n\r\t\0\u2028\u2029]/g;
 var reserved = /^(?:do|if|in|for|int|let|new|try|var|byte|case|char|else|enum|goto|long|this|void|with|await|break|catch|class|const|final|float|short|super|throw|while|yield|delete|double|export|import|native|return|switch|throws|typeof|boolean|default|extends|finally|package|private|abstract|continue|debugger|function|volatile|interface|protected|transient|implements|instanceof|synchronized)$/;
-var escaped = {
+var escaped$1 = {
     '<': '\\u003C',
     '>': '\\u003E',
     '/': '\\u002F',
@@ -474,7 +1500,7 @@ function getType(thing) {
     return Object.prototype.toString.call(thing).slice(8, -1);
 }
 function escapeUnsafeChar(c) {
-    return escaped[c] || c;
+    return escaped$1[c] || c;
 }
 function escapeUnsafeChars(str) {
     return str.replace(unsafeChars, escapeUnsafeChar);
@@ -493,8 +1519,8 @@ function stringifyString(str) {
         if (char === '"') {
             result += '\\"';
         }
-        else if (char in escaped) {
-            result += escaped[char];
+        else if (char in escaped$1) {
+            result += escaped$1[char];
         }
         else if (code >= 0xd800 && code <= 0xdfff) {
             var next = str.charCodeAt(i + 1);
@@ -518,7 +1544,7 @@ function stringifyString(str) {
 // Based on https://github.com/tmpvar/jsdom/blob/aa85b2abf07766ff7bf5c1f6daafb3726f2f2db5/lib/jsdom/living/blob.js
 
 // fix for "Readable" isn't a named export issue
-const Readable = Stream.Readable;
+const Readable = Stream__default['default'].Readable;
 
 const BUFFER = Symbol('buffer');
 const TYPE = Symbol('type');
@@ -670,7 +1696,7 @@ try {
 const INTERNALS = Symbol('Body internals');
 
 // fix an issue where "PassThrough" isn't a named export for node <10
-const PassThrough = Stream.PassThrough;
+const PassThrough = Stream__default['default'].PassThrough;
 
 /**
  * Body mixin
@@ -703,7 +1729,7 @@ function Body(body) {
 	} else if (ArrayBuffer.isView(body)) {
 		// body is ArrayBufferView
 		body = Buffer.from(body.buffer, body.byteOffset, body.byteLength);
-	} else if (body instanceof Stream) ; else {
+	} else if (body instanceof Stream__default['default']) ; else {
 		// none of the above
 		// coerce to string then buffer
 		body = Buffer.from(String(body));
@@ -716,7 +1742,7 @@ function Body(body) {
 	this.size = size;
 	this.timeout = timeout;
 
-	if (body instanceof Stream) {
+	if (body instanceof Stream__default['default']) {
 		body.on('error', function (err) {
 			const error = err.name === 'AbortError' ? err : new FetchError(`Invalid response body while trying to fetch ${_this.url}: ${err.message}`, 'system', err);
 			_this[INTERNALS].error = error;
@@ -872,7 +1898,7 @@ function consumeBody() {
 	}
 
 	// istanbul ignore if: should never happen
-	if (!(body instanceof Stream)) {
+	if (!(body instanceof Stream__default['default'])) {
 		return Body.Promise.resolve(Buffer.alloc(0));
 	}
 
@@ -1045,7 +2071,7 @@ function clone(instance) {
 
 	// check that body is a stream and not form-data object
 	// note: we can't clone the form-data object without having it as a dependency
-	if (body instanceof Stream && typeof body.getBoundary !== 'function') {
+	if (body instanceof Stream__default['default'] && typeof body.getBoundary !== 'function') {
 		// tee instance body
 		p1 = new PassThrough();
 		p2 = new PassThrough();
@@ -1093,7 +2119,7 @@ function extractContentType(body) {
 	} else if (typeof body.getBoundary === 'function') {
 		// detect form data input from form-data module
 		return `multipart/form-data;boundary=${body.getBoundary()}`;
-	} else if (body instanceof Stream) {
+	} else if (body instanceof Stream__default['default']) {
 		// body is stream
 		// can't really do much about this
 		return null;
@@ -1547,7 +2573,7 @@ function createHeadersLenient(obj) {
 const INTERNALS$1 = Symbol('Response internals');
 
 // fix an issue where "STATUS_CODES" aren't a named export for node <10
-const STATUS_CODES = http.STATUS_CODES;
+const STATUS_CODES = http__default['default'].STATUS_CODES;
 
 /**
  * Response class
@@ -1648,10 +2674,10 @@ Object.defineProperty(Response.prototype, Symbol.toStringTag, {
 const INTERNALS$2 = Symbol('Request internals');
 
 // fix an issue where "format", "parse" aren't a named export for node <10
-const parse_url = Url.parse;
-const format_url = Url.format;
+const parse_url = Url__default['default'].parse;
+const format_url = Url__default['default'].format;
 
-const streamDestructionSupported = 'destroy' in Stream.Readable.prototype;
+const streamDestructionSupported = 'destroy' in Stream__default['default'].Readable.prototype;
 
 /**
  * Check if a value is an instance of Request.
@@ -1814,7 +2840,7 @@ function getNodeRequestOptions(request) {
 		throw new TypeError('Only HTTP(S) protocols are supported');
 	}
 
-	if (request.signal && request.body instanceof Stream.Readable && !streamDestructionSupported) {
+	if (request.signal && request.body instanceof Stream__default['default'].Readable && !streamDestructionSupported) {
 		throw new Error('Cancellation of streamed requests with AbortSignal is not supported in node < 8');
 	}
 
@@ -1889,8 +2915,8 @@ AbortError.prototype.constructor = AbortError;
 AbortError.prototype.name = 'AbortError';
 
 // fix an issue where "PassThrough", "resolve" aren't a named export for node <10
-const PassThrough$1 = Stream.PassThrough;
-const resolve_url = Url.resolve;
+const PassThrough$1 = Stream__default['default'].PassThrough;
+const resolve_url = Url__default['default'].resolve;
 
 /**
  * Fetch function
@@ -1914,7 +2940,7 @@ function fetch(url, opts) {
 		const request = new Request(url, opts);
 		const options = getNodeRequestOptions(request);
 
-		const send = (options.protocol === 'https:' ? https : http).request;
+		const send = (options.protocol === 'https:' ? https__default['default'] : http__default['default']).request;
 		const signal = request.signal;
 
 		let response = null;
@@ -1922,7 +2948,7 @@ function fetch(url, opts) {
 		const abort = function abort() {
 			let error = new AbortError('The user aborted a request.');
 			reject(error);
-			if (request.body && request.body instanceof Stream.Readable) {
+			if (request.body && request.body instanceof Stream__default['default'].Readable) {
 				request.body.destroy(error);
 			}
 			if (!response || !response.body) return;
@@ -2086,13 +3112,13 @@ function fetch(url, opts) {
 			// by common browsers.
 			// Always using Z_SYNC_FLUSH is what cURL does.
 			const zlibOptions = {
-				flush: zlib.Z_SYNC_FLUSH,
-				finishFlush: zlib.Z_SYNC_FLUSH
+				flush: zlib__default['default'].Z_SYNC_FLUSH,
+				finishFlush: zlib__default['default'].Z_SYNC_FLUSH
 			};
 
 			// for gzip
 			if (codings == 'gzip' || codings == 'x-gzip') {
-				body = body.pipe(zlib.createGunzip(zlibOptions));
+				body = body.pipe(zlib__default['default'].createGunzip(zlibOptions));
 				response = new Response(body, response_options);
 				resolve(response);
 				return;
@@ -2106,9 +3132,9 @@ function fetch(url, opts) {
 				raw.once('data', function (chunk) {
 					// see http://stackoverflow.com/questions/37519828
 					if ((chunk[0] & 0x0F) === 0x08) {
-						body = body.pipe(zlib.createInflate());
+						body = body.pipe(zlib__default['default'].createInflate());
 					} else {
-						body = body.pipe(zlib.createInflateRaw());
+						body = body.pipe(zlib__default['default'].createInflateRaw());
 					}
 					response = new Response(body, response_options);
 					resolve(response);
@@ -2117,8 +3143,8 @@ function fetch(url, opts) {
 			}
 
 			// for br
-			if (codings == 'br' && typeof zlib.createBrotliDecompress === 'function') {
-				body = body.pipe(zlib.createBrotliDecompress());
+			if (codings == 'br' && typeof zlib__default['default'].createBrotliDecompress === 'function') {
+				body = body.pipe(zlib__default['default'].createBrotliDecompress());
 				response = new Response(body, response_options);
 				resolve(response);
 				return;
@@ -4398,7 +5424,7 @@ function get_file_contents(file_path) {
         return file_cache.get(file_path);
     }
     try {
-        const data = fs.readFileSync(file_path, 'utf8');
+        const data = fs__default['default'].readFileSync(file_path, 'utf8');
         file_cache.set(file_path, data);
         return data;
     }
@@ -4416,7 +5442,7 @@ function sourcemap_stacktrace(stack) {
         const sourcemap_url = get_sourcemap_url(contents);
         if (!sourcemap_url)
             return input;
-        let dir = path.dirname(file_path);
+        let dir = path__default['default'].dirname(file_path);
         let sourcemap_data;
         if (/^data:application\/json[^,]+base64,/.test(sourcemap_url)) {
             const raw_data = sourcemap_url.slice(sourcemap_url.indexOf(',') + 1);
@@ -4428,12 +5454,12 @@ function sourcemap_stacktrace(stack) {
             }
         }
         else {
-            const sourcemap_path = path.resolve(dir, sourcemap_url);
+            const sourcemap_path = path__default['default'].resolve(dir, sourcemap_url);
             const data = get_file_contents(sourcemap_path);
             if (!data)
                 return input;
             sourcemap_data = data;
-            dir = path.dirname(sourcemap_path);
+            dir = path__default['default'].dirname(sourcemap_path);
         }
         let raw_sourcemap;
         try {
@@ -4450,7 +5476,7 @@ function sourcemap_stacktrace(stack) {
         });
         if (!pos.source)
             return input;
-        const source_path = path.resolve(dir, pos.source);
+        const source_path = path__default['default'].resolve(dir, pos.source);
         const source = `${source_path}:${pos.line || 0}:${pos.column || 0}`;
         if (!var_name)
             return `    at ${source}`;
@@ -4464,17 +5490,13 @@ function sourcemap_stacktrace(stack) {
 }
 
 function get_page_handler(manifest, session_getter) {
-    const get_build_info = dev
-        ? () => JSON.parse(fs.readFileSync(path.join(build_dir, 'build.json'), 'utf-8'))
-        : (assets => () => assets)(JSON.parse(fs.readFileSync(path.join(build_dir, 'build.json'), 'utf-8')));
-    const template = dev
-        ? () => read_template(src_dir)
-        : (str => () => str)(read_template(build_dir));
-    const has_service_worker = fs.existsSync(path.join(build_dir, 'service-worker.js'));
+    const get_build_info =  (assets => () => assets)(JSON.parse(fs__default['default'].readFileSync(path__default['default'].join(build_dir, 'build.json'), 'utf-8')));
+    const template =  (str => () => str)(read_template(build_dir));
+    const has_service_worker = fs__default['default'].existsSync(path__default['default'].join(build_dir, 'service-worker.js'));
     const { pages, error: error_route } = manifest;
     function bail(req, res, err) {
         console.error(err);
-        const message = dev ? escape_html(err.message) : 'Internal server error';
+        const message =  'Internal server error';
         res.statusCode = 500;
         res.end(`<pre>${message}</pre>`);
     }
@@ -4547,7 +5569,7 @@ function get_page_handler(manifest, session_getter) {
                 },
                 fetch: (url, opts) => {
                     const protocol = req.socket.encrypted ? 'https' : 'http';
-                    const parsed = new Url.URL(url, `${protocol}://127.0.0.1:${process.env.PORT}${req.baseUrl ? req.baseUrl + '/' : ''}`);
+                    const parsed = new Url__default['default'].URL(url, `${protocol}://127.0.0.1:${process.env.PORT}${req.baseUrl ? req.baseUrl + '/' : ''}`);
                     opts = Object.assign({}, opts);
                     const include_credentials = (opts.credentials === 'include' ||
                         opts.credentials !== 'omit' && parsed.origin === `${protocol}://127.0.0.1:${process.env.PORT}`);
@@ -4611,7 +5633,7 @@ function get_page_handler(manifest, session_getter) {
             }
             try {
                 if (redirect) {
-                    const location = Url.resolve((req.baseUrl || '') + '/', redirect.location);
+                    const location = Url__default['default'].resolve((req.baseUrl || '') + '/', redirect.location);
                     res.statusCode = redirect.statusCode;
                     res.setHeader('Location', location);
                     res.end();
@@ -4774,7 +5796,7 @@ function get_page_handler(manifest, session_getter) {
     };
 }
 function read_template(dir = build_dir) {
-    return fs.readFileSync(`${dir}/template.html`, 'utf-8');
+    return fs__default['default'].readFileSync(`${dir}/template.html`, 'utf-8');
 }
 function try_serialize(data, fail) {
     try {
@@ -4799,16 +5821,6 @@ function serialize_error(error) {
         serialized = '{}';
     }
     return serialized;
-}
-function escape_html(html) {
-    const chars = {
-        '"': 'quot',
-        '\'': '#39',
-        '&': 'amp',
-        '<': 'lt',
-        '>': 'gt'
-    };
-    return html.replace(/["'&<>]/g, c => `&${chars[c]};`);
 }
 
 function middleware(opts = {}) {
@@ -4838,20 +5850,20 @@ function middleware(opts = {}) {
             }
             next();
         },
-        fs.existsSync(path.join(build_dir, 'service-worker.js')) && serve({
+        fs__default['default'].existsSync(path__default['default'].join(build_dir, 'service-worker.js')) && serve({
             pathname: '/service-worker.js',
             cache_control: 'no-cache, no-store, must-revalidate'
         }),
-        fs.existsSync(path.join(build_dir, 'service-worker.js.map')) && serve({
+        fs__default['default'].existsSync(path__default['default'].join(build_dir, 'service-worker.js.map')) && serve({
             pathname: '/service-worker.js.map',
             cache_control: 'no-cache, no-store, must-revalidate'
         }),
         serve({
             prefix: '/client/',
-            cache_control: dev ? 'no-cache' : 'max-age=31536000, immutable'
+            cache_control:  'max-age=31536000, immutable'
         }),
         get_server_route_handler(manifest.server_routes),
-        get_page_handler(manifest, session || noop)
+        get_page_handler(manifest, session || noop$1)
     ].filter(Boolean));
 }
 function compose_handlers(ignore, handlers) {
@@ -4887,14 +5899,12 @@ function serve({ prefix, pathname, cache_control }) {
         ? (req) => req.path === pathname
         : (req) => req.path.startsWith(prefix);
     const cache = new Map();
-    const read = dev
-        ? (file) => fs.readFileSync(path.join(build_dir, file))
-        : (file) => (cache.has(file) ? cache : cache.set(file, fs.readFileSync(path.join(build_dir, file)))).get(file);
+    const read =  (file) => (cache.has(file) ? cache : cache.set(file, fs__default['default'].readFileSync(path__default['default'].join(build_dir, file)))).get(file);
     return (req, res, next) => {
         if (filter(req)) {
             const type = lite.getType(req.path);
             try {
-                const file = path.posix.normalize(decodeURIComponent(req.path));
+                const file = path__default['default'].posix.normalize(decodeURIComponent(req.path));
                 const data = read(file);
                 res.setHeader('Content-Type', type);
                 res.setHeader('Cache-Control', cache_control);
@@ -4916,6 +5926,19 @@ function serve({ prefix, pathname, cache_control }) {
         }
     };
 }
-function noop() { }
+function noop$1() { }
 
-export { middleware };
+const { PORT, NODE_ENV } = process.env;
+const dev = NODE_ENV === "development";
+
+var server = polka__default['default']() // You can also use Express
+  .use(
+    compression__default['default']({ threshold: 0 }),
+    sirv__default['default']("static", { dev }),
+    middleware()
+  )
+  .listen(PORT, (err) => {
+    if (err) console.log("error", err);
+  });
+
+module.exports = server;
