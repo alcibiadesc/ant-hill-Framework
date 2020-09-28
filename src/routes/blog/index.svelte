@@ -108,7 +108,7 @@
 <main class="sections">
   <Title />
 
-  <h2 class="tl-ns tc">Últimos artículos</h2>
+  <h2 class="tl-l tc">Últimos artículos</h2>
 
   {#each postsOrdered as post}
     <a rel="prefetch" href="blog/{post.slug}">
