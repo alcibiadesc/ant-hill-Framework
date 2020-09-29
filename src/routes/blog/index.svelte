@@ -1,17 +1,8 @@
-<script context="module">
-  export function preload() {
-    return this.fetch(`blog.json`)
-      .then(r => r.json())
-      .then(posts => {
-        return { posts };
-      });
-  }
-</script>
-
 <script>
+  import { posts } from "../../posts";
   import Title from "./../../components/1-Title.svelte";
-  export let posts;
 
+  // Order Post by recent
   let postsOrdered = posts.sort((a, b) => {
     a = a.date
       .split("/")
@@ -24,14 +15,6 @@
 
     return a < b ? 1 : a > b ? -1 : 0;
   });
-
-  const shortDescription = inputDescription => {
-    let output = "";
-    inputDescription.length > 140
-      ? (output = inputDescription.substring(0, 140) + "...")
-      : (output = inputDescription);
-    return output;
-  };
 
   const dateTransformer = inputDate => {
     let arrayDate = inputDate.split("/");
@@ -57,6 +40,14 @@
     return `${dia} ${arrayMeses[mes - 1]}. ${
       año == new Date().getFullYear() ? "" : año
     }`;
+  };
+
+  const shortDescription = inputDescription => {
+    let output = "";
+    inputDescription.length > 140
+      ? (output = inputDescription.substring(0, 140) + "...")
+      : (output = inputDescription);
+    return output;
   };
 </script>
 
@@ -111,7 +102,7 @@
   <h2 class="tl-l tc">Últimos artículos</h2>
 
   {#each postsOrdered as post}
-    <a rel="prefetch" href="blog/{post.slug}">
+    <a rel="prefetch" href={`/posts/${post.permalink}`}>
 
       <div class=" center-m post-card w-60-ns w-80-m w-100 shadow-4 br3">
 
