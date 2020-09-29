@@ -5,9 +5,7 @@
     "main": "client.be16d64f.js"
   },
   "css": {
-    "main": [
-      "client-d3a2fb9c.css"
-    ]
+    "main": ["client-d3a2fb9c.css"]
   },
   "dependencies": {
     "index.svelte": [
@@ -17,6 +15,11 @@
       "inject_styles.5607aec6.js",
       "1-Title-016fb1c0.css",
       "index-15385797.css"
+    ],
+    "posts/[permalink].svelte": [
+      "[permalink].3c9bd904.js",
+      "posts.04d1e0b7.js",
+      "inject_styles.5607aec6.js"
     ],
     "blog/index.svelte": [
       "index.10378c0e.js",
