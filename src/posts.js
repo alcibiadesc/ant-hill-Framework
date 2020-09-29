@@ -10,7 +10,6 @@ function transform({ filename, html, metadata }) {
   // the permalink is the filename with the '.md' ending removed
   const permalink = filename.replace(/\.md$/, "");
 
-  // convert date string into a proper `Date`
   const date = metadata.date;
 
   // return the new shape

@@ -102,7 +102,7 @@
   <h2 class="tl-l tc">Últimos artículos</h2>
 
   {#each postsOrdered as post}
-    <a rel="prefetch" href={`/posts/${post.permalink}`}>
+    <a rel="prefetch" href={`/blog/${post.permalink}`}>
 
       <div class=" center-m post-card w-60-ns w-80-m w-100 shadow-4 br3">
 
