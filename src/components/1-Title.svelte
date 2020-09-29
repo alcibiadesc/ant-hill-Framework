@@ -4,7 +4,7 @@
   }
 </style>
 
-<div class="pa1 w-80 " id="title">
+<div class="ph1 pb1 w-80 " id="title">
 
   <a href=".">
     <h1 class=" courier f1-ns f-subheadline-l lh-title-l mb0">Ant Hill</h1>
