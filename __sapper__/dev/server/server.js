@@ -17393,7 +17393,7 @@ var lodash = createCommonjsModule(function (module, exports) {
 }.call(commonjsGlobal));
 });
 
-var Mod0 = {"html":"<ul>\n<li>this</li>\n<li>is</li>\n<li>markdown</li>\n</ul>","metadata":{"title":"Everything you wanted to know","summary":"A short post about ...","date":"12/01/2030","slug":"123","description":"hola amigo mio"},"filename":"example 2.md","path":"/Users/alcibiadescabraldiaz/github/ant-hill/posts/example 2.md"};
+var Mod0 = {"html":"<ul>\n<li>this</li>\n<li>is</li>\n<li>markdown</li>\n</ul>","metadata":{"title":"Everything you wanted to know","date":"12/01/2030","description":"hola amigo mio"},"filename":"example 2.md","path":"/Users/alcibiadescabraldiaz/github/ant-hill/posts/example 2.md"};
 
 var Mod1 = {"html":"<ul>\n<li>this</li>\n<li>is</li>\n<li>markdown</li>\n</ul>","metadata":{"title":"Everything you wanted to know","summary":"A short post about ...","date":"12/01/2001","slug":"123"},"filename":"example.md","path":"/Users/alcibiadescabraldiaz/github/ant-hill/posts/example.md"};
 
