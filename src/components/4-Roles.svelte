@@ -8,6 +8,7 @@
   <h3>Key Stakeholder</h3>
 
   <section class="cf pa3 mt0 pt0 fw3 mt0 w-75-l">
+
     <div class="fl w-100 w-100-m f3-l f4-ns ">
       <p>
         Los Key Stakeholder son líderes al servicio de la organización,
