@@ -22,6 +22,7 @@
 
 <svelte:head>
   <title>Blog | {post.title}</title>
+  <meta property="og:title" content={post.title} />
   <meta name="description" content={post.description} />
 
   <meta property="og:description" content={post.description} />
