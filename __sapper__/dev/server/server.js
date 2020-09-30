@@ -217,7 +217,7 @@ const _99_Credits = create_ssr_component(($$result, $$props, $$bindings, slots) 
 const Routes = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 	return `${($$result.head += `${($$result.title = `<title>Inicio</title>`, "")}`, "")}
 
-<main class="${"sections "}">${validate_component(_1_Title, "Title").$$render($$result, {}, {}, {})}
+<main class="${"sections"}">${validate_component(_1_Title, "Title").$$render($$result, {}, {}, {})}
   ${validate_component(_2_Why, "Why").$$render($$result, {}, {}, {})}
   ${validate_component(Accesos, "Accesos").$$render($$result, {}, {}, {})}</main>
 ${validate_component(_99_Credits, "Credits").$$render($$result, {}, {}, {})}`;

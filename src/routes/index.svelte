@@ -9,7 +9,7 @@
   <title>Inicio</title>
 </svelte:head>
 
-<main class="sections ">
+<main class="sections">
   <Title />
   <Why />
   <Accesos />
