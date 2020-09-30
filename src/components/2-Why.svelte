@@ -1,5 +1,5 @@
 <div id="why">
-  <h2 class=" f2 lh-copy courier mb0">¿Para qué?</h2>
+  <h2>¿Para qué?</h2>
 
   <section class="cf pa3 mt0 pt0 fw3 w-75-l">
 
