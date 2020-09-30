@@ -69,6 +69,12 @@
     text-decoration: none;
     color: #333333;
   }
+
+  @media screen and (min-width: 64em) {
+    .post-description {
+      font-size: 1.25rem;
+    }
+  }
 </style>
 
 <svelte:head>
@@ -85,13 +91,15 @@
 
       <div class=" center-m post-card w-60-ns w-80-m w-100 shadow-4 br3">
 
-        <h2
+        <h1
           class="f3 lh-copy courier mb0 ph3 pt3 underline-hover title-card link">
           {post.title}
-        </h2>
+        </h1>
 
         {#if post.description}
-          <p class="ph3">{shortDescription(post.description)}</p>
+          <p class="ph3 post-description">
+            {shortDescription(post.description)}
+          </p>
         {/if}
 
         {#if post.date}
