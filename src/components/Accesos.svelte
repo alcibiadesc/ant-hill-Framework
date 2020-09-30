@@ -1,8 +1,10 @@
 <script>
+  import Guia from "./../routes/guia.svelte";
   export let segment;
   let pdfVersion = "./descargas/Ant Hill Framework.pdf";
   let leer = "./gif/Ojo.svg";
   let documento = "./gif/Documento.svg";
+  let corazon = "./gif/Corazon.svg";
 </script>
 
 <style>
@@ -31,7 +33,7 @@
     </a>
     <br />
     <a aria-current={segment === 'guia' ? 'page' : undefined} href="guia">
-      <p>Leer Online</p>
+      <p>Leer Guia</p>
     </a>
   </div>
 
@@ -50,4 +52,17 @@
     </a>
   </div>
 
+  <!-- Blog -->
+  <div class=" dib pa2 mh4 tc">
+    <a
+      aria-current={segment === 'guia' ? 'page' : undefined}
+      href="blog"
+      class="dim">
+      <img src={corazon} alt="why gif" class="img-svg" />
+    </a>
+    <br />
+    <a aria-current={segment === 'guia' ? 'page' : undefined} href="Blog">
+      <p>Blog</p>
+    </a>
+  </div>
 </section>
