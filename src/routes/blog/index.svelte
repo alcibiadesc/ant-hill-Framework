@@ -72,7 +72,7 @@
 </style>
 
 <svelte:head>
-  <title>Blog</title>
+  <title>Ant Hill | Blog</title>
 </svelte:head>
 
 <main class="sections">

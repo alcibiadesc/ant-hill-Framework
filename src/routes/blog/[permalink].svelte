@@ -20,6 +20,13 @@
   import Credits from "./../../components/99-Credits.svelte";
 </script>
 
+<svelte:head>
+  <title>Blog | {post.title}</title>
+  <meta name="description" content={post.description} />
+
+  <meta property="og:description" content={post.description} />
+</svelte:head>
+
 <main class="sections">
 
   <Title />

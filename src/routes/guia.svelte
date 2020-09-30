@@ -35,7 +35,7 @@
 </style>
 
 <svelte:head>
-  <title>Guia</title>
+  <title>Ant Hill | Guia</title>
 
 </svelte:head>
 

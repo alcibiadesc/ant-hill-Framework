@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-  <title>Inicio</title>
+  <title>👉 Ant Hill | Un framework Agile</title>
 </svelte:head>
 
 <main class="sections">
