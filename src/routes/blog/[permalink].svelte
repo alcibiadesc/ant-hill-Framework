@@ -1,4 +1,5 @@
 <script context="module">
+  import Title from "./../../components/1-Title.svelte";
   // import the logic for finding a post based on permalink
   import { findPost } from "../../posts";
 
@@ -15,9 +16,18 @@
 <script>
   // this prop is filled from the result of the `preload()`
   export let post;
+
+  import Credits from "./../../components/99-Credits.svelte";
 </script>
 
-<!-- display the post -->
-<h1>{post.title}</h1>
+<main class="sections">
 
-{@html post.html}
+  <Title />
+  <!-- display the post -->
+  <h1>{post.title}</h1>
+
+  {@html post.html}
+
+</main>
+
+<Credits />

@@ -52,27 +52,6 @@
 </script>
 
 <style>
-  /* Small screens */
-  @media only screen and (max-width: 600px) {
-    .sections {
-      margin-left: 2rem;
-      margin-right: 2rem;
-    }
-  }
-
-  /* Large screens */
-  @media only screen and (min-width: 600px) {
-    .sections {
-      margin-left: 3rem;
-      margin-right: 2rem;
-    }
-  }
-
-  .sections {
-    margin-left: 3rem;
-    margin-right: 2rem;
-  }
-
   .post-card {
     background: white;
     min-height: 8vh;

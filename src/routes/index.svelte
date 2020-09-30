@@ -5,29 +5,6 @@
   import Credits from "./../components/99-Credits.svelte";
 </script>
 
-<style>
-  .sections {
-    margin-left: 3rem;
-    margin-right: 2rem;
-  }
-
-  /* Small screens */
-  @media only screen and (max-width: 600px) {
-    .sections {
-      margin-left: 2rem;
-      margin-right: 2rem;
-    }
-  }
-
-  /* Large screens */
-  @media only screen and (min-width: 600px) {
-    .sections {
-      margin-left: 3rem;
-      margin-right: 2rem;
-    }
-  }
-</style>
-
 <svelte:head>
   <title>Inicio</title>
 </svelte:head>

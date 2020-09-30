@@ -123,3 +123,47 @@ h3 {
   margin-bottom: var(--spacing-none);
   color: #ff7d87;
 }
+
+.sections {
+  margin-left: 3rem;
+  margin-right: 2rem;
+}
+
+/* Small screens */
+@media only screen and (max-width: 600px) {
+  .sections {
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+}
+
+/* Large screens */
+@media only screen and (min-width: 600px) {
+  .sections {
+    margin-left: 3rem;
+    margin-right: 2rem;
+  }
+}
+
+p {
+  width: 100%;
+}
+
+@media screen and (min-width: 48em) {
+  p {
+    font-size: 1.25rem;
+  }
+}
+
+@media screen and (min-width: 48em) and (max-width: 64em) {
+  p {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 64em) {
+  p {
+    width: 100%;
+    font-size: 1.5rem;
+  }
+}
