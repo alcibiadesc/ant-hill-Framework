@@ -108,6 +108,13 @@ li {
   margin-bottom: 1rem;
 }
 
+h1 {
+  font-size: 3rem;
+  line-height: 1.5;
+  font-family: "Courier Next", courier, monospace;
+  margin-bottom: var(--spacing-none);
+}
+
 h2 {
   font-size: 2.25rem;
   line-height: 1.5;
