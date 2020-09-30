@@ -9,6 +9,14 @@
   a {
     color: #333333;
   }
+
+  p {
+    padding: 0;
+    margin: 1rem;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    font-weight: 700;
+  }
 </style>
 
 <section class="tc tl-l">
@@ -23,7 +31,7 @@
     </a>
     <br />
     <a aria-current={segment === 'guia' ? 'page' : undefined} href="guia">
-      <h2>Leer Online</h2>
+      <p>Leer Online</p>
     </a>
   </div>
 
@@ -38,7 +46,7 @@
     </a>
     <br />
     <a href={pdfVersion} target="_blank">
-      <h2>Descargar PDF</h2>
+      <p>Descargar PDF</p>
     </a>
   </div>
 

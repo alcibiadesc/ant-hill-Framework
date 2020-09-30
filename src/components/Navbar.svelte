@@ -13,6 +13,11 @@
     --transition-speed: 600ms;
   }
 
+  li {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+  }
+
   .navbar {
     position: fixed;
     background-color: var(--bg-primary);

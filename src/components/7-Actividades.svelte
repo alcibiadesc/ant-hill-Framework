@@ -4,7 +4,7 @@
 
 <div class="actividades">
 
-  <h3 class=" f2 lh-copy mb0 courier">Actividades</h3>
+  <h2>Actividades</h2>
   <section class="cf pa3 mt0 pt0 fw3 mt0 ">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
@@ -17,7 +17,7 @@
 
   </section>
 
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Refinamientos</h3>
+  <h3>Refinamientos</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
@@ -29,7 +29,7 @@
     </div>
   </section>
 
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Escalado de Bloqueos</h3>
+  <h3>Escalado de Bloqueos</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0 ">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
@@ -60,7 +60,7 @@
 
   </section>
 
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Comunidad de Prácticas</h3>
+  <h3>Comunidad de Prácticas</h3>
   <p />
   <section class="cf pa3 mt0 pt0 fw3 mt0 w-75-l">
 

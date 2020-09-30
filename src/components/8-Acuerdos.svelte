@@ -1,5 +1,5 @@
 <div id="acuerdos">
-  <h3 class=" f2 lh-copy mb0 courier">Acuerdos</h3>
+  <h2>Acuerdos</h2>
 
   <section class="cf pa3 mt0 pt0 fw3 mt0 ">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
@@ -19,9 +19,7 @@
 
     </div>
   </section>
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">
-    M-DoD (Minimum Definition Of Done)
-  </h3>
+  <h3>M-DoD (Minimum Definition Of Done)</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0 ">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
 
@@ -49,9 +47,7 @@
     </div>
   </section>
 
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">
-    SLA (Service Level Agreement)
-  </h3>
+  <h3>SLA (Service Level Agreement)</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0 ">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
@@ -82,7 +78,7 @@
     </div>
   </section>
 
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">ROI (Return Of Inversion)</h3>
+  <h3>ROI (Return Of Inversion)</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0 ">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>

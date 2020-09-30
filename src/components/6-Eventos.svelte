@@ -3,7 +3,7 @@
 </script>
 
 <div id="eventos">
-  <h3 class=" f2 lh-copy mb0 courier">Eventos</h3>
+  <h2>Eventos</h2>
 
   <section class="cf pa3 mt0 pt0 fw3 mt0 ">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
@@ -58,15 +58,17 @@
 
   </section>
 
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Big Planning</h3>
+  <h3>Big Planning</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
         <span class="fw6">Timebox:</span>
-        8 horas para ciclos bimestrales. 
+        8 horas para ciclos bimestrales.
       </p>
-      <p><span class="fw6">Invitados:</span> Los Owners de cada equipo
-        junto con los Key Stakeholders.</p> 
+      <p>
+        <span class="fw6">Invitados:</span>
+        Los Owners de cada equipo junto con los Key Stakeholders.
+      </p>
       <p>
         Cada Owner tiene la posibilidad de invitar a miembros de sus equipos que
         consideren relevantes para cumplir con el propósito de la sesión.
@@ -82,7 +84,7 @@
     </div>
   </section>
 
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Big Review</h3>
+  <h3>Big Review</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
@@ -104,7 +106,7 @@
     </div>
   </section>
 
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Big Retrospective</h3>
+  <h3>Big Retrospective</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>

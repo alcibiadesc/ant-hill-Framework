@@ -3,9 +3,9 @@
 </script>
 
 <div id="roles">
-  <h3 class=" f2 lh-copy mb0 courier">Roles</h3>
+  <h2>Roles</h2>
 
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Key Stakeholder</h3>
+  <h3>Key Stakeholder</h3>
 
   <section class="cf pa3 mt0 pt0 fw3 mt0 w-75-l">
     <div class="fl w-100 w-100-m f3-l f4-ns ">
@@ -34,7 +34,7 @@
     </div>
 
   </section>
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Team</h3>
+  <h3>Team</h3>
 
   <section class="cf pa3 mt0 pt0 fw3 mt0">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
@@ -62,7 +62,7 @@
       </div>
     </div>
   </section>
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Owner</h3>
+  <h3>Owner</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
@@ -91,7 +91,7 @@
     </div>
 
   </section>
-  <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Development Team</h3>
+  <h3>Development Team</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
       <p>
