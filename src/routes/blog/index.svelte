@@ -100,7 +100,7 @@
         </h1>
 
         {#if post.description}
-          <p class="ph3 post-description">
+          <p class="ph3 post-description lookhere">
             {shortDescription(post.description)}
           </p>
         {/if}
