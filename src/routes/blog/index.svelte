@@ -1,6 +1,8 @@
 <script>
+	import NavHorizontal from './../../components/Nav-horizontal.svelte';
   import { posts } from "../../posts";
-  import Title from "./../../components/1-Title.svelte";
+  
+  
 
   // Order Post by recent
   let postsOrdered = posts.sort((a, b) => {
@@ -81,8 +83,9 @@
   <title>Ant Hill | Blog</title>
 </svelte:head>
 
+<NavHorizontal />
 <main class="sections">
-  <Title />
+  
 
   <h2 class="tl-l tc">Últimos artículos</h2>
 
@@ -112,4 +115,8 @@
     </a>
   {/each}
 
+  
+
 </main>
+
+

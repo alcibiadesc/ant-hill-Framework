@@ -1,4 +1,5 @@
 <script context="module">
+	import Navbar from './../../components/Navbar.svelte';
   // import the logic for finding a post based on permalink
   import { findPost } from "../../posts";
 
@@ -13,11 +14,12 @@
 </script>
 
 <script>
-  import Title from "./../../components/Title-Posts.svelte";
+import NavHorizontal from './../../components/Nav-horizontal.svelte';
   // this prop is filled from the result of the `preload()`
   export let post;
 
   import Credits from "./../../components/99-Credits.svelte";
+
 
   const dateTransformer = inputDate => {
     let arrayDate = inputDate.split("/");
@@ -60,13 +62,13 @@
 
   <meta property="og:description" content={post.description} />
 </svelte:head>
-<Title />
-<main class="sections mt6">
+<NavHorizontal />
+<main class="sections">
 
   <div class=" center post-card w-70-ns w-90-m w-100 shadow-4 br3 mt3">
 
     <!-- display the post -->
-    <div class=" mb0 ph3 pt3 ">
+    <div class=" mb0 ph3 pt3 mt4">
       <h1 class="f4-m">{post.title}</h1>
       <h3 class="tl w-90 f4-m">{post.description}</h3>
       <p class=" ma1 pb2 pt2 pr2 tr f6 gray lh-copy courier">

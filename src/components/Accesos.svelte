@@ -14,7 +14,7 @@
 
   p {
     padding: 0;
-    margin: 1rem;
+    margin: 0;
     font-size: 1.5rem;
     line-height: 1.5;
     font-weight: 700;
@@ -24,21 +24,35 @@
 <section class="tc tl-l">
 
   <!-- Leer Online -->
-  <div class=" dib pa2 mh4 tc">
+  <div class=" dib pa2 tc ma2">
     <a
       aria-current={segment === 'guia' ? 'page' : undefined}
       href="guia"
-      class="dim">
+      class="dim db">
       <img src={leer} alt="why gif" class="img-svg" />
     </a>
-    <br />
+    
     <a aria-current={segment === 'guia' ? 'page' : undefined} href="guia">
-      <p>Leer Guia</p>
+      <p >Leer Guia</p>
+    </a>
+  </div>
+
+    <!-- Blog -->
+  <div class=" dib pa2  tc ma2">
+    <a
+      aria-current={segment === 'guia' ? 'page' : undefined}
+      href="blog"
+      class="dim">
+      <img src={corazon} alt="why gif" class="img-svg" />
+    </a>
+    <br />
+    <a aria-current={segment === 'guia' ? 'page' : undefined} href="Blog">
+      <p>Blog</p>
     </a>
   </div>
 
   <!-- Descargar PDF -->
-  <div class=" dib pa2 mh4 tc ">
+  <div class=" dib pa2  tc ma2">
     <a href={pdfVersion} class="dim" target="_blank">
       <img
         src={documento}
@@ -52,17 +66,5 @@
     </a>
   </div>
 
-  <!-- Blog -->
-  <div class=" dib pa2 mh4 tc">
-    <a
-      aria-current={segment === 'guia' ? 'page' : undefined}
-      href="blog"
-      class="dim">
-      <img src={corazon} alt="why gif" class="img-svg" />
-    </a>
-    <br />
-    <a aria-current={segment === 'guia' ? 'page' : undefined} href="Blog">
-      <p>Blog</p>
-    </a>
-  </div>
+
 </section>
