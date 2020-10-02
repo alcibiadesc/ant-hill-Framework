@@ -4,6 +4,16 @@
     color: #333;
   }
 
+  nav{
+    background: no-repeat url(../images/backgroundPaper.png) 0 0;
+    background-color: #ebebeb;
+    background-repeat: repeat;
+    margin-top:0;
+    padding-top:0;
+
+
+  }
+
   .title-card:hover {
     color: #ff7d87;
   }
@@ -40,9 +50,9 @@
 }
 </style>
 
-<nav class="db dt w-100 border-box pa3 ph5-l bb b--black-10 fixed">
-  <div class="di dtc  w-25  tl-l navSmall">
-    <svg class=" link grow"
+<nav class="db dt w-100 border-box pa3  top-0 ph5-l bb b--black-10 fixed shadow-1 ">
+  <div class="di dtc mt2 w-25  tl-l navSmall">
+    <svg class=" link grow pt3 pl3"
       xmlns="http://www.w3.org/2000/svg"
       height="24"
       viewBox="0 0 24 24"
@@ -51,18 +61,18 @@
   </div>
   <!-- End Small-->
 
-  <div class="di dt-l dtc v-mid w-100 tl-l tc mb2 mb0-l ">
+  <div class="di dt-l mt2 dtc v-mid w-100 tl-l tc mb2 mb0-l ">
       
 
 
       <a
         href="."
-        class="f4 f4-l courier fw7 dib mr3 mr4-l  title-card link tl">Ant <br>
+        class="f4 f4-l courier fw7 dib mr3 mr4-l  title-card link tl pt2">Ant <br>
         Hill</a>
     </div>
 
   <!-- Normal and Big Screen -->
-  <div class="db dtc-l v-mid w-100 w-75-l tc tr-l navLarge">
+  <div class="db dtc-l mt2 v-mid w-100 w-75-l tc tr-l navLarge">
     <a
       href="."
       class="courier fw3 f5 f4-l dib mr3 mr4-l underline-hover title-card link">Inicio</a>

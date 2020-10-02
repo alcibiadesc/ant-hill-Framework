@@ -37,7 +37,7 @@
     </a>
   </div>
 
-    <!-- Blog -->
+    <!-- Blog 
   <div class=" dib pa2  tc ma2">
     <a
       aria-current={segment === 'guia' ? 'page' : undefined}
@@ -50,6 +50,7 @@
       <p>Blog</p>
     </a>
   </div>
+  -->
 
   <!-- Descargar PDF -->
   <div class=" dib pa2  tc ma2">

@@ -13,6 +13,8 @@
   }
 </script>
 
+
+
 <script>
 import NavHorizontal from './../../components/Nav-horizontal.svelte';
   // this prop is filled from the result of the `preload()`
@@ -53,6 +55,10 @@ import NavHorizontal from './../../components/Nav-horizontal.svelte';
     background: white;
     min-height: 8vh;
   }
+
+  .intro{
+    margin-top: 7rem;
+  }
 </style>
 
 <svelte:head>
@@ -68,7 +74,7 @@ import NavHorizontal from './../../components/Nav-horizontal.svelte';
   <div class=" center post-card w-70-ns w-90-m w-100 shadow-4 br3 mt3">
 
     <!-- display the post -->
-    <div class=" mb0 ph3 pt3 mt4">
+    <div class=" mb0 ph3 pt3 intro">
       <h1 class="f4-m">{post.title}</h1>
       <h3 class="tl w-90 f4-m">{post.description}</h3>
       <p class=" ma1 pb2 pt2 pr2 tr f6 gray lh-copy courier">
