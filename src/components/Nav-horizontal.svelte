@@ -67,13 +67,13 @@
 
 
 <nav
-  class="db dt w-100 border-box pa3  top-0 ph5-l bb b--black-10 fixed shadow-1 ">
+  class="h3 db dt w-100 border-box pa3  top-0 ph5-l bb b--black-10 fixed shadow-1  ">
   <div
-    class="di dtc mt2 w-25  tl-l navSmall"
+    class="di dtc  w-25 v-mid tl-l navSmall pt3"
     on:click={()=> $showStore = !$showStore}
     >
     <svg
-      class=" link grow pt3 pl3"
+      class=" link grow  pl3 pt3"
       xmlns="http://www.w3.org/2000/svg"
       height="24"
       viewBox="0 0 24 24"
@@ -82,18 +82,16 @@
   </div>
   <!-- End Small-->
 
-  <div class="di dt-l mt2 dtc v-mid w-100 tl-l tc mb2 mb0-l ">
-      
-
-
+  <div class=" dtc dtc-l   v-mid w-100 w-25-l tc tl-l ">
+      <!-- di dt-l  v-mid dtc  w-100  tl-l tc   -->
       <a
         href="."
-        class="f4 f4-l courier fw7 dib mr3 mr4-l  title-card link tl ">Ant <br>
-        Hill</a>
+        class=" courier fw6 mt1 f3 f3-l dib mr3 mr4-l underline-hover title-card link ">Ant  Hill</a>
     </div>
 
+
   <!-- Normal and Big Screen -->
-  <div class="db dtc-l mt2 v-mid w-100 w-75-l tc tr-l navLarge top-2 pt3">
+  <div class=" db dtc-l   v-mid w-100 w-75-l tc tr-l navLarge  ">
     <a
       href="."
       class="courier fw3 f5 f4-l dib mr3 mr4-l underline-hover title-card link">Inicio</a>
@@ -102,6 +100,7 @@
       class="courier fw3  f5 f4-l dib mr3 mr4-l underline-hover title-card link">Guia</a>
     <a
       href="blog"
+      
       class="courier fw3  f5 f4-l dib mr3 mr4-l underline-hover title-card link">Blog</a>
   </div>
 </nav>

@@ -93,20 +93,22 @@
 <main class="sections" >
   
 
-  <h2 class="tl-l tc intro">Últimos artículos</h2>
+  <h2 class="tl-l tc intro f3">Últimos artículos</h2>
 
   {#each postsOrdered as post}
+
+  <div class="w-60-ns w-80-m  w-90-l w-100 center-m"> 
     <a rel="prefetch" href={`/blog/${post.permalink}`}>
 
-      <div class=" center-m post-card w-60-ns w-80-m w-100 shadow-4 br3">
+      <div class="  post-card  shadow-4 br3">
 
         <h1
-          class="f3 lh-copy courier mb0 ph3 pt3 underline-hover title-card link">
+          class="f4-m f3-l f4-ns f5 lh-copy courier mb0 ph3 pt3 underline-hover title-card link">
           {post.title}
         </h1>
 
         {#if post.description}
-          <p class="ph3 post-description lookhere">
+          <p class="ph3 post-description lookhere w-90 f5-m f4-l f5-ns f5">
             {shortDescription(post.description)}
           </p>
         {/if}
@@ -119,6 +121,7 @@
 
       </div>
     </a>
+    </div>
   {/each}
 
   

@@ -75,8 +75,8 @@ import NavHorizontal from './../../components/Nav-horizontal.svelte';
 
     <!-- display the post -->
     <div class=" mb0 ph3 pt3 intro">
-      <h1 class="f4-m">{post.title}</h1>
-      <h3 class="tl w-90 f4-m">{post.description}</h3>
+      <h1 class="f4-m f3-l f4-ns f5">{post.title}</h1>
+      <h3 class="tl w-90 f5-m f4-l f5-ns f5">{post.description}</h3>
       <p class=" ma1 pb2 pt2 pr2 tr f6 gray lh-copy courier">
         {dateTransformer(post.date)}
       </p>

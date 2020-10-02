@@ -55,7 +55,7 @@
 
         <a href="." ><h3 class="link underline-hover grow courier">Inicio</h3></a>
         <a href="guia" ><h3 class="link underline-hover grow courier">Guia</h3></a>
-        <a href="blog" ><h3 class="link underline-hover grow courier">Blog</h3></a>
+        <a href="blog"on:click={()=> $showStore = !$showStore}><h3 class="link underline-hover grow courier">Blog</h3></a>
       
     </div>
 
