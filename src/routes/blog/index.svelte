@@ -1,6 +1,8 @@
 <script>
+	
 	import NavHorizontal from './../../components/Nav-horizontal.svelte';
   import { posts } from "../../posts";
+  
   
   
 
@@ -77,6 +79,10 @@
       font-size: 1.25rem;
     }
   }
+
+   .intro{
+    margin-top: 6rem;
+  }
 </style>
 
 <svelte:head>
@@ -84,10 +90,10 @@
 </svelte:head>
 
 <NavHorizontal />
-<main class="sections">
+<main class="sections" >
   
 
-  <h2 class="tl-l tc">Últimos artículos</h2>
+  <h2 class="tl-l tc intro">Últimos artículos</h2>
 
   {#each postsOrdered as post}
     <a rel="prefetch" href={`/blog/${post.permalink}`}>

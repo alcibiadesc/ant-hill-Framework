@@ -57,7 +57,7 @@ import NavHorizontal from './../../components/Nav-horizontal.svelte';
   }
 
   .intro{
-    margin-top: 7rem;
+    margin-top: 6rem;
   }
 </style>
 

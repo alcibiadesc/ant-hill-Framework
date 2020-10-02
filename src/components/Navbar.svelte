@@ -8,8 +8,8 @@
     font-family: "Open Sans";
     --text-primary: #b6b6b6;
     --text-secondary: #ececec;
-    --bg-primary: #262022;
-    --bg-secondary: #1a1516;
+    --bg-primary: #333333;
+    --bg-secondary: #474747;
     --transition-speed: 600ms;
   }
 
@@ -205,9 +205,7 @@
     <!-- Pilares-->
     <li class="nav-item pilares">
       <a href="guia/#pilares" class="nav-link">
-
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-
           <path
             fill="currentColor"
             d="M544 464v32a16 16 0 0 1-16 16H112a16 16 0 0 1-16-16v-32a16 16 0 0
@@ -467,6 +465,5 @@
         <span class="link-text">Descargar</span>
       </a>
     </li>
-
   </ul>
 </nav>
