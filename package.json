@@ -18,7 +18,6 @@
     "polka": "next",
     "rollup-plugin-glob": "^1.0.2",
     "sirv": "^1.0.0",
-    "svelte-click-outside": "^1.0.0",
     "vercel": "^20.1.1",
     "vercel-sapper": "^0.43.0"
   },
