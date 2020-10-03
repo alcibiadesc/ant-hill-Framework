@@ -4,7 +4,6 @@
 .DS_Store
 
 .vercel
-__sapper__/
-src/node_modules/
-
+/__sapper__/
+/src/node_modules/
 
