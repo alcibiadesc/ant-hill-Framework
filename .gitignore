@@ -11,3 +11,4 @@ __sapper__/dev/client/
 __sapper__/dev/
 src/node_modules/@sapper/service-worker.js
 __sapper__/dev/service-worker.js
+/src/node_modules/@sapper/service-worker.js
