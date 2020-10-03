@@ -1,5 +1,5 @@
 <script context="module">
-	import Navbar from './../../components/Navbar.svelte';
+  import Navbar from "./../../components/Navbar.svelte";
   // import the logic for finding a post based on permalink
   import { findPost } from "../../posts";
 
@@ -13,17 +13,14 @@
   }
 </script>
 
-
-
 <script>
-import NavHorizontal from './../../components/Nav-horizontal.svelte';
+  import NavHorizontal from "./../../components/Nav-horizontal.svelte";
   // this prop is filled from the result of the `preload()`
   export let post;
 
   import Credits from "./../../components/99-Credits.svelte";
 
-
-  const dateTransformer = inputDate => {
+  const dateTransformer = (inputDate) => {
     let arrayDate = inputDate.split("/");
     let reverseDate = arrayDate.reverse();
     let dia = arrayDate[2];
@@ -42,7 +39,7 @@ import NavHorizontal from './../../components/Nav-horizontal.svelte';
       "sept",
       "oct",
       "nov",
-      "dic"
+      "dic",
     ];
     return `${dia} ${arrayMeses[mes - 1]}. ${
       año == new Date().getFullYear() ? "" : año
@@ -56,7 +53,7 @@ import NavHorizontal from './../../components/Nav-horizontal.svelte';
     min-height: 8vh;
   }
 
-  .intro{
+  .intro {
     margin-top: 6rem;
   }
 </style>
@@ -70,9 +67,7 @@ import NavHorizontal from './../../components/Nav-horizontal.svelte';
 </svelte:head>
 <NavHorizontal />
 <main class="sections">
-
   <div class=" center post-card w-70-ns w-90-m w-100 shadow-4 br3 mt3">
-
     <!-- display the post -->
     <div class=" mb0 ph3 pt3 intro">
       <h1 class="f4-m f3-l f4-ns f5">{post.title}</h1>
@@ -86,7 +81,6 @@ import NavHorizontal from './../../components/Nav-horizontal.svelte';
   <div class="center w-90-l w-100-m w-100 br3 pt4 bt-grey">
     {@html post.html}
   </div>
-
 </main>
 
 <Credits />
