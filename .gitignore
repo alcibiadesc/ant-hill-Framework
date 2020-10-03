@@ -6,4 +6,6 @@
 .vercel
 /__sapper__/
 /src/node_modules/
-
+__sapper__/dev/client/
+/__sapper__/dev/client/
+__sapper__/dev/
