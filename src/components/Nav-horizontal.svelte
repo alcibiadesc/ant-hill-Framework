@@ -1,11 +1,7 @@
 <script>
-	import { showStore } from './../store/sidebar-store.js';
-  
-  import Sidebar from "./Sidebar.svelte";
-  
+  import { showStore } from "./../store/sidebar-store.js";
 
-  
-  
+  import Sidebar from "./Sidebar.svelte";
 </script>
 
 <style>
@@ -59,19 +55,15 @@
   }
 </style>
 
-
 {#if $showStore === true}
-
-<Sidebar class="navSmall"  />
+  <Sidebar class="navSmall" />
 {/if}
-
 
 <nav
   class="h3 db dt w-100 border-box pa3  top-0 ph5-l bb b--black-10 fixed shadow-1  ">
   <div
     class="di dtc  w-25 v-mid tl-l navSmall pt3"
-    on:click={()=> $showStore = !$showStore}
-    >
+    on:click={() => ($showStore = !$showStore)}>
     <svg
       class=" link grow  pl3 pt3"
       xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +80,6 @@
         href="."
         class=" courier fw6 mt1 f3 f3-l dib mr3 mr4-l underline-hover title-card link ">Ant  Hill</a>
     </div>
-
 
   <!-- Normal and Big Screen -->
   <div class=" db dtc-l   v-mid w-100 w-75-l tc tr-l navLarge  ">
