@@ -1,38 +1,36 @@
 <script>
-	
-	import NavHorizontal from './../../components/Nav-horizontal.svelte';
-  import { posts } from "../../posts";  import {searchbar} from "./../../store/searchbar.js";
-  
-  
+  import NavHorizontal from "./../../components/Nav-horizontal.svelte";
+  import { posts } from "../../posts";
+  import { searchbar } from "./../../store/searchbar.js";
+
   // Order Post by recent
   let postsOrdered = posts.sort((a, b) => {
-    a = a.date
-      .split("/")
-      .reverse()
-      .join("");
-    b = b.date
-      .split("/")
-      .reverse()
-      .join("");
+    a = a.date.split("/").reverse().join("");
+    b = b.date.split("/").reverse().join("");
 
     return a < b ? 1 : a > b ? -1 : 0;
   });
 
   // filter searchBar
+  const removeAccents = (str) => {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  };
 
   $: postsFiltered = postsOrdered.filter(
-    post => 
-    post.title.toLowerCase().includes($searchbar.toLowerCase())  || 
-    post.html.toLowerCase().includes($searchbar.toLowerCase()) || 
-    post.date.toString().includes($searchbar.toString()) || 
-    post.description.toString().includes($searchbar.toString())
-  
-    
-    );
+    (post) =>
+      removeAccents(post.title.toLowerCase()).includes(
+        removeAccents($searchbar.toLowerCase())
+      ) ||
+      removeAccents(post.html.toLowerCase()).includes(
+        removeAccents($searchbar.toLowerCase())
+      ) ||
+      post.date.toString().includes($searchbar.toString()) ||
+      removeAccents(post.description.toLowerCase()).includes(
+        removeAccents($searchbar.toLowerCase())
+      )
+  );
 
-
-
-  const dateTransformer = inputDate => {
+  const dateTransformer = (inputDate) => {
     let arrayDate = inputDate.split("/");
     let reverseDate = arrayDate.reverse();
     let dia = arrayDate[2];
@@ -51,14 +49,14 @@
       "sept",
       "oct",
       "nov",
-      "dic"
+      "dic",
     ];
     return `${dia} ${arrayMeses[mes - 1]}. ${
       año == new Date().getFullYear() ? "" : año
     }`;
   };
 
-  const shortDescription = inputDescription => {
+  const shortDescription = (inputDescription) => {
     let output = "";
     inputDescription.length > 140
       ? (output = inputDescription.substring(0, 140) + "...")
@@ -92,7 +90,7 @@
     }
   }
 
-   .intro{
+  .intro {
     margin-top: 6rem;
   }
 </style>
@@ -102,48 +100,35 @@
 </svelte:head>
 
 <NavHorizontal />
-<main class="sections" >
-  
-
-{#if !$searchbar}
-   <h2 class="tl-l tc intro f3">Últimos artículos </h2>
-{:else}
-   <h2 class="tl-l tc intro f3">Artículos que contienen: "{$searchbar}" </h2>
-{/if}
-
-  
+<main class="sections">
+  {#if !$searchbar}
+    <h2 class="tl-l tc intro f3">Últimos artículos</h2>
+  {:else}
+    <h2 class="tl-l tc intro f3">Artículos que contienen: "{$searchbar}"</h2>
+  {/if}
 
   {#each postsFiltered as post}
+    <div class="w-60-ns w-80-m  w-90-l w-100 center-m">
+      <a rel="prefetch" href={`/blog/${post.permalink}`}>
+        <div class="  post-card  shadow-4 br3">
+          <h1
+            class="f4-m f3-l f4-ns f5 lh-copy courier mb0 ph3 pt3 underline-hover title-card link">
+            {post.title}
+          </h1>
 
-  <div class="w-60-ns w-80-m  w-90-l w-100 center-m"> 
-    <a rel="prefetch" href={`/blog/${post.permalink}`}>
+          {#if post.description}
+            <p class="ph3 post-description lookhere w-90 f5-m f4-l f5-ns f5">
+              {shortDescription(post.description)}
+            </p>
+          {/if}
 
-      <div class="  post-card  shadow-4 br3">
-
-        <h1
-          class="f4-m f3-l f4-ns f5 lh-copy courier mb0 ph3 pt3 underline-hover title-card link">
-          {post.title}
-        </h1>
-
-        {#if post.description}
-          <p class="ph3 post-description lookhere w-90 f5-m f4-l f5-ns f5">
-            {shortDescription(post.description)}
-          </p>
-        {/if}
-
-        {#if post.date}
-          <p class=" ma1 pb2 pr2 tr f6 gray lh-copy courier">
-            {dateTransformer(post.date)}
-          </p>
-        {/if}
-
-      </div>
-    </a>
+          {#if post.date}
+            <p class=" ma1 pb2 pr2 tr f6 gray lh-copy courier">
+              {dateTransformer(post.date)}
+            </p>
+          {/if}
+        </div>
+      </a>
     </div>
   {/each}
-
-  
-
 </main>
-
-
