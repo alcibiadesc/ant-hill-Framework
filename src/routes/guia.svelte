@@ -35,12 +35,20 @@
 </style>
 
 <svelte:head>
-  <title>Ant Hill | Guia</title>
+  <title>👉 Ant Hill | Guia</title>
+  <meta property="og:url" content="ant-hill.org/guia" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Ant Hill: Guia" />
+  <meta
+    property="og:description"
+    content="Un framework para generar feedback loops orientados a la aportación continua de valor respetando como trabajan los equipos." />
 
+  <title>👉 Ant Hill | Guia</title>
+  <meta
+    name="description"
+    content="Un framework para generar feedback loops orientados a la aportación continua de valor. El propósito de Ant Hill es sincronizar y alinear equipos respetando como trabajan." />
 </svelte:head>
-
 <div transition:fade>
-
   <Navbar />
 
   <main class="sections">

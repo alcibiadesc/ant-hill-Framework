@@ -1,3 +1,6 @@
+<script>
+</script>
+
 <div id="acuerdos">
   <h2>Acuerdos</h2>
 
@@ -16,13 +19,11 @@
         y es desarrollado sobre la base de los compromisos y responsabilidades
         adquiridos por los equipos.
       </p>
-
     </div>
   </section>
   <h3>M-DoD (Minimum Definition Of Done)</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0 ">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
-
       <p>
         Todos los equipos de desarrollo de producto comparten una definición de
         hecho mínima.
@@ -43,7 +44,6 @@
         de calidad de su producto o servicio dando lugar a un D.O.D propio más
         exigente que comparta la base común establecida en la organización.
       </p>
-
     </div>
   </section>
 
@@ -74,7 +74,6 @@
         indicando de forma explícita las cadencias de entrega de incremento de
         producto.
       </p>
-
     </div>
   </section>
 
@@ -106,8 +105,6 @@
         Retorno de la Inversión deben ser evaluadas y, en su caso, eliminadas
         para el buen gobierno y desempeño de la organización.
       </p>
-
     </div>
   </section>
-
 </div>

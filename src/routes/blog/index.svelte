@@ -97,6 +97,17 @@
 
 <svelte:head>
   <title>Ant Hill | Blog</title>
+  <meta property="og:url" content="ant-hill.org/blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Ant Hill: Blog" />
+  <meta
+    property="og:description"
+    content="Un framework para generar feedback loops orientados a la aportación continua de valor respetando como trabajan los equipos." />
+
+  <title>👉 Ant Hill | Blog</title>
+  <meta
+    name="description"
+    content=" Un Framework para generar feedback loops orientados a la aportación continua de valor. El propósito de Ant Hill es sincronizar y alinear equipos respetando como trabajan." />
 </svelte:head>
 
 <NavHorizontal showSearchBar={true} />

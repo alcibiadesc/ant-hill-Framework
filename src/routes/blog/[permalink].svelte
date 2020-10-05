@@ -58,11 +58,12 @@
 </style>
 
 <svelte:head>
-  <title>Blog | {post.title}</title>
-  <meta property="og:title" content={post.title} />
-  <meta name="description" content={post.description} />
-
+  <title>Ant Hill: | {post.title}</title>
+  <meta property="og:url" content={`www.ant-hill.org/blog/${post.permalink}`} />
+  <meta property="og:title" content={`${post.title} - Ant Hill`} />
   <meta property="og:description" content={post.description} />
+
+  <meta name="description" content={post.description} />
 </svelte:head>
 <NavHorizontal showSearchBar={false} />
 <main class="sections">
