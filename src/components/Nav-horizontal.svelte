@@ -1,4 +1,5 @@
 <script>
+  import BuscarBlog from "./BuscarBlog.svelte";
   import { showStore } from "./../store/sidebar-store.js";
 
   import Sidebar from "./Sidebar.svelte";
@@ -75,14 +76,22 @@
   <!-- End Small-->
 
   <div class=" dtc dtc-l   v-mid w-100 w-25-l tc tl-l ">
-      <!-- di dt-l  v-mid dtc  w-100  tl-l tc   -->
       <a
         href="."
         class=" courier fw6 mt1 f3 f3-l dib mr3 mr4-l underline-hover title-card link ">Ant  Hill</a>
     </div>
 
+  <div class=" db dtc-l v-mid w-35 tc tr-l navLarge  ">
+    <div class="courier fw3 f5 f4-l dib mr3 mr4-l pt1">
+      <BuscarBlog />
+    </div>
+  </div>
+
   <!-- Normal and Big Screen -->
-  <div class=" db dtc-l   v-mid w-100 w-75-l tc tr-l navLarge  ">
+  <div class=" db dtc-l   v-mid w-65 tc tr-l navLarge  ">
+
+    
+
     <a
       href="."
       class="courier fw3 f5 f4-l dib mr3 mr4-l underline-hover title-card link">Inicio</a>

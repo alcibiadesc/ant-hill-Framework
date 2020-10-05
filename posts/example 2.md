@@ -1,7 +1,7 @@
 ---
 title: Esto es un post sobre como llevar a cabo tus eventos
 date: "12/01/2030"
-description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor, felis tempor egestas ultricies, erat nulla ullamcorper dui, ut sollicitudin sem ante et leo. Etiam tincidunt odio ligula, ut tristique lacus tristique eu. "
+description: "palabra de filtro Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor, felis tempor egestas ultricies, erat nulla ullamcorper dui, ut sollicitudin sem ante et leo. Etiam tincidunt odio ligula, ut tristique lacus tristique eu. "
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor, felis tempor egestas ultricies, erat nulla ullamcorper dui, ut sollicitudin sem ante et leo.

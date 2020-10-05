@@ -1,11 +1,9 @@
 <script>
 	
 	import NavHorizontal from './../../components/Nav-horizontal.svelte';
-  import { posts } from "../../posts";
+  import { posts } from "../../posts";  import {searchbar} from "./../../store/searchbar.js";
   
   
-  
-
   // Order Post by recent
   let postsOrdered = posts.sort((a, b) => {
     a = a.date
@@ -19,6 +17,20 @@
 
     return a < b ? 1 : a > b ? -1 : 0;
   });
+
+  // filter searchBar
+
+  $: postsFiltered = postsOrdered.filter(
+    post => 
+    post.title.toLowerCase().includes($searchbar.toLowerCase())  || 
+    post.html.toLowerCase().includes($searchbar.toLowerCase()) || 
+    post.date.toString().includes($searchbar.toString()) || 
+    post.description.toString().includes($searchbar.toString())
+  
+    
+    );
+
+
 
   const dateTransformer = inputDate => {
     let arrayDate = inputDate.split("/");
@@ -93,9 +105,15 @@
 <main class="sections" >
   
 
-  <h2 class="tl-l tc intro f3">Últimos artículos</h2>
+{#if !$searchbar}
+   <h2 class="tl-l tc intro f3">Últimos artículos </h2>
+{:else}
+   <h2 class="tl-l tc intro f3">Artículos que contienen: "{$searchbar}" </h2>
+{/if}
 
-  {#each postsOrdered as post}
+  
+
+  {#each postsFiltered as post}
 
   <div class="w-60-ns w-80-m  w-90-l w-100 center-m"> 
     <a rel="prefetch" href={`/blog/${post.permalink}`}>

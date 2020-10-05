@@ -1,4 +1,5 @@
 <script>
+  import BuscarBlog from "./BuscarBlog.svelte";
   import { showStore } from "./../store/sidebar-store.js";
 
   import { fly } from "svelte/transition";
@@ -14,7 +15,7 @@
     border-left: 1px solid #aaa;
     background: #333333;
     overflow: auto;
-    width: 10rem;
+    width: 15rem;
     z-index: 2;
   }
 
@@ -56,6 +57,10 @@
         d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
   </div>
   <div class="ml3 mt3">
+    <div class="mv4">
+      <BuscarBlog />
+    </div>
+
     <a href="."><h3 class="link underline-hover grow courier">Inicio</h3></a>
     <a href="guia"><h3 class="link underline-hover grow courier">Guia</h3></a>
     <a href="blog" on:click={() => ($showStore = !$showStore)}><h3

@@ -10,10 +10,12 @@ function transform({ filename, html, metadata }) {
   // the permalink is the filename with the '.md' ending removed
   const permalink = filename.replace(/\.md$/, "");
 
-  const date = metadata.date;
+  const description = metadata.description ? metadata.description : "";
+
+  
 
   // return the new shape
-  return { ...metadata, filename, html, permalink, date };
+  return { ...metadata, filename, html, description, permalink };
 }
 
 // provide a way to find a post by permalink
