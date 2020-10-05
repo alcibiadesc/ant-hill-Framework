@@ -1,5 +1,12 @@
 <script>
+    import { showStore } from "./../store/sidebar-store.js";
     import { searchbar } from "./../store/searchbar.js";
+
+    const onKeyPress = (e) => {
+        if (e.charCode === 13) {
+            $showStore = false;
+        }
+    };
 </script>
 
 <style>
@@ -186,7 +193,11 @@
 </style>
 
 <label>
-    <input type="text" required bind:value={$searchbar} />
+    <input
+        type="text"
+        required
+        bind:value={$searchbar}
+        on:keypress={onKeyPress} />
     <ul>
         <li b class="i fw7 ">b</li>
         <li u class="i fw7 ">u</li>
@@ -196,4 +207,3 @@
         <li r class="i fw7 ">r</li>
     </ul>
 </label>
-
