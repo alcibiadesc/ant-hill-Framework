@@ -2,7 +2,7 @@
   "bundler": "rollup",
   "shimport": "2.0.4",
   "assets": {
-    "main": "client.906bfaff.js"
+    "main": "client.8cef4713.js"
   },
   "css": {
     "main": [
@@ -11,40 +11,37 @@
   },
   "dependencies": {
     "index.svelte": [
-      "index.7252989e.js",
-      "guia.e416f000.js",
-      "99-Credits.d3e52530.js",
-      "index.75ecaa8c.js",
+      "index.1584fd86.js",
+      "guia.92325e8b.js",
+      "99-Credits.eb00af00.js",
+      "index.b719f290.js",
       "inject_styles.5607aec6.js",
-      "99-Credits-3a8fa602.css",
-      "guia-af2ef9d7.css",
-      "index-08b7060a.css"
+      "guia-d815adf8.css",
+      "index-422ac289.css"
     ],
     "blog/index.svelte": [
-      "index.9dd59015.js",
-      "index.75ecaa8c.js",
-      "posts.118be772.js",
+      "index.b93761d8.js",
+      "index.b719f290.js",
+      "posts.688d64f8.js",
       "inject_styles.5607aec6.js",
       "posts-8292cca6.css",
       "index-b96df2d6.css"
     ],
     "blog/[permalink].svelte": [
-      "[permalink].bf538cb6.js",
-      "99-Credits.d3e52530.js",
-      "index.75ecaa8c.js",
-      "posts.118be772.js",
+      "[permalink].b4f8265e.js",
+      "99-Credits.eb00af00.js",
+      "index.b719f290.js",
+      "posts.688d64f8.js",
       "inject_styles.5607aec6.js",
-      "99-Credits-3a8fa602.css",
       "posts-8292cca6.css",
       "[permalink]-f4542955.css"
     ],
     "guia.svelte": [
-      "guia.e416f000.js",
-      "99-Credits.d3e52530.js",
-      "index.75ecaa8c.js",
+      "guia.92325e8b.js",
+      "99-Credits.eb00af00.js",
+      "index.b719f290.js",
       "inject_styles.5607aec6.js",
-      "99-Credits-3a8fa602.css",
-      "guia-af2ef9d7.css"
+      "guia-d815adf8.css"
     ]
   }
 }

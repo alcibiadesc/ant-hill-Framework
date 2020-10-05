@@ -99,7 +99,7 @@
   <title>Ant Hill | Blog</title>
 </svelte:head>
 
-<NavHorizontal />
+<NavHorizontal showSearchBar={true} />
 <main class="sections">
   {#if !$searchbar}
     <h2 class="tl-l tc intro f3">Últimos artículos</h2>

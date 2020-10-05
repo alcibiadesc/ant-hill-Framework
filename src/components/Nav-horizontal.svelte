@@ -1,8 +1,8 @@
 <script>
   import BuscarBlog from "./BuscarBlog.svelte";
   import { showStore } from "./../store/sidebar-store.js";
-
   import Sidebar from "./Sidebar.svelte";
+  export let showSearchBar;
 </script>
 
 <style>
@@ -57,7 +57,7 @@
 </style>
 
 {#if $showStore === true}
-  <Sidebar class="navSmall" />
+  <Sidebar class="navSmall" showSearchBar={showSearchBar} />
 {/if}
 
 <nav
@@ -81,11 +81,13 @@
         class=" courier fw6 mt1 f3 f3-l dib mr3 mr4-l underline-hover title-card link ">Ant  Hill</a>
     </div>
 
-  <div class=" db dtc-l v-mid w-35 tc tr-l navLarge  ">
-    <div class="courier fw3 f5 f4-l dib mr3 mr4-l pt1">
-      <BuscarBlog />
+  {#if showSearchBar}
+    <div class=" db dtc-l v-mid w-35 tc tr-l navLarge  ">
+      <div class="courier fw3 f5 f4-l dib mr3 mr4-l pt1">
+        <BuscarBlog />
+      </div>
     </div>
-  </div>
+  {/if}
 
   <!-- Normal and Big Screen -->
   <div class=" db dtc-l   v-mid w-65 tc tr-l navLarge  ">

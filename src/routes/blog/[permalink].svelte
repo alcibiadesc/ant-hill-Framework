@@ -1,5 +1,4 @@
 <script context="module">
-  import Navbar from "./../../components/Navbar.svelte";
   // import the logic for finding a post based on permalink
   import { findPost } from "../../posts";
 
@@ -65,7 +64,7 @@
 
   <meta property="og:description" content={post.description} />
 </svelte:head>
-<NavHorizontal />
+<NavHorizontal showSearchBar={false} />
 <main class="sections">
   <div class=" center post-card w-70-ns w-90-m w-100 shadow-4 br3 mt3">
     <!-- display the post -->
