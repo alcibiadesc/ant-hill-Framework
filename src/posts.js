@@ -8,11 +8,14 @@ export const posts = _.chain(all) // begin a chain
 // function for reshaping each post
 function transform({ filename, html, metadata }) {
   // the permalink is the filename with the '.md' ending removed
-  const permalink = filename.replace(/\.md$/, "");
+
+
+
+  const permalink = filename.replace(/\.md$/, "").split(" ").join("-");
 
   const description = metadata.description ? metadata.description : "";
 
-  
+
 
   // return the new shape
   return { ...metadata, filename, html, description, permalink };
