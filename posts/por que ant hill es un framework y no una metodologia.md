@@ -1,6 +1,6 @@
 ---
 title: "¿Por qué Ant Hill no es una metodología?"
-date: 9/10/2020
+date: 8/10/2020
 description: Ant Hill es una caja de herramientas destinada a la comunicación efectiva dentro de las organizaciones respetando como trabajan los equipos.
 ---
 
