@@ -6,9 +6,10 @@
   <h2>Pilares</h2>
   <section class="cf pa3 mt0 pt0 fw3 mt0 w-75-l">
     <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
-      Ant Hill se basa en la teoría de
-      <mark>control empírico de procesos.</mark>
-
+      <p>
+        Ant Hill se basa en la teoría de
+        <mark>control empírico de procesos.</mark>
+      </p>
       <p>
         Como organización solo conocemos aquello que ha pasado y solo podemos
         tratar de predecir aquello que ocurrirá.
@@ -23,7 +24,6 @@
     <div class="fl w-100 w-100-m w-30-l tc-m ph4-l tc">
       <img src={whyImage} alt="why gif" class="img-svg" />
     </div>
-
   </section>
 </div>
 

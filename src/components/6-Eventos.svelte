@@ -22,12 +22,9 @@
             superado el tiempo establecido y conocido por todos los asistentes,
             el evento en curso debe finalizar.
           </p>
-
         </blockquote>
       </div>
-
     </div>
-
   </section>
 
   <h3 class=" f3 lh-copy mb0 pl2 fw5 lookhere ">Iteración</h3>
@@ -40,31 +37,28 @@
     </div>
 
     <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
-      Cada iteración comienza con la inspección de necesidades a cubrir durante
-      el periodo, transcurre con su desarrollo en base a planes flexibles y
-      finaliza con la obtención del feedback sobre el valor entregado durante la
-      iteración y la inspección y adaptación de la forma de trabajar de la
-      organización.
+      <p>
+        Cada iteración comienza con la inspección de necesidades a cubrir
+        durante el periodo, transcurre con su desarrollo en base a planes
+        flexibles y finaliza con la obtención del feedback sobre el valor
+        entregado durante la iteración y la inspección y adaptación de la forma
+        de trabajar de la organización.
+      </p>
       <p>
         Una iteración tiene un timebox de 2 meses como máximo y al finalizar la
         vigente comienza otra de la misma duración.
       </p>
-
     </div>
 
     <div class="fl w-100 w-100-m w-30-l tc-m ph4-l tc">
       <img src={ciclo} alt="ciclo" class="img-svg" />
     </div>
-
   </section>
 
   <h3>Big Planning</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
-      <p>
-        <span class="fw6">Timebox:</span>
-        8 horas para ciclos bimestrales.
-      </p>
+      <p><span class="fw6">Timebox:</span> 8 horas para ciclos bimestrales.</p>
       <p>
         <span class="fw6">Invitados:</span>
         Los Owners de cada equipo junto con los Key Stakeholders.
@@ -80,17 +74,13 @@
         aportar, desagregarse en Épicas, detectar dependencias y proceder a su
         refinamiento e incorporación al Backlog de cada equipo.
       </p>
-
     </div>
   </section>
 
   <h3>Big Review</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
-      <p>
-        <span class="fw6">Timebox:</span>
-        4 horas para ciclos bimestrales.
-      </p>
+      <p><span class="fw6">Timebox:</span> 4 horas para ciclos bimestrales.</p>
 
       <p>
         <span class="fw6">Invitados:</span>
@@ -102,17 +92,13 @@
         Inspeccionar la entrega de valor realizada durante la iteración por cada
         uno de los equipos en base a las Epopeyas.
       </p>
-
     </div>
   </section>
 
   <h3>Big Retrospective</h3>
   <section class="cf pa3 mt0 pt0 fw3 mt0">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
-      <p>
-        <span class="fw6">Timebox:</span>
-        3 horas para ciclos bimestrales.
-      </p>
+      <p><span class="fw6">Timebox:</span> 3 horas para ciclos bimestrales.</p>
 
       <p>
         <span class="fw6">Invitados:</span>
@@ -127,8 +113,6 @@
         acción de mejora debe proponerse y probarse durante la siguiente
         iteración que beneficie a la mayor parte de equipos.
       </p>
-
     </div>
   </section>
-
 </div>

@@ -3,7 +3,6 @@
 </script>
 
 <div class="actividades">
-
   <h2>Actividades</h2>
   <section class="cf pa3 mt0 pt0 fw3 mt0 ">
     <div class="fl w-100 w-100-m w-75-l f3-l f4-ns ">
@@ -12,9 +11,7 @@
         del framework que son realizadas a petición de los Development Team, los
         Owners o los Key Stakeholders:
       </p>
-
     </div>
-
   </section>
 
   <h3>Refinamientos</h3>
@@ -25,7 +22,6 @@
         detalle a las Epopeyas junto con los Equipos para trasladar la necesidad
         existente y la gestión de expectativas sobre el valor esperado.
       </p>
-
     </div>
   </section>
 
@@ -43,7 +39,6 @@
             Se entiende por Bloqueo todo aquel impedimento que no puede resolver
             el Equipo por sí mismo.
           </p>
-
         </blockquote>
       </div>
       <p>
@@ -55,25 +50,24 @@
         Las acciones de mejora realizadas en una iteración pueden ser objeto de
         inspección a través de la Big Retrospective.
       </p>
-
     </div>
-
   </section>
 
   <h3>Comunidad de Prácticas</h3>
   <p />
   <section class="cf pa3 mt0 pt0 fw3 mt0 w-75-l">
-
     <div class="fl w-100 w-100-m w-70-l f3-l f4-ns ">
-      Con el fin de
-      <mark>
-        fomentar la auto-organización, el desarrollo y la difusión de
-        conocimientos
-      </mark>
-      orientados a las necesidades de los productos y servicios prestados por la
-      organización, tanto dentro del equipo como entre equipos, es recomendable
-      la creación de comunidades orientadas al aprendizaje y desarrollo de
-      habilidades prácticas.
+      <p>
+        Con el fin de
+        <mark>
+          fomentar la auto-organización, el desarrollo y la difusión de
+          conocimientos
+        </mark>
+        orientados a las necesidades de los productos y servicios prestados por
+        la organización, tanto dentro del equipo como entre equipos, es
+        recomendable la creación de comunidades orientadas al aprendizaje y
+        desarrollo de habilidades prácticas.
+      </p>
       <p>
         La creación de una Comunidad de Práctica tiende a ser fruto como
         respuesta a las acciones de mejora detectadas durante la Big Review.
@@ -83,7 +77,5 @@
     <div class="fl w-100 w-100-m w-30-l tc-m ph4-l tc">
       <img src={celula} alt="celula" class="img-svg" />
     </div>
-
   </section>
-
 </div>

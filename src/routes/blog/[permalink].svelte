@@ -78,7 +78,7 @@
     </div>
   </div>
 
-  <div class="center w-90-l w-100-m w-100 br3 pt4 bt-grey">
+  <div class="center w-80-l w-90-m w-100-ns w-100 br3 pt4 bt-grey">
     {@html post.html}
   </div>
 </main>
