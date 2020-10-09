@@ -48,6 +48,7 @@
     name="description"
     content="Un framework para generar feedback loops orientados a la aportación continua de valor. El propósito de Ant Hill es sincronizar y alinear equipos respetando como trabajan." />
 </svelte:head>
+
 <div transition:fade>
   <Navbar />
 

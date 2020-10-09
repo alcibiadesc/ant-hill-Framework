@@ -1,4 +1,5 @@
 <script context="module">
+  import { fade } from "svelte/transition";
   // import the logic for finding a post based on permalink
   import { findPost } from "../../posts";
 
@@ -65,22 +66,24 @@
 
   <meta name="description" content={post.description} />
 </svelte:head>
-<NavHorizontal showSearchBar={false} />
-<main class="sections">
-  <div class=" center post-card w-70-ns w-90-m w-100 shadow-4 br3 mt3">
-    <!-- display the post -->
-    <div class=" mb0 ph3 pt3 intro">
+
+<div transition:fade>
+  <NavHorizontal showSearchBar={false} />
+  <main class="sections">
+    <div class=" center post-card w-70-ns w-90-m w-100 shadow-4 br3 mt3">
+      <!-- display the post -->
+      <div class=" mb0 ph3 pt3 intro">
       <h1 class="f4-m f3-l f4-ns f5">{post.title}</h1>
       <h3 class="tl w-90 f5-m f4-l f5-ns f5">{post.description}</h3>
       <p class=" ma1 pb2 pt2 pr2 tr f6 gray lh-copy courier">
         {dateTransformer(post.date)}
       </p>
     </div>
-  </div>
+    </div>
 
-  <div class="center w-80-l w-90-m w-100-ns w-100 br3 pt4 bt-grey">
-    {@html post.html}
-  </div>
-</main>
-
-<Credits />
+    <div class="center w-80-l w-90-m w-100-ns w-100 br3 pt4 bt-grey">
+      {@html post.html}
+    </div>
+  </main>
+  <Credits />
+</div>

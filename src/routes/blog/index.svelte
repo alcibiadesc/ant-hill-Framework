@@ -1,7 +1,9 @@
 <script>
+  import Credits from "./../../components/99-Credits.svelte";
   import NavHorizontal from "./../../components/Nav-horizontal.svelte";
   import { posts } from "../../posts";
   import { searchbar } from "./../../store/searchbar.js";
+  import { fade } from "svelte/transition";
 
   // Order Post by recent
   let postsOrdered = posts.sort((a, b) => {
@@ -109,37 +111,39 @@
     name="description"
     content=" Un Framework para generar feedback loops orientados a la aportación continua de valor. El propósito de Ant Hill es sincronizar y alinear equipos respetando como trabajan." />
 </svelte:head>
+<div transition:fade>
+  <NavHorizontal showSearchBar={true} />
+  <main class="sections">
+    {#if !$searchbar}
+      <h2 class="tl-l tc intro f3">Últimos artículos</h2>
+    {:else}
+      <h2 class="tl-l tc intro f3">Artículos que contienen: "{$searchbar}"</h2>
+    {/if}
 
-<NavHorizontal showSearchBar={true} />
-<main class="sections">
-  {#if !$searchbar}
-    <h2 class="tl-l tc intro f3">Últimos artículos</h2>
-  {:else}
-    <h2 class="tl-l tc intro f3">Artículos que contienen: "{$searchbar}"</h2>
-  {/if}
+    {#each postsFiltered as post}
+      <div class="w-60-ns w-80-m  w-90-l w-100 center-m">
+        <a rel="prefetch" href={`/blog/${post.permalink}`}>
+          <div class="  post-card  shadow-4 br3">
+            <h1
+              class="f4-m f3-l f4-ns f5 lh-copy courier mb0 ph3 pt3 underline-hover title-card link">
+              {post.title}
+            </h1>
 
-  {#each postsFiltered as post}
-    <div class="w-60-ns w-80-m  w-90-l w-100 center-m">
-      <a rel="prefetch" href={`/blog/${post.permalink}`}>
-        <div class="  post-card  shadow-4 br3">
-          <h1
-            class="f4-m f3-l f4-ns f5 lh-copy courier mb0 ph3 pt3 underline-hover title-card link">
-            {post.title}
-          </h1>
+            {#if post.description}
+              <p class="ph3 post-description lookhere w-90 f5-m f4-l f5-ns f5">
+                {shortDescription(post.description)}
+              </p>
+            {/if}
 
-          {#if post.description}
-            <p class="ph3 post-description lookhere w-90 f5-m f4-l f5-ns f5">
-              {shortDescription(post.description)}
-            </p>
-          {/if}
-
-          {#if post.date}
-            <p class=" ma1 pb2 pr2 tr f6 gray lh-copy courier">
-              {dateTransformer(post.date)}
-            </p>
-          {/if}
-        </div>
-      </a>
-    </div>
-  {/each}
-</main>
+            {#if post.date}
+              <p class=" ma1 pb2 pr2 tr f6 gray lh-copy courier">
+                {dateTransformer(post.date)}
+              </p>
+            {/if}
+          </div>
+        </a>
+      </div>
+    {/each}
+  </main>
+  <Credits />
+</div>
