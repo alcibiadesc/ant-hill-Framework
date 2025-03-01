@@ -3,7 +3,7 @@
   <p class=" tc courier fw1 pt3 f5-ns f6-m f7 ">
     desarrollado con ❤️ por
     <a
-      href="https://www.linkedin.com/in/alcibiadesc/"
+      href="https://www.linkedin.com/in/alci/"
       target="#blank"
       class="lookhere">
       Alcibíades
